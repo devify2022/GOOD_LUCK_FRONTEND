@@ -10,54 +10,46 @@ import {
 
 const screenWidth = Dimensions.get("window").width; // Get the screen width
 const itemPadding = 10; // Padding around each grid item
-const numberOfColumns = Math.floor(screenWidth / 120); // Number of items per row based on screen width
+const numberOfColumns = 2; // Set number of items per row to 2
 const itemSize =
   (screenWidth - (numberOfColumns + 1) * itemPadding) / numberOfColumns; // Calculate item size
 
 const images = [
   {
     id: "1",
-    source: require("../assets/divineShop.png"),
+    source: require("../assets/ganesha.png"),
     title: "Divine Shop",
     originalPrice: "₹500",
     discountedPrice: "₹300",
   },
   {
     id: "2",
-    source: require("../assets/friends.png"),
+    source: require("../assets/ganesha.png"),
     title: "Friends Gathering",
     originalPrice: "₹600",
     discountedPrice: "₹450",
   },
   {
     id: "3",
-    source: require("../assets/marketing.png"),
+    source: require("../assets/ganesha.png"),
     title: "Marketing Essentials",
     originalPrice: "₹1200",
     discountedPrice: "₹850",
   },
   {
     id: "4",
-    source: require("../assets/panchangLogo.png"),
+    source: require("../assets/ganesha.png"),
     title: "Panchang Logo",
     originalPrice: "₹1000",
     discountedPrice: "₹750",
   },
   {
     id: "5",
-    source: require("../assets/loginLogo.png"),
+    source: require("../assets/ganesha.png"),
     title: "Login Logo",
     originalPrice: "₹400",
     discountedPrice: "₹250",
   },
-  {
-    id: "6",
-    source: require("../assets/matrimony.png"),
-    title: "Matrimony Services",
-    originalPrice: "₹1500",
-    discountedPrice: "₹1000",
-  },
-  // Add more images as needed
 ];
 
 const GridView = () => {
@@ -83,27 +75,20 @@ const GridView = () => {
 };
 
 const styles = StyleSheet.create({
-  gridContainer: {
-    padding: itemPadding / 2,
-    paddingHorizontal: 4,
-  },
+  gridContainer: {},
   itemContainer: {
-    width: itemSize,
+    width: itemSize - 15,
     height: itemSize + 80, // Adjust height to include space for title and prices
-    paddingHorizontal: 2,
+    marginBottom: 20, // Add space between rows
+    marginRight: 15,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#FFF", // Optional: Add background color for visual clarity
+    backgroundColor: "rgba(0, 45, 113, 0.06)", // Optional: Add background color for visual clarity
     borderRadius: 10,
-    elevation: 2, // Add shadow for Android
-    shadowColor: "#000", // Shadow color for iOS
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
   },
   image: {
-    width: itemSize,
-    height: itemSize,
+    width: itemSize - 10, // Slightly smaller to fit nicely within the container
+    height: itemSize - 10,
     borderRadius: 10,
     resizeMode: "cover",
   },

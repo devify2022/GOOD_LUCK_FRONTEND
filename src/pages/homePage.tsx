@@ -12,11 +12,26 @@ const scrollableMenuItems = [
   { id: 5, source: require("../assets/marketing.png") },
 ];
 
+const menuItems = [
+  { id: "1", title: "Divine Shop", icon: require("../assets/divineShop.png") },
+  { id: "2", title: "Matrimony", icon: require("../assets/matrimony.png") },
+  {
+    id: "3",
+    title: "Panchang Calendar",
+    icon: require("../assets/panchangLogo.png"),
+  },
+  {
+    id: "4",
+    title: "Love & Friends",
+    icon: require("../assets/friends.png"),
+  },
+];
+
 const HomeScreen = ({ navigation }: { navigation: any }) => {
   return (
     <HomeScreenLayout>
       <View style={styles.container}>
-        <ScrollableMenu navigation={navigation} />
+        <ScrollableMenu navigation={navigation} menuItems={menuItems} />
 
         <View style={styles.imageContainer}>
           <Image

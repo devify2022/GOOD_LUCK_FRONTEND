@@ -23,30 +23,15 @@ const menuItems = [
   },
 ];
 
-const Subcategories = ({ navigation }: { navigation: any }) => {
+const ProductList = ({ navigation }: { navigation: any }) => {
   return (
     <HomeScreenLayout>
       <View style={styles.container}>
         <View style={styles.headerContainer}>
           <Icon name="arrow-back" size={24} color="black" />
-          <Text style={styles.title}>Catogory</Text>
+          <Text style={styles.title}>God Idol</Text>
         </View>
 
-        <View>
-          <ScrollableMenu navigation={navigation} menuItems={menuItems} />
-        </View>
-
-        <View style={styles.newArrivalsContainer}>
-          <Text style={styles.newArrivals}>New Arrivals</Text>
-          <TouchableOpacity
-            style={styles.showMoreButton}
-            onPress={() => {
-              navigation.navigate("productlisting");
-            }}
-          >
-            <Text style={styles.showMoreText}>Show More</Text>
-          </TouchableOpacity>
-        </View>
         <GridView />
       </View>
     </HomeScreenLayout>
@@ -98,4 +83,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Subcategories;
+export default ProductList;

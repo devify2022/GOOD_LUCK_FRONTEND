@@ -28,7 +28,13 @@ const menuItems = [
 const { width } = Dimensions.get("window");
 const itemSize = width * 0.25;
 
-const ScrollableMenu = ({ navigation }: { navigation: any }) => {
+const ScrollableMenu = ({
+  navigation,
+  menuItems,
+}: {
+  navigation: any;
+  menuItems: { id: string; title: string; icon: any }[];
+}) => {
   const renderItem = ({ item }: any) => (
     <TouchableOpacity
       style={styles.itemContainer}
@@ -57,7 +63,7 @@ const styles = StyleSheet.create({
   menuContainer: {
     paddingVertical: 10,
     paddingHorizontal: 5,
-    height: "auto",
+    height: "100%",
   },
   itemContainer: {
     width: itemSize,
