@@ -114,12 +114,13 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     fontSize: 18,
     fontWeight: "bold",
-    fontFamily: "Poppins",
+    fontFamily: "Poppins-Black",
     color: "#FFF",
   },
   headerRight: {
     flexDirection: "row",
   },
+
   content: {
     flex: 1,
     padding: 10,
@@ -143,6 +144,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 14,
     fontWeight: "bold",
+    fontFamily: "Poppins-Black",
   },
   homeIconContainer: {
     position: "absolute",

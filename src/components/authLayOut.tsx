@@ -129,9 +129,9 @@ const styles = StyleSheet.create({
   headerTextLineOne: {
     color: "#FFF",
     textAlign: "center",
-    fontFamily: "Poppins",
+    fontFamily: "Poppins-Black",
     fontSize: 40,
-    fontWeight: "600",
+    fontWeight: "400",
     lineHeight: 50,
     marginBottom: 10,
     position: "absolute",
@@ -141,9 +141,9 @@ const styles = StyleSheet.create({
   headerTextLineTwo: {
     color: "#FFF",
     textAlign: "center",
-    fontFamily: "Poppins",
+    fontFamily: "Poppins-Black",
     fontSize: 46,
-    fontWeight: "600",
+    fontWeight: "400",
     lineHeight: 60,
     marginBottom: 20,
     position: "absolute",

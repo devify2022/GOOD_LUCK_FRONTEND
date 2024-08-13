@@ -7,38 +7,36 @@ import {
   FlatList,
   Dimensions,
   TouchableOpacity,
+  Image,
 } from "react-native";
-import { IconButton } from "react-native-paper";
-import DivineShop from "../assets/divineShop";
 
 const menuItems = [
-  { id: "1", title: "Land", icon: "earth" },
-  { id: "2", title: "Puja", icon: "fire" },
-  { id: "3", title: "TV", icon: "television" },
-  { id: "4", title: "Priest", icon: "account" },
-  { id: "1", title: "Land", icon: "earth" },
-  { id: "2", title: "Puja", icon: "fire" },
-  { id: "3", title: "TV", icon: "television" },
-  { id: "4", title: "Priest", icon: "account" },
-  { id: "1", title: "Land", icon: "earth" },
-  { id: "2", title: "Puja", icon: "fire" },
-  { id: "3", title: "TV", icon: "television" },
-  { id: "4", title: "Priest", icon: "account" },
-  // Add more items as needed
+  { id: "1", title: "Divine Shop", icon: require("../assets/divineShop.png") },
+  { id: "2", title: "Matrimony", icon: require("../assets/matrimony.png") },
+  {
+    id: "3",
+    title: "Panchang Calendar",
+    icon: require("../assets/panchangLogo.png"),
+  },
+  {
+    id: "4",
+    title: "Love & Friends",
+    icon: require("../assets/friends.png"),
+  },
 ];
 
 const { width } = Dimensions.get("window");
 const itemSize = width * 0.25;
 
-const ScrollableMenu = () => {
+const ScrollableMenu = ({ navigation }: { navigation: any }) => {
   const renderItem = ({ item }: any) => (
-    <TouchableOpacity style={styles.itemContainer} onPress={() => {}}>
-      <IconButton
-        icon={item.icon}
-        size={itemSize * 0.5}
-        iconColor="black"
-        style={styles.icon}
-      />
+    <TouchableOpacity
+      style={styles.itemContainer}
+      onPress={() => {
+        navigation.navigate("subproducts");
+      }}
+    >
+      <Image style={styles.icon} source={item.icon} resizeMode="contain" />
       <Text style={styles.itemText}>{item.title}</Text>
     </TouchableOpacity>
   );
@@ -59,6 +57,7 @@ const styles = StyleSheet.create({
   menuContainer: {
     paddingVertical: 10,
     paddingHorizontal: 5,
+    height: "auto",
   },
   itemContainer: {
     width: itemSize,
@@ -68,18 +67,19 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
     backgroundColor: "rgba(0, 45, 113, 0.06)",
     borderRadius: 12,
+    padding: 5,
   },
   icon: {
-    height: itemSize * 0.6,
-    justifyContent: "center",
-    alignItems: "center",
+    width: "90%",
+    height: "70%",
   },
   itemText: {
     color: "black",
     fontSize: 14,
     textAlign: "center",
-    marginTop: 2,
-    fontFamily: "Popins",
+    marginTop: 4,
+    fontFamily: "Poppins-Black",
+    flexWrap: "wrap",
   },
 });
 

@@ -49,7 +49,7 @@ const OTPPage = ({ navigation }: { navigation: any }) => {
 
   const handleSignUp = () => {
     // Implement sign up logic here
-    navigation.navigate("login"); // Replace with your target page
+    navigation.navigate("signin"); // Replace with your target page
   };
 
   return (
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
 
   otpText: {
     color: "#444",
-    fontFamily: "Poppins",
+    fontFamily: "Poppins-Black",
     fontSize: 16,
     fontStyle: "normal",
     fontWeight: "500",

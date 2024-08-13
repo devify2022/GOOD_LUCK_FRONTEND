@@ -17,7 +17,7 @@ const SignUp = ({ navigation }: any) => {
 
   const handleSignUp = () => {
     // Implement your sign-up logic here
-    navigation.navigate("signin");
+    navigation.navigate("otpverify");
   };
 
   const handleBack = () => {

@@ -6,6 +6,7 @@ import LoginPage from "./pages/signInPage";
 import SignUp from "./pages/createAccount";
 import OTPPage from "./pages/otpInputPage";
 import HomePage from "./pages/homePage";
+import Subcategories from "./pages/subCategories";
 
 const Routes = () => {
   const Stack = createNativeStackNavigator();
@@ -31,6 +32,7 @@ const Routes = () => {
           <Stack.Screen name="signup" component={SignUp} />
           <Stack.Screen name="otpverify" component={OTPPage} />
           <Stack.Screen name="home" component={HomePage} />
+          <Stack.Screen name="subproducts" component={Subcategories} />
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>
