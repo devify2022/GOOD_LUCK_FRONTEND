@@ -4,6 +4,7 @@ import Icon from "react-native-vector-icons/MaterialIcons"; // Import the icon s
 import ScrollableMenu from "../components/scrollableTopMenu";
 import GridView from "../components/gridView";
 import HomeScreenLayout from "../components/homeLayOut";
+import { subCategoriesstyle as styles } from "../styles";
 const menuItems = [
   {
     id: "1",
@@ -52,50 +53,5 @@ const Subcategories = ({ navigation }: { navigation: any }) => {
     </HomeScreenLayout>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#FFF",
-    paddingHorizontal: 15,
-    paddingVertical: 20,
-  },
-  topMenuContainer: {
-    height: "25%",
-  },
-  headerContainer: {
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
-    paddingHorizontal: 15,
-  },
-
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#000",
-    marginLeft: 20,
-  },
-  newArrivalsContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 15,
-  },
-  newArrivals: {
-    fontSize: 18,
-    fontWeight: "600",
-    color: "#333",
-  },
-  showMoreButton: {
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-  },
-  showMoreText: {
-    fontSize: 16,
-    color: "#007BFF",
-    fontWeight: "bold",
-  },
-});
 
 export default Subcategories;

@@ -1,10 +1,8 @@
 import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import React from "react";
 import Layout from "../components/authLayOut";
-import {
-  useNavigation,
-  NavigationContainerProps,
-} from "@react-navigation/native";
+import { signSignUpStyle as styles } from "../styles";
+
 export type RootStackParamList = {
   signin: undefined;
   signup: undefined;
@@ -44,42 +42,5 @@ const SignInSignUp = ({
     </Layout>
   );
 };
-
-const styles = StyleSheet.create({
-  buttonContainer: {
-    width: "98%",
-    alignItems: "center",
-    justifyContent: "center",
-    position: "absolute",
-    bottom: 0,
-  },
-  signInButton: {
-    width: "100%",
-    padding: 15,
-    backgroundColor: "white",
-    borderRadius: 46,
-    marginBottom: 10,
-    alignItems: "center",
-  },
-  signInButtonText: {
-    color: "#FD7A5B", // saffron color
-    fontSize: 18,
-    fontWeight: "600",
-  },
-  signUpButton: {
-    width: "100%",
-    padding: 15,
-    borderColor: "white",
-    borderWidth: 1,
-    borderRadius: 46,
-    backgroundColor: "transparent",
-    alignItems: "center",
-  },
-  signUpButtonText: {
-    color: "white",
-    fontSize: 18,
-    fontWeight: "600",
-  },
-});
 
 export default SignInSignUp;

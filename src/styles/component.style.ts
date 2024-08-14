@@ -1,0 +1,158 @@
+import { StyleSheet } from "react-native";
+import { styleConstants } from "./constants";
+
+export const topscrollableMenu = StyleSheet.create({
+  menuContainer: {
+    paddingVertical: 10,
+    paddingHorizontal: 5,
+    height: "100%",
+  },
+  itemContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginHorizontal: 5,
+    backgroundColor: styleConstants.color.backgroundGrayColor,
+    borderRadius: 12,
+    padding: 5,
+  },
+  icon: {
+    width: "90%",
+    height: "70%",
+  },
+  itemText: {
+    color: styleConstants.color.textBlackColor,
+    fontSize: 14,
+    textAlign: "center",
+    marginTop: 4,
+    fontFamily: styleConstants.fontFamily,
+    flexWrap: "wrap",
+  },
+});
+
+export const gridViewStyle = StyleSheet.create({
+  gridContainer: {},
+  itemContainer: {
+    // width: itemSize - 15,
+    // height: itemSize + 80, // Adjust height to include space for title and prices
+    marginBottom: 20, // Add space between rows
+    marginRight: 15,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: styleConstants.color.backgroundGrayColor, // Optional: Add background color for visual clarity
+    borderRadius: 10,
+  },
+  image: {
+    // width: itemSize - 10, // Slightly smaller to fit nicely within the container
+    // height: itemSize - 10,
+    borderRadius: 10,
+    resizeMode: "cover",
+  },
+  title: {
+    color: styleConstants.color.textBlackColor,
+    fontSize: 14,
+    fontFamily: styleConstants.fontFamily,
+
+    textAlign: "center",
+    marginVertical: 5, // Space between the image and title
+  },
+  priceContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 5, // Space between the title and prices
+  },
+  originalPrice: {
+    fontSize: 14,
+    color: styleConstants.color.textGrayColor,
+    textDecorationLine: "line-through", // Strikethrough effect
+    marginRight: 10, // Space between the original price and discounted price
+    fontFamily: styleConstants.fontFamily,
+  },
+  discountedPrice: {
+    fontSize: 14,
+
+    color: styleConstants.color.textBlackColor, // You can adjust this color based on your design
+    fontFamily: styleConstants.fontFamily,
+  },
+});
+
+export const homeLayOutStyle = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    backgroundColor: styleConstants.color.primaryColor,
+    alignItems: "center",
+    paddingHorizontal: 10,
+    paddingVertical: 15,
+    borderBottomRightRadius: 24,
+    borderBottomLeftRadius: 24,
+    height: "10%",
+  },
+  headerLeft: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  welcomeText: {
+    marginLeft: 10,
+    fontSize: 18,
+
+    fontFamily: styleConstants.fontFamily,
+    color: styleConstants.color.textWhiteColor,
+  },
+  headerRight: {
+    flexDirection: "row",
+  },
+
+  content: {
+    flex: 1,
+    padding: 10,
+  },
+  footer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    backgroundColor: styleConstants.color.primaryColor,
+    alignItems: "center",
+    paddingHorizontal: 10,
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    height: "10%",
+    position: "relative",
+  },
+  footerButton: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  footerButtonText: {
+    color: styleConstants.color.textWhiteColor,
+    fontSize: 14,
+
+    fontFamily: styleConstants.fontFamily,
+  },
+  homeIconContainer: {
+    position: "absolute",
+    top: -60,
+    left: "50%",
+    transform: [{ translateX: -35 }],
+    backgroundColor: "white",
+    borderRadius: 45,
+    height: 90,
+    width: 90,
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 1000,
+  },
+  homeIcon: {
+    backgroundColor: styleConstants.color.primaryColor,
+    borderRadius: 30,
+    height: 60,
+    width: 60,
+    alignItems: "center",
+  },
+  homeIconLabel: {
+    color: styleConstants.color.backgroundWhiteColor,
+    fontSize: 24,
+    alignSelf: "center",
+  },
+});

@@ -11,6 +11,8 @@ import Layout from "../components/authLayOut";
 
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
+import { signInPageStyle as styles } from "../styles";
+
 const LoginPage = ({ navigation }: any) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [password, setPassword] = useState("");
@@ -79,52 +81,5 @@ const LoginPage = ({ navigation }: any) => {
     </Layout>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    width: "100%",
-    paddingHorizontal: 16,
-    justifyContent: "center",
-    marginTop: 20,
-  },
-  input: {
-    width: "100%",
-    padding: 15,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 46,
-    marginBottom: 10,
-    color: "#000000",
-  },
-  passwordContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  eyeButton: {
-    position: "absolute",
-    right: 15,
-    top: 10,
-  },
-  forgotPasswordLink: {
-    alignItems: "flex-end",
-    marginVertical: 10,
-  },
-  forgotPasswordText: {
-    color: "#FD7A5B", // saffron color
-    fontSize: 16,
-    fontWeight: "600",
-  },
-  loginButton: {
-    width: "100%",
-    padding: 15,
-    backgroundColor: "#FD7A5B", // saffron color
-    borderRadius: 46,
-    alignItems: "center",
-  },
-  loginButtonText: {
-    color: "white",
-    fontSize: 18,
-    fontWeight: "600",
-  },
-});
 
 export default LoginPage;

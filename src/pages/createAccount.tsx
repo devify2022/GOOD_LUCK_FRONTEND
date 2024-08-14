@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import Layout from "../components/authLayOut";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { createAccountStyle as styles } from "../styles";
 
 const SignUp = ({ navigation }: any) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -88,44 +89,5 @@ const SignUp = ({ navigation }: any) => {
     </Layout>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    width: "100%",
-    paddingHorizontal: 16,
-    justifyContent: "center",
-    marginTop: 20,
-  },
-  input: {
-    width: "100%",
-    padding: 15,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 46,
-    marginBottom: 10,
-    color: "#000000",
-  },
-  passwordContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  eyeButton: {
-    position: "absolute",
-    right: 15,
-    top: 10,
-    alignSelf: "center",
-  },
-  signUpButton: {
-    width: "100%",
-    padding: 15,
-    backgroundColor: "#FD7A5B", // saffron color
-    borderRadius: 46,
-    alignItems: "center",
-  },
-  signUpButtonText: {
-    color: "white",
-    fontSize: 18,
-    fontWeight: "600",
-  },
-});
 
 export default SignUp;

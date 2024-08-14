@@ -8,8 +8,9 @@ import {
   Keyboard,
 } from "react-native";
 import Layout from "../components/authLayOut";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+
 import { Button } from "react-native-paper";
+import { otpInputStyle as styles } from "../styles";
 
 const OTPPage = ({ navigation }: { navigation: any }) => {
   const [otp, setOtp] = useState(["", "", "", ""]);
@@ -107,70 +108,5 @@ const OTPPage = ({ navigation }: { navigation: any }) => {
     </Layout>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    width: "100%",
-    paddingHorizontal: 16,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  otpContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: "80%",
-    marginVertical: 20,
-  },
-  otpInput: {
-    width: 50,
-    height: 50,
-    borderRadius: 8,
-    color: "white",
-    textAlign: "center",
-    fontSize: 20,
-    borderWidth: 1,
-    borderColor: "#FD7A5B",
-  },
-  timerContainer: {
-    borderRadius: 100,
-
-    // backgroundColor: "#FD7A5B", // Ensure the container background is transparent
-  },
-  timerText: {
-    color: "#FD7A5B", // saffron color for the timer
-    fontSize: 16,
-  },
-  timerCountdown: {
-    color: "#FD7A5B", // saffron color for the countdown
-    fontSize: 16,
-  },
-
-  resendButtonText: {
-    color: "#FD7A5B", // saffron color
-    fontSize: 16,
-  },
-  signUpButton: {
-    width: "100%",
-    padding: 15,
-    backgroundColor: "#FD7A5B", // saffron color
-    borderRadius: 46,
-    alignItems: "center",
-    marginTop: 20,
-  },
-  signUpButtonText: {
-    color: "white",
-    fontSize: 18,
-    fontWeight: "600",
-  },
-
-  otpText: {
-    color: "#444",
-    fontFamily: "Poppins-Black",
-    fontSize: 16,
-    fontStyle: "normal",
-    fontWeight: "500",
-    lineHeight: 20, // Set a value for lineHeight based on your design needs
-  },
-});
 
 export default OTPPage;

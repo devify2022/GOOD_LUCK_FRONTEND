@@ -2,6 +2,7 @@
 import React from "react";
 import { View, StyleSheet, Text, Dimensions } from "react-native";
 import { Avatar, IconButton, Button } from "react-native-paper";
+import { homeLayOutStyle as styles } from "../styles";
 
 const HomeScreenLayout: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -90,87 +91,5 @@ const HomeScreenLayout: React.FC<{ children: React.ReactNode }> = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    backgroundColor: "#FD7A5B",
-    alignItems: "center",
-    paddingHorizontal: 10,
-    paddingVertical: 15,
-    borderBottomRightRadius: 24,
-    borderBottomLeftRadius: 24,
-    height: "10%",
-  },
-  headerLeft: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  welcomeText: {
-    marginLeft: 10,
-    fontSize: 18,
-    fontWeight: "bold",
-    fontFamily: "Poppins-Black",
-    color: "#FFF",
-  },
-  headerRight: {
-    flexDirection: "row",
-  },
-
-  content: {
-    flex: 1,
-    padding: 10,
-  },
-  footer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    backgroundColor: "#FD7A5B",
-    alignItems: "center",
-    paddingHorizontal: 10,
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
-    height: "10%",
-    position: "relative",
-  },
-  footerButton: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  footerButtonText: {
-    color: "white",
-    fontSize: 14,
-    fontWeight: "bold",
-    fontFamily: "Poppins-Black",
-  },
-  homeIconContainer: {
-    position: "absolute",
-    top: -60,
-    left: "50%",
-    transform: [{ translateX: -35 }],
-    backgroundColor: "white",
-    borderRadius: 45,
-    height: 90,
-    width: 90,
-    justifyContent: "center",
-    alignItems: "center",
-    zIndex: 1000,
-  },
-  homeIcon: {
-    backgroundColor: "#FD7A5B",
-    borderRadius: 30,
-    height: 60,
-    width: 60,
-    alignItems: "center",
-  },
-  homeIconLabel: {
-    color: "white",
-    fontSize: 24,
-    alignSelf: "center",
-  },
-});
 
 export default HomeScreenLayout;

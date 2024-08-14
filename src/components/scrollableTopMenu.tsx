@@ -10,21 +10,7 @@ import {
   Image,
 } from "react-native";
 
-const menuItems = [
-  { id: "1", title: "Divine Shop", icon: require("../assets/divineShop.png") },
-  { id: "2", title: "Matrimony", icon: require("../assets/matrimony.png") },
-  {
-    id: "3",
-    title: "Panchang Calendar",
-    icon: require("../assets/panchangLogo.png"),
-  },
-  {
-    id: "4",
-    title: "Love & Friends",
-    icon: require("../assets/friends.png"),
-  },
-];
-
+import { topscrollableMenu as styles } from "../styles";
 const { width } = Dimensions.get("window");
 const itemSize = width * 0.25;
 
@@ -37,7 +23,7 @@ const ScrollableMenu = ({
 }) => {
   const renderItem = ({ item }: any) => (
     <TouchableOpacity
-      style={styles.itemContainer}
+      style={{ ...styles.itemContainer, width: itemSize, height: itemSize }}
       onPress={() => {
         navigation.navigate("subproducts");
       }}
@@ -58,35 +44,5 @@ const ScrollableMenu = ({
     />
   );
 };
-
-const styles = StyleSheet.create({
-  menuContainer: {
-    paddingVertical: 10,
-    paddingHorizontal: 5,
-    height: "100%",
-  },
-  itemContainer: {
-    width: itemSize,
-    height: itemSize,
-    justifyContent: "center",
-    alignItems: "center",
-    marginHorizontal: 5,
-    backgroundColor: "rgba(0, 45, 113, 0.06)",
-    borderRadius: 12,
-    padding: 5,
-  },
-  icon: {
-    width: "90%",
-    height: "70%",
-  },
-  itemText: {
-    color: "black",
-    fontSize: 14,
-    textAlign: "center",
-    marginTop: 4,
-    fontFamily: "Poppins-Black",
-    flexWrap: "wrap",
-  },
-});
 
 export default ScrollableMenu;
