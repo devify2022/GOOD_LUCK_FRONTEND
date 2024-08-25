@@ -88,7 +88,6 @@ export const homeLayOutStyle = StyleSheet.create({
     paddingVertical: 15,
     borderBottomRightRadius: 24,
     borderBottomLeftRadius: 24,
-    height: "10%",
   },
   headerLeft: {
     flexDirection: "row",
@@ -97,16 +96,14 @@ export const homeLayOutStyle = StyleSheet.create({
   welcomeText: {
     marginLeft: 10,
     fontSize: 18,
-
     fontFamily: styleConstants.fontFamily,
     color: styleConstants.color.textWhiteColor,
   },
   headerRight: {
     flexDirection: "row",
   },
-
   content: {
-    flex: 1,
+    flex: 1, // Ensure content takes up available space
     padding: 10,
   },
   footer: {
@@ -117,7 +114,7 @@ export const homeLayOutStyle = StyleSheet.create({
     paddingHorizontal: 10,
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
-    height: "10%",
+    height: 80, // Set a fixed height for the footer
     position: "relative",
   },
   footerButton: {
@@ -127,7 +124,6 @@ export const homeLayOutStyle = StyleSheet.create({
   footerButtonText: {
     color: styleConstants.color.textWhiteColor,
     fontSize: 14,
-
     fontFamily: styleConstants.fontFamily,
   },
   homeIconContainer: {

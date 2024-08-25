@@ -16,7 +16,7 @@ const HomeScreenLayout: React.FC<{ children: React.ReactNode }> = ({
         <View style={styles.headerLeft}>
           <Avatar.Image
             size={width * 0.1}
-            source={{ uri: "https://example.com/profile.jpg" }}
+            source={require("../assets/girlOne.png")}
           />
           <Text style={styles.welcomeText}>Welcome, User!</Text>
         </View>

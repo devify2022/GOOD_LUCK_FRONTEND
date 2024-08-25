@@ -8,7 +8,7 @@ import {
   ScrollView,
 } from "react-native";
 import HomeScreenLayout from "../components/homeLayOut";
-import ScrollableMenu from "../components/scrollableTopMenu";
+import ScrollableMenu, { IMenuItem } from "../components/scrollableTopMenu";
 
 import { homePageStyle as styles } from "../styles";
 
@@ -21,18 +21,30 @@ const scrollableMenuItems = [
   { id: 5, source: require("../assets/marketing.png") },
 ];
 
-const menuItems = [
-  { id: "1", title: "Divine Shop", icon: require("../assets/divineShop.png") },
-  { id: "2", title: "Matrimony", icon: require("../assets/matrimony.png") },
+const menuItems: IMenuItem[] = [
+  {
+    id: "1",
+    title: "Divine Shop",
+    icon: require("../assets/divineShop.png"),
+    route: "subproducts",
+  },
+  {
+    id: "2",
+    title: "Matrimony",
+    icon: require("../assets/matrimony.png"),
+    route: "createdatingprofile",
+  },
   {
     id: "3",
     title: "Panchang Calendar",
     icon: require("../assets/panchangLogo.png"),
+    route: "subproducts",
   },
   {
     id: "4",
     title: "Love & Friends",
     icon: require("../assets/friends.png"),
+    route: "createdatingprofile",
   },
 ];
 

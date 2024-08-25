@@ -8,5 +8,5 @@ export const styleConstants = {
     transparent: "transparent",
     textGrayColor: "#999",
   },
-  fontFamily: "Poppins-Black",
+  fontFamily: "Poppins-Light",
 };

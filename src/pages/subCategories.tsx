@@ -1,26 +1,34 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons"; // Import the icon set you want to use
-import ScrollableMenu from "../components/scrollableTopMenu";
+import ScrollableMenu, { IMenuItem } from "../components/scrollableTopMenu";
 import GridView from "../components/gridView";
 import HomeScreenLayout from "../components/homeLayOut";
 import { subCategoriesstyle as styles } from "../styles";
-const menuItems = [
+const menuItems: IMenuItem[] = [
   {
     id: "1",
     title: "Gems & Rudraksha",
     icon: require("../assets/rudraksha.png"),
+    route: "productlisting",
   },
-  { id: "2", title: "Books", icon: require("../assets/book.png") },
+  {
+    id: "2",
+    title: "Books",
+    icon: require("../assets/book.png"),
+    route: "productlisting",
+  },
   {
     id: "3",
     title: "God idols",
     icon: require("../assets/buddha.png"),
+    route: "productlisting",
   },
   {
     id: "4",
     title: "Beauty",
     icon: require("../assets/beauty.png"),
+    route: "productlisting",
   },
 ];
 

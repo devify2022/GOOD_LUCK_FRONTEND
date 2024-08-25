@@ -1,5 +1,4 @@
-// ScrollableMenu.tsx
-import React from "react";
+import React, { memo } from "react";
 import {
   View,
   StyleSheet,
@@ -9,23 +8,30 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-
 import { topscrollableMenu as styles } from "../styles";
+
 const { width } = Dimensions.get("window");
 const itemSize = width * 0.25;
 
-const ScrollableMenu = ({
-  navigation,
-  menuItems,
-}: {
+export interface IMenuItem {
+  id: string;
+  title: string;
+  icon: any;
+  route: string;
+}
+
+interface ScrollableMenuProps {
   navigation: any;
-  menuItems: { id: string; title: string; icon: any }[];
-}) => {
-  const renderItem = ({ item }: any) => (
+  menuItems: IMenuItem[];
+}
+
+const ScrollableMenu = ({ navigation, menuItems }: ScrollableMenuProps) => {
+  const renderItem = ({ item }: { item: IMenuItem }) => (
     <TouchableOpacity
-      style={{ ...styles.itemContainer, width: itemSize, height: itemSize }}
+      style={[styles.itemContainer, { width: itemSize, height: itemSize }]}
       onPress={() => {
-        navigation.navigate("subproducts");
+        console.log(item.title);
+        navigation.navigate(item.route);
       }}
     >
       <Image style={styles.icon} source={item.icon} resizeMode="contain" />
@@ -45,4 +51,4 @@ const ScrollableMenu = ({
   );
 };
 
-export default ScrollableMenu;
+export default memo(ScrollableMenu);
