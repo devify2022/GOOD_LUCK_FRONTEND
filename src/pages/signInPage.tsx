@@ -12,11 +12,13 @@ import Layout from "../components/authLayOut";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { signInPageStyle as styles } from "../styles";
+import { RadioButton } from "react-native-paper";
 
 const LoginPage = ({ navigation }: any) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [password, setPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [checked, setChecked] = useState('user');
 
   const handleLogin = () => {
     // Implement your login logic here
@@ -68,6 +70,36 @@ const LoginPage = ({ navigation }: any) => {
             />
           </TouchableOpacity>
         </View>
+
+        <View style={styles.selectRoleButtons}>
+          <View style={styles.radioButton}>
+            <RadioButton
+              color="#FD7A5B"
+              value="user"
+              status={checked === 'user' ? 'checked' : 'unchecked'}
+              onPress={() => setChecked('user')}
+            />
+            <Text>User1</Text>
+          </View>
+          <View style={styles.radioButton}>
+            <RadioButton
+              color="#FD7A5B"
+              value="Astrologer"
+              status={checked === 'Astrologer' ? 'checked' : 'unchecked'}
+              onPress={() => setChecked('Astrologer')}
+            />
+            <Text>Astrologer</Text>
+          </View>
+          <View style={styles.radioButton}>
+            <RadioButton
+              color="#FD7A5B"
+              value="AffiliateMarketer"
+              status={checked === 'AffiliateMarketer' ? 'checked' : 'unchecked'}
+              onPress={() => setChecked('AffiliateMarketer')}
+            />
+            <Text>Affiliate Marketer</Text>
+          </View>
+        </View>
         <TouchableOpacity
           style={styles.forgotPasswordLink}
           onPress={handleForgotPassword}
@@ -83,3 +115,4 @@ const LoginPage = ({ navigation }: any) => {
 };
 
 export default LoginPage;
+
