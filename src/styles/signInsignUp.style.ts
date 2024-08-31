@@ -88,6 +88,15 @@ export const signInPageStyle = StyleSheet.create({
     fontWeight: "600",
     fontFamily: styleConstants.fontFamily,
   },
+  selectRoleButtons:{
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between"
+  },
+  radioButton:{
+    alignItems: "center",
+    flexDirection: "row"
+  },
 });
 
 export const createAccountStyle = StyleSheet.create({
