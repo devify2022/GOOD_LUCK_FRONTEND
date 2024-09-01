@@ -15,7 +15,7 @@ const ProductList = ({ navigation }: { navigation: any }) => {
           <Text style={styles.title}>God Idol</Text>
         </View>
 
-        <GridView />
+        <GridView navigation={navigation}/>
       </View>
     </HomeScreenLayout>
   );
