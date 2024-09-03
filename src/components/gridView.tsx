@@ -6,6 +6,7 @@ import {
   StyleSheet,
   FlatList,
   Dimensions,
+  TouchableOpacity,
 } from "react-native";
 
 import { gridViewStyle as styles } from "../styles";
@@ -54,11 +55,12 @@ const images = [
   },
 ];
 
-const GridView = () => {
+const GridView = ({ navigation }: { navigation: any }) => {
   return (
     <FlatList
       data={images}
       renderItem={({ item }) => (
+        <TouchableOpacity onPress={()=>{navigation.navigate("buyProduct")}}>
         <View
           style={{
             ...styles.itemContainer,
@@ -80,6 +82,7 @@ const GridView = () => {
             <Text style={styles.discountedPrice}>{item.discountedPrice}</Text>
           </View>
         </View>
+        </TouchableOpacity> 
       )}
       keyExtractor={(item) => item.id}
       numColumns={numberOfColumns}

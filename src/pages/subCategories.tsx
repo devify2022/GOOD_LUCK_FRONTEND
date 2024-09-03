@@ -56,7 +56,7 @@ const Subcategories = ({ navigation }: { navigation: any }) => {
             <Text style={styles.showMoreText}>Show More</Text>
           </TouchableOpacity>
         </View>
-        <GridView />
+        <GridView navigation={navigation}/>
       </View>
     </HomeScreenLayout>
   );
