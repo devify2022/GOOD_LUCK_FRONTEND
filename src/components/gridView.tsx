@@ -57,7 +57,7 @@ const images = [
 
 const GridView = ({ navigation }: { navigation: any }) => {
   return (
-    <FlatList
+    <FlatList showsVerticalScrollIndicator={false}
       data={images}
       renderItem={({ item }) => (
         <TouchableOpacity onPress={()=>{navigation.navigate("buyProduct")}}>

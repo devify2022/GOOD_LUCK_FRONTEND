@@ -1,10 +1,10 @@
 import { View, Image, Text, Touchable, TouchableOpacity } from "react-native";
 import CartLayout from "../components/cartLayout";
-import { productDetailStyles as styles } from "../styles/productDetails.style";
+import { productDetailStyles as styles } from "../styles/cart.styles";
 import { Dimensions } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { useState } from "react";
-
+import { Button } from "react-native-paper";
 
 const image = {
   id: "1",
@@ -18,7 +18,7 @@ const imgsize = screenWidth / 2.5;
 
 const ProductDetail = ({ navigation }: { navigation: any }) => {
   return (
-    <CartLayout>
+    <CartLayout buttonText="Buy Now" navigation={navigation}>
 
       <View style={styles.titleContainer}>
         <Icon name="arrow-back" size={24} color="black" style={{ top: -2 }} />
@@ -53,7 +53,9 @@ const ProductDetail = ({ navigation }: { navigation: any }) => {
         </Text>
         <TouchableOpacity><Text style={styles.moreButton}>.. Read more</Text></TouchableOpacity>
       </View>
+
     </CartLayout>
+    
   )
 };
 

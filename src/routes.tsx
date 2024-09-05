@@ -15,6 +15,8 @@ import DatingMessageList from "./pages/datingMesagesComponent";
 import ChatUI from "./components/chatUI";
 import MyProfilePage from "./pages/myProfile";
 import ProductDetail from "./pages/productDetail";
+import PaymentDetail from "./pages/paymentDetail";
+import ConfirmPayment from "./pages/paymentConfirm";
 
 const Routes = () => {
   const Stack = createNativeStackNavigator();
@@ -52,6 +54,8 @@ const Routes = () => {
           <Stack.Screen name="datingmessagechat" component={ChatUI} />
           <Stack.Screen name="myprofile" component={MyProfilePage} />
           <Stack.Screen name="buyProduct" component={ProductDetail} />
+          <Stack.Screen name="checkout" component={PaymentDetail} />
+          <Stack.Screen name="paymentConfirm" component={ConfirmPayment} />
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>
