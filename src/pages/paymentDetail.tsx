@@ -20,6 +20,10 @@ const PaymentDetail = ({ navigation }: { navigation: any }) => {
     const [city, setCity] = useState("");
     const [state, setState] = useState("");
     const [phone, setPhone] = useState("");
+    const [address, setAddress] = useState("");
+    
+    const [pincode, setPincode] = useState("");
+
     return (
         <CartLayout buttonText="Pay Now" navigation={navigation}>
             <View style={styles.titleContainer}>
@@ -65,6 +69,13 @@ const PaymentDetail = ({ navigation }: { navigation: any }) => {
                                     value={name}
                                     onChangeText={setName}
                                 />
+                                 <TextInput
+                                    style={styles.input}
+                                    placeholder="Address"
+                                    placeholderTextColor="#B0B0B0"
+                                    value={address}
+                                    onChangeText={setAddress}
+                                /> 
                                 <TextInput
                                     style={styles.input}
                                     placeholder="City"
@@ -78,6 +89,14 @@ const PaymentDetail = ({ navigation }: { navigation: any }) => {
                                     placeholderTextColor="#B0B0B0"
                                     value={state}
                                     onChangeText={setState}
+                                />
+                                 <TextInput
+                                    style={styles.input}
+                                    placeholder="Pincode"
+                                    placeholderTextColor="#B0B0B0"
+                                    
+                                    value={pincode}
+                                    onChangeText={setPincode}
                                 />
                                 <TextInput
                                     style={styles.input}
@@ -108,12 +127,12 @@ const PaymentDetail = ({ navigation }: { navigation: any }) => {
                             </View>
                             <Text style={styles.paymentMethodText}>UPI</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.paymentOption}>
+                        {/* <TouchableOpacity style={styles.paymentOption}>
                             <View style={styles.paymentImageContainer}>
                                 <Image source={require("../assets/others.png")} style={styles.paymentMethodImage} />
                             </View>
                             <Text style={styles.paymentMethodText}>Other</Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                         <TouchableOpacity style={styles.paymentOption}>
                             <View style={styles.paymentImageContainer}>
                                 <Image source={require("../assets/offers.png")} style={styles.paymentMethodImage} />

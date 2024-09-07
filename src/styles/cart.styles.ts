@@ -304,3 +304,121 @@ export const paymentDetailStyles = StyleSheet.create({
         color: styleConstants.color.textBlackColor
     },
 })
+
+export const OrderDetailStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 4,
+    },
+    titleContainer: {
+        flexDirection: "row",
+        justifyContent: "flex-start",
+        alignItems: "center",
+        paddingHorizontal: 5,
+
+    },
+    title: {
+        fontSize: 24,
+        fontWeight: "600",
+        fontFamily: styleConstants.fontFamily,
+        color: styleConstants.color.textBlackColor,
+        marginLeft: 15,
+    },
+    orderDetailsContainer:{
+        flexDirection: "row",
+    },
+    imageContainer: {
+        backgroundColor: styleConstants.color.backgroundGrayColor,
+        padding: 10,
+        width: 100,
+        borderRadius: 16,
+        margin: 10,
+    },
+    image: {
+        width: 80,
+        height: 80,
+
+    },
+    details: {
+        padding: 5,
+        justifyContent: "center",
+    },
+    name: {
+        fontSize: 16,
+        fontWeight: "800", //600 in figma but 800 suites as per visuals. might be needed to change at titles also.
+        fontFamily: styleConstants.fontFamily,
+
+    },
+    priceContainer: {
+        flexDirection: "row",
+        top: 2,
+    },
+    originalPrice: {
+        fontSize: 18,
+        color: styleConstants.color.textGrayColor,
+        textDecorationLine: "line-through", // Strikethrough effect
+        marginLeft: 10,
+        fontFamily: styleConstants.fontFamily,
+    },
+    discountedPrice: {
+        fontSize: 18,
+        color: styleConstants.color.textBlackColor,
+        fontFamily: styleConstants.fontFamily,
+    },
+    count: {
+        flexDirection: "row",
+        alignItems: "center",
+        left: -8,
+        textAlign: "center",
+    },
+    countText: {
+        marginHorizontal: 5,
+        fontFamily: styleConstants.fontFamily,
+        fontSize: 18,
+        fontWeight: "600",
+    },
+    divider:{
+        margin: 10,
+        height: 1,
+        backgroundColor: styleConstants.color.textGrayColor, 
+     },
+     orderDetails:{
+         margin: 15
+     },
+     orderDetailCategory:{
+         flexDirection: "row",
+         justifyContent: "space-between",
+         textAlign: "center",
+         marginVertical: 2,
+     },
+     categoryName:{
+         fontFamily: styleConstants.fontFamily,
+         fontSize: 16,
+         fontWeight: "300",
+         color: styleConstants.color.textBlackColor
+     },
+     categoryValue:{
+         fontFamily: styleConstants.fontFamily,
+         fontSize: 16,
+         fontWeight: "700",
+         color: styleConstants.color.textBlackColor,
+     },
+     total:{
+         flexDirection: "row",
+         justifyContent: "space-between",
+         textAlign: "center",
+         marginVertical: 2,
+     },
+     totalText:{
+         fontFamily: styleConstants.fontFamily,
+         fontSize: 16,
+         fontWeight: "300",
+         color: styleConstants.color.textBlackColor
+     },
+     totalAmount:{
+         fontFamily: styleConstants.fontFamily,
+         fontSize: 18,
+         fontWeight: "700",
+         color: styleConstants.color.textBlackColor
+     },
+})

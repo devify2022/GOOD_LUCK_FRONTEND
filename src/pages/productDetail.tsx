@@ -1,10 +1,10 @@
-import { View, Image, Text, Touchable, TouchableOpacity } from "react-native";
+import { View, Image, Text, TouchableOpacity } from "react-native";
 import CartLayout from "../components/cartLayout";
 import { productDetailStyles as styles } from "../styles/cart.styles";
 import { Dimensions } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { useState } from "react";
-import { Button } from "react-native-paper";
+
 
 const image = {
   id: "1",
@@ -17,6 +17,7 @@ const screenWidth = (Dimensions.get("window").width)
 const imgsize = screenWidth / 2.5;
 
 const ProductDetail = ({ navigation }: { navigation: any }) => {
+  const [lines, setLines] = useState(2);
   return (
     <CartLayout buttonText="Buy Now" navigation={navigation}>
 
@@ -48,14 +49,23 @@ const ProductDetail = ({ navigation }: { navigation: any }) => {
         <Text style={styles.originalPrice}>{image.originalPrice}</Text>
       </View>
       <View style={styles.descriptionContainer}>
-        <Text numberOfLines={2} style={styles.description}>
-        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat...
+        <Text numberOfLines={lines} style={styles.description}>
+          incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
         </Text>
-        <TouchableOpacity><Text style={styles.moreButton}>.. Read more</Text></TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            if (lines == 2) {
+              setLines(10);
+            }
+            else {
+              setLines(2);
+            }
+          }}
+        ><Text style={styles.moreButton}>{ (lines == 2)?"read more":"read less"}</Text></TouchableOpacity>
       </View>
 
     </CartLayout>
-    
+
   )
 };
 
