@@ -1,23 +1,36 @@
 import { StyleSheet } from "react-native";
 import { styleConstants } from "./constants";
+import { cloneElement } from "react";
 
 export const topscrollableMenu = StyleSheet.create({
-  menuContainer: {
-    paddingVertical: 10,
-    paddingHorizontal: 5,
-    height: "100%",
+  menu: {
+    height: 115,
   },
-  itemContainer: {
+  menuItems:{
+    flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    marginHorizontal: 5,
-    backgroundColor: styleConstants.color.backgroundGrayColor,
-    borderRadius: 12,
-    padding: 5,
+    
   },
+  itemContainer:{
+    marginHorizontal: 10,
+    justifyContent: "center",
+    alignItems: "center",backgroundColor: styleConstants.color.backgroundGrayColor,
+    borderRadius: 12,
+    padding: 10,
+  },
+  // iconContainer:{
+  //   justifyContent: "center",
+  //   alignItems: "center",
+  //   backgroundColor: styleConstants.color.backgroundGrayColor,
+  //   borderRadius: 12,
+  //   padding: 5,
+    
+  // },
   icon: {
     width: "90%",
     height: "70%",
+    
   },
   itemText: {
     color: styleConstants.color.textBlackColor,
@@ -25,7 +38,7 @@ export const topscrollableMenu = StyleSheet.create({
     textAlign: "center",
     marginTop: 4,
     fontFamily: styleConstants.fontFamily,
-    flexWrap: "wrap",
+    flexWrap: "nowrap",
   },
 });
 
@@ -131,24 +144,28 @@ export const homeLayOutStyle = StyleSheet.create({
     top: -60,
     left: "50%",
     transform: [{ translateX: -35 }],
-    backgroundColor: "white",
-    borderRadius: 45,
-    height: 90,
-    width: 90,
+    // backgroundColor: "white",
+    borderRadius: 50,
+    // height: 90,
+    // width: 90,
     justifyContent: "center",
     alignItems: "center",
     zIndex: 1000,
+    borderWidth: 12,
+    borderColor: "white",
   },
   homeIcon: {
     backgroundColor: styleConstants.color.primaryColor,
     borderRadius: 30,
     height: 60,
     width: 60,
-    alignItems: "center",
+    paddingLeft: 12,
+    paddingVertical: 8,
+    
   },
   homeIconLabel: {
     color: styleConstants.color.backgroundWhiteColor,
-    fontSize: 24,
+    fontSize: 30,
     alignSelf: "center",
   },
 });

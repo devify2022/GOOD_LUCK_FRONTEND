@@ -84,7 +84,6 @@ const HomeScreenLayout: React.FC<{ children: React.ReactNode }> = ({
             style={styles.homeIcon}
             onPress={() => {}}
           >
-            {""}
           </Button>
         </View>
       </View>

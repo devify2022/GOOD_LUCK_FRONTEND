@@ -64,7 +64,7 @@ const GridView = ({ navigation }: { navigation: any }) => {
         <View
           style={{
             ...styles.itemContainer,
-            width: itemSize - 15,
+            width: itemSize - 18,
             height: itemSize + 80,
           }}
         >

@@ -29,7 +29,6 @@ export const subCategoriesstyle = StyleSheet.create({
     flex: 1,
     backgroundColor: styleConstants.color.transparent,
     paddingHorizontal: 15,
-    paddingVertical: 20,
   },
   topMenuContainer: {
     height: "25%",
@@ -37,15 +36,15 @@ export const subCategoriesstyle = StyleSheet.create({
   headerContainer: {
     flexDirection: "row",
     justifyContent: "flex-start",
-    alignItems: "flex-start",
-    paddingHorizontal: 15,
+    alignItems: "center",
+    textAlign: "center",
   },
 
   title: {
     fontSize: 24,
     fontFamily: styleConstants.fontFamily,
     color: styleConstants.color.textBlackColor,
-    marginLeft: 20,
+    marginLeft: 10,
   },
   newArrivalsContainer: {
     flexDirection: "row",
