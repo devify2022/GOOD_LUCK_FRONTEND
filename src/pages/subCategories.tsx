@@ -37,7 +37,7 @@ const Subcategories = ({ navigation }: { navigation: any }) => {
     <HomeScreenLayout>
       <View style={styles.container}>
         <View style={styles.headerContainer}>
-          <Icon name="arrow-back" size={24} color="black" />
+          <Icon name="arrow-back" size={24} color="black" style={{top: -2}}/>
           <Text style={styles.title}>Catogory</Text>
         </View>
 

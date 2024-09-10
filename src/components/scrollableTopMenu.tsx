@@ -10,8 +10,9 @@ import {
 } from "react-native";
 import { topscrollableMenu as styles } from "../styles";
 
-const { width } = Dimensions.get("window");
-const itemSize = width * 0.25;
+
+const itemwidth = (Dimensions.get("window").width) * 0.33;
+const itemHeight = itemwidth * 0.65;
 
 export interface IMenuItem {
   id: string;
@@ -27,16 +28,23 @@ interface ScrollableMenuProps {
 
 const ScrollableMenu = ({ navigation, menuItems }: ScrollableMenuProps) => {
   const renderItem = ({ item }: { item: IMenuItem }) => (
-    <TouchableOpacity
-      style={[styles.itemContainer, { width: itemSize, height: itemSize }]}
-      onPress={() => {
+    <View style={styles.menuItems}>
+      <TouchableOpacity
+        style={[styles.itemContainer, { width: itemwidth, height: itemHeight }]}
+        onPress={() => {
+          console.log(item.title);
+          navigation.navigate(item.route);
+        }}
+      >
+        <Image style={styles.icon} source={item.icon} resizeMode="contain" />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => {
         console.log(item.title);
         navigation.navigate(item.route);
-      }}
-    >
-      <Image style={styles.icon} source={item.icon} resizeMode="contain" />
-      <Text style={styles.itemText}>{item.title}</Text>
-    </TouchableOpacity>
+      }}>
+        <Text style={styles.itemText}>{item.title}</Text>
+      </TouchableOpacity>
+    </View>
   );
 
   return (
@@ -45,7 +53,7 @@ const ScrollableMenu = ({ navigation, menuItems }: ScrollableMenuProps) => {
       horizontal
       renderItem={renderItem}
       keyExtractor={(item) => item.id}
-      contentContainerStyle={styles.menuContainer}
+      contentContainerStyle={styles.menu}
       showsHorizontalScrollIndicator={false}
     />
   );

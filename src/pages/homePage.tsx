@@ -51,9 +51,20 @@ const menuItems: IMenuItem[] = [
 const HomeScreen = ({ navigation }: { navigation: any }) => {
   return (
     <HomeScreenLayout>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
           <ScrollableMenu navigation={navigation} menuItems={menuItems} />
+
+          <View style={styles.imageContainer}>
+            <Image
+              source={require("../assets/Header1.png")}
+              style={styles.image}
+            />
+            <View style={styles.textOverlayLeft}>
+              <Text style={styles.headerText}>Header Text</Text>
+              <Text style={styles.subText}>Sub Text</Text>
+            </View>
+          </View>
 
           <View style={styles.imageContainer}>
             <Image
@@ -61,19 +72,6 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
               style={styles.image}
             />
             <View style={styles.textOverlayRight}>
-              <Text style={styles.headerText}>Header Text</Text>
-              <Text style={styles.subText}>Sub Text</Text>
-            </View>
-          </View>
-
-          <View style={styles.spacer} />
-
-          <View style={styles.imageContainer}>
-            <Image
-              source={require("../assets/marketingOne.png")}
-              style={styles.image}
-            />
-            <View style={styles.textOverlayLeft}>
               <Text style={styles.headerText}>Header Text</Text>
               <Text style={styles.subText}>Sub Text</Text>
             </View>
