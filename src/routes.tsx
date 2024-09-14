@@ -17,6 +17,8 @@ import MyProfilePage from "./pages/myProfile";
 import ProductDetail from "./pages/productDetail";
 import PaymentDetail from "./pages/paymentDetail";
 import ConfirmPayment from "./pages/paymentConfirm";
+import Matches from "./pages/matches";
+import ViewProfile from "./pages/viewProfile";
 
 const Routes = () => {
   const Stack = createNativeStackNavigator();
@@ -48,6 +50,7 @@ const Routes = () => {
             name="createdatingprofile"
             component={CreateDatingProfile}
           />
+          
           <Stack.Screen name="plans" component={PlanSelectionComponent} />
           <Stack.Screen name="datinghome" component={DatingDashboard} />
           <Stack.Screen name="datingmessage" component={DatingMessageList} />
@@ -56,6 +59,8 @@ const Routes = () => {
           <Stack.Screen name="buyProduct" component={ProductDetail} />
           <Stack.Screen name="checkout" component={PaymentDetail} />
           <Stack.Screen name="paymentConfirm" component={ConfirmPayment} />
+          <Stack.Screen name="matches" component={Matches} />
+          <Stack.Screen name="viewProfile" component={ViewProfile} />
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>

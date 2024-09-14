@@ -6,11 +6,19 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
+  FlatList,
 } from "react-native";
 import { Button } from "react-native-paper";
 import { styleConstants } from "../styles/constants";
 
-const plans = [
+interface Iplan {
+  name: string,
+  price: string,
+  features: string[],
+  isPopular: boolean,
+}
+
+const plans: Iplan[] = [
   {
     name: "1 week",
     price: "$159/wk",
@@ -21,11 +29,13 @@ const plans = [
     name: "1 month",
     price: "$900/wk",
     features: ["Unlimited swipes", "Rewind", "Boost"],
+    isPopular: false,
   },
   {
     name: "6 months",
     price: "$19.99/wk",
     features: ["All Plus features", "See who likes you", "5 Super Likes/day"],
+    isPopular: false,
   },
 ];
 
@@ -35,6 +45,27 @@ const PlanSelectionComponent = ({ navigation }: { navigation: any }) => {
   const handlePlanSelection = (planName: string) => {
     setSelectedPlan(planName);
   };
+  const renderPlans = ({ item }: { item: Iplan }) => (
+
+    <View>
+      <TouchableOpacity
+
+        style={[
+          styles.card,
+          {
+            borderColor: selectedPlan === item.name ? "#FFD700" : "#FFFFFF",
+          },
+        ]}
+        onPress={() => handlePlanSelection(item.name)}
+      >
+        {item.isPopular && <Text style={styles.popular}>Popular</Text>}
+        {selectedPlan === item.name && <Text style={styles.tick}>✓</Text>}
+        <Text style={styles.planName}>{item.name}</Text>
+        <Text style={styles.price}>{item.price}</Text>
+      </TouchableOpacity>
+    </View>
+  )
+
 
   return (
     <View style={styles.container}>
@@ -52,12 +83,14 @@ const PlanSelectionComponent = ({ navigation }: { navigation: any }) => {
       </Text>
 
       {/* Scrollable Plans */}
-      <ScrollView
+      {/* <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
         style={styles.scrollView}
-      >
-        {plans.map((plan, index) => (
+        contentContainerStyle={styles.scrollViewContent}
+      > */}
+
+      {/* {plans.map((plan, index) => (
           <TouchableOpacity
             key={index}
             style={[
@@ -73,11 +106,12 @@ const PlanSelectionComponent = ({ navigation }: { navigation: any }) => {
             <Text style={styles.planName}>{plan.name}</Text>
             <Text style={styles.price}>{plan.price}</Text>
           </TouchableOpacity>
-        ))}
-      </ScrollView>
+        ))} */}
+
+      {/* </ScrollView> */}
 
       {/* Features of Selected Plan */}
-      {selectedPlan && (
+      {/* {selectedPlan && (
         <View style={styles.additionalCard}>
           <View style={styles.additionalCardTop}>
             <Text style={styles.additionalCardText}>
@@ -92,7 +126,15 @@ const PlanSelectionComponent = ({ navigation }: { navigation: any }) => {
             ))}
           </View>
         </View>
-      )}
+      )} */}
+
+
+      <FlatList
+        data={plans}
+        keyExtractor={(item) => item.name}
+        horizontal
+        renderItem={renderPlans}
+      ></FlatList>
 
       {/* Submit Button */}
       <Text style={styles.tAndC}>
@@ -137,7 +179,11 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     marginBottom: 20,
+
   },
+  // scrollViewContent:{
+  //   paddingRight: 115,
+  // },
   card: {
     width: "60%", // Less lengthier cards
     padding: 16,
