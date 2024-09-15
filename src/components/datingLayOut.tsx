@@ -9,8 +9,9 @@ const DatingScreenLayout: React.FC<{
   children: React.ReactNode;
   navigation?: any;
   showHeader?: boolean;
-}> = ({ children, showHeader }) => {
-  const { width } = Dimensions.get("window");
+  showFooter?: boolean;
+}> = ({ children, showHeader, showFooter }) => {
+  const { width, height } = Dimensions.get("window");
   const navigation = useNavigation<any>();
 
   return (
@@ -32,7 +33,7 @@ const DatingScreenLayout: React.FC<{
       <View style={styles.content}>{children}</View>
 
       {/* Footer */}
-      <View style={styles.footer}>
+      { !showFooter && <View style={styles.footer}>
         <View style={styles.footerButton}>
           <IconButton
             icon="home"
@@ -75,7 +76,7 @@ const DatingScreenLayout: React.FC<{
             {""}
           </Button>
         </View> */}
-      </View>
+      </View>}
     </View>
   );
 };

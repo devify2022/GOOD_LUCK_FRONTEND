@@ -117,7 +117,7 @@ export const homeLayOutStyle = StyleSheet.create({
   },
   content: {
     flex: 1, // Ensure content takes up available space
-    padding: 10,
+    
   },
   footer: {
     flexDirection: "row",

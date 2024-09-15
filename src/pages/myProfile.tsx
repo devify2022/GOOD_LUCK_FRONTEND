@@ -6,7 +6,7 @@ import MyProfile from "../components/profile";
 const MyProfilePage = () => {
   return (
     <View style={{ height: "100%" }}>
-      <DatingScreenLayout navigation={{}}>
+      <DatingScreenLayout navigation={{}} showFooter showHeader>
         <MyProfile />
       </DatingScreenLayout>
     </View>

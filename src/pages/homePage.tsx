@@ -44,7 +44,7 @@ const menuItems: IMenuItem[] = [
     id: "4",
     title: "Love & Friends",
     icon: require("../assets/friends.png"),
-    route: "createdatingprofile",
+    route: "matches",
   },
 ];
 

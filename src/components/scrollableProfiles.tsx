@@ -27,6 +27,8 @@ const DatingDashBoardScroll = (props: {
     "../assets/marketing.png",
   ];
   const { userName, userAge, userLocation, imageURL } = props;
+  const lookingFor = "Men";
+  const interests = ["music", "travel"]
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -58,46 +60,56 @@ const DatingDashBoardScroll = (props: {
             <TouchableOpacity style={styles.backButton}>
               <Icon name="chevron-left" size={30} color="white" />
             </TouchableOpacity>
+
+            <View style={styles.progressContainer}>
+              {images.map((_, index) => (
+                <View key={index} style={styles.progressLine}>
+                  <Animated.View
+                    style={[
+                      styles.progressFill,
+                      index === currentImageIndex
+                        ? { width: progressBarWidth }
+                        : {},
+                    ]}
+                  />
+                </View>
+              ))}
+            </View>
+
             <TouchableOpacity style={styles.filterButton}>
               <Icon name="filter" size={30} color="white" />
             </TouchableOpacity>
           </View>
 
-          {/* <View style={styles.progressContainer}>
-            {images.map((_, index) => (
-              <View key={index} style={styles.progressLine}>
-                <Animated.View
-                  style={[
-                    styles.progressFill,
-                    index === currentImageIndex
-                      ? { width: progressBarWidth }
-                      : {},
-                  ]}
-                />
-              </View>
-            ))}
-          </View> */}
+
 
           <View style={styles.bottomContainer}>
             <Text style={styles.userInfo}>
               {userName}, {userAge}
             </Text>
-            <Text style={styles.userLocation}>{userLocation}</Text>
+            <View style={styles.interestContainer}>
+              <Text style={styles.interest}>{lookingFor}</Text>
+              <Text style={styles.interest}>{interests[0]}</Text>
+              <Text style={styles.interest}>{interests[1]}</Text>
+            </View>
             <View style={styles.buttonContainer}>
               <IconButton
-                icon="close"
+                icon="close-circle-outline"
+                iconColor={styleConstants.color.textWhiteColor}
                 mode="contained"
                 style={styles.actionButton}
-                size={45}
+                size={50}
               />
               <IconButton
-                icon="heart"
+                iconColor={styleConstants.color.textWhiteColor}
+                icon="heart-outline"
                 mode="contained"
                 style={styles.actionButton}
                 size={45}
               />
               <IconButton
                 icon="arrow-up"
+                iconColor={styleConstants.color.textWhiteColor}
                 mode="contained"
                 style={styles.actionButton}
                 size={45}
@@ -119,7 +131,7 @@ const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
     width: "100%",
-    height: "100%",
+    height: "105%", // to avoid white background corners at footer
     opacity: 1,
   },
   imageStyle: {
@@ -130,7 +142,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "space-between",
     paddingHorizontal: 20,
-    paddingVertical: 40,
+    paddingVertical: 20,
     // backgroundColor: "rgba(0, 0, 0, 0.4)", // To darken the background
   },
   topContainer: {
@@ -161,7 +173,8 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     alignItems: "center",
-    marginBottom: 30,
+
+    justifyContent: "flex-end"
   },
   userInfo: {
     color: "white",
@@ -169,21 +182,40 @@ const styles = StyleSheet.create({
     fontFamily: styleConstants.fontFamily,
     alignSelf: "flex-start",
   },
-  userLocation: {
-    color: "white",
-    fontSize: 24,
-    marginBottom: 20,
-    alignSelf: "flex-start",
+  // userLocation: {
+  //   color: "white",
+  //   fontSize: 24,
+  //   marginBottom: 20,
+  //   alignSelf: "flex-start",
+  //   fontFamily: styleConstants.fontFamily,
+  // },
+  interestContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between"
+  },
+  interest: {
+    marginHorizontal: 10,
+    padding: 8,
     fontFamily: styleConstants.fontFamily,
+    color: styleConstants.color.textWhiteColor,
+    borderRadius: 22,
+    backgroundColor: "rgba(0, 0, 0, 0.12)",
+    width: width / 4,
+    borderColor: styleConstants.color.textWhiteColor,
+    textAlign: "center",
+    fontSize: 16,
+    fontWeight: "400",
   },
   buttonContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     width: "85%",
+    marginTop: 35,
   },
   actionButton: {
     marginHorizontal: 10,
-    backgroundColor: "rgba(255, 255, 255, 0.7)",
+    backgroundColor: "rgba(0, 0, 0, 0.12)",
+    color: styleConstants.color.textWhiteColor,
     height: 65,
     width: 65,
     borderRadius: 32.5,
@@ -191,6 +223,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
+    
   },
 });
 
