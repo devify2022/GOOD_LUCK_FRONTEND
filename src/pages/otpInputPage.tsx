@@ -11,12 +11,21 @@ import Layout from "../components/authLayOut";
 
 import { Button } from "react-native-paper";
 import { otpInputStyle as styles } from "../styles";
+import useAuthService from "../hooks/useAuthServices";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux";
 
 const OTPPage = ({ navigation }: { navigation: any }) => {
   const [otp, setOtp] = useState(["", "", "", ""]);
   const [timer, setTimer] = useState(60);
   const [resendEnabled, setResendEnabled] = useState(true);
   const inputRefs = useRef<(TextInput | null)[]>([]);
+
+  const { handleVerifyOTP } = useAuthService();
+
+  const phoneNumber = useSelector(
+    (state: RootState) => state.auth.userDetails?.phoneNumber
+  );
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
@@ -50,7 +59,11 @@ const OTPPage = ({ navigation }: { navigation: any }) => {
 
   const handleSignUp = () => {
     // Implement sign up logic here
-    navigation.navigate("signin"); // Replace with your target page
+    const otpString = otp[0] + otp[1] + otp[2] + otp[3];
+    handleVerifyOTP(
+      { otp: parseInt(otpString), phone: phoneNumber },
+      navigation
+    ); // Replace with your target page
   };
 
   return (
@@ -61,7 +74,9 @@ const OTPPage = ({ navigation }: { navigation: any }) => {
       textColor="black"
     >
       <View style={styles.container}>
-        <Text style={styles.otpText}>Code has been sent to +8998455566</Text>
+        <Text
+          style={styles.otpText}
+        >{`Code has been sent to +91${phoneNumber}`}</Text>
         <View style={styles.otpContainer}>
           {otp.map((digit, index) => (
             <TextInput

@@ -8,7 +8,10 @@ import {
 } from "react-native";
 import Layout from "../components/authLayOut";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import useAuthService from "../hooks/useAuthServices";
 import { createAccountStyle as styles } from "../styles";
+import { useDispatch } from "react-redux";
+import { setOtpFlow } from "../redux/silces/auth.silce";
 
 const SignUp = ({ navigation }: any) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -16,9 +19,15 @@ const SignUp = ({ navigation }: any) => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
 
+  const { handleRegisterNewUser } = useAuthService();
+
+  const dispatch = useDispatch();
+
   const handleSignUp = () => {
     // Implement your sign-up logic here
+    dispatch(setOtpFlow("signup"));
     navigation.navigate("otpverify");
+    handleRegisterNewUser({ phone: phoneNumber });
   };
 
   const handleBack = () => {
@@ -41,8 +50,9 @@ const SignUp = ({ navigation }: any) => {
           keyboardType="phone-pad"
           value={phoneNumber}
           onChangeText={setPhoneNumber}
+          maxLength={10}
         />
-        <View style={styles.passwordContainer}>
+        {/* <View style={styles.passwordContainer}>
           <TextInput
             style={styles.input}
             placeholder="Password"
@@ -81,7 +91,7 @@ const SignUp = ({ navigation }: any) => {
               color="#B0B0B0" // saffron color
             />
           </TouchableOpacity>
-        </View>
+        </View> */}
         <TouchableOpacity style={styles.signUpButton} onPress={handleSignUp}>
           <Text style={styles.signUpButtonText}>Sign Up</Text>
         </TouchableOpacity>

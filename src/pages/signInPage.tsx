@@ -13,16 +13,23 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { signInPageStyle as styles } from "../styles";
 import { RadioButton } from "react-native-paper";
+import useAuthService from "../hooks/useAuthServices";
+import { useDispatch } from "react-redux";
+import { setOtpFlow } from "../redux/silces/auth.silce";
 
 const LoginPage = ({ navigation }: any) => {
+  const { handleSendOTP } = useAuthService();
+  const dispatch = useDispatch();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [password, setPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [checked, setChecked] = useState('user');
+  const [checked, setChecked] = useState("user");
 
   const handleLogin = () => {
     // Implement your login logic here
-    navigation.navigate("home");
+    dispatch(setOtpFlow("signin"));
+    handleSendOTP({ phone: phoneNumber });
+    navigation.navigate("otpverify");
   };
 
   const handleForgotPassword = () => {
@@ -50,7 +57,7 @@ const LoginPage = ({ navigation }: any) => {
           value={phoneNumber}
           onChangeText={setPhoneNumber}
         />
-        <View style={styles.passwordContainer}>
+        {/* <View style={styles.passwordContainer}>
           <TextInput
             style={styles.input}
             placeholder="Password"
@@ -69,15 +76,15 @@ const LoginPage = ({ navigation }: any) => {
               color="#FD7A5B" // saffron color
             />
           </TouchableOpacity>
-        </View>
+        </View> */}
 
         <View style={styles.selectRoleButtons}>
           <View style={styles.radioButton}>
             <RadioButton
               color="#FD7A5B"
               value="user"
-              status={checked === 'user' ? 'checked' : 'unchecked'}
-              onPress={() => setChecked('user')}
+              status={checked === "user" ? "checked" : "unchecked"}
+              onPress={() => setChecked("user")}
             />
             <Text>User1</Text>
           </View>
@@ -85,8 +92,8 @@ const LoginPage = ({ navigation }: any) => {
             <RadioButton
               color="#FD7A5B"
               value="Astrologer"
-              status={checked === 'Astrologer' ? 'checked' : 'unchecked'}
-              onPress={() => setChecked('Astrologer')}
+              status={checked === "Astrologer" ? "checked" : "unchecked"}
+              onPress={() => setChecked("Astrologer")}
             />
             <Text>Astrologer</Text>
           </View>
@@ -94,8 +101,8 @@ const LoginPage = ({ navigation }: any) => {
             <RadioButton
               color="#FD7A5B"
               value="AffiliateMarketer"
-              status={checked === 'AffiliateMarketer' ? 'checked' : 'unchecked'}
-              onPress={() => setChecked('AffiliateMarketer')}
+              status={checked === "AffiliateMarketer" ? "checked" : "unchecked"}
+              onPress={() => setChecked("AffiliateMarketer")}
             />
             <Text>Affiliate Marketer</Text>
           </View>
@@ -115,4 +122,3 @@ const LoginPage = ({ navigation }: any) => {
 };
 
 export default LoginPage;
-
