@@ -15,9 +15,10 @@ import { homeLayOutStyle as styles } from "../styles";
 import { styleConstants } from "../styles/constants";
 import { useNavigation } from "@react-navigation/native";
 
-const HomeScreenLayout: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+const HomeScreenLayout: React.FC<{
+  children: React.ReactNode;
+  hideFooter?: boolean;
+}> = ({ children, hideFooter = false }) => {
   const { width } = Dimensions.get("window");
   const dispatch = useDispatch();
 
@@ -26,7 +27,7 @@ const HomeScreenLayout: React.FC<{ children: React.ReactNode }> = ({
 
   // Function to toggle drawer visibility
   const toggleDrawer = () => setDrawerVisible(!drawerVisible);
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   return (
     <View style={styles.container}>
       {/* Header */}
@@ -79,7 +80,9 @@ const HomeScreenLayout: React.FC<{ children: React.ReactNode }> = ({
                 />
               )}
               label="My Orders"
-              onPress={() => toggleDrawer()}
+              onPress={() => {
+                toggleDrawer(), navigation.navigate("orderListing");
+              }}
             />
             <Drawer.Item
               icon={() => (
@@ -133,52 +136,54 @@ const HomeScreenLayout: React.FC<{ children: React.ReactNode }> = ({
       <View style={styles.content}>{children}</View>
 
       {/* Footer */}
-      <View style={styles.footer}>
-        <View style={styles.footerButton}>
-          <IconButton
-            icon="earth"
-            size={width * 0.08}
-            iconColor="white"
-            onPress={() => {}}
-          />
-          <Text style={styles.footerButtonText}>Land</Text>
+      {!hideFooter && (
+        <View style={styles.footer}>
+          <View style={styles.footerButton}>
+            <IconButton
+              icon="earth"
+              size={width * 0.08}
+              iconColor="white"
+              onPress={() => {}}
+            />
+            <Text style={styles.footerButtonText}>Land</Text>
+          </View>
+          <View style={styles.footerButton}>
+            <IconButton
+              icon="fire"
+              size={width * 0.08}
+              iconColor="white"
+              onPress={() => {}}
+            />
+            <Text style={styles.footerButtonText}>Puja</Text>
+          </View>
+          <View style={styles.footerButton}>
+            <IconButton
+              icon="television"
+              size={width * 0.08}
+              iconColor="white"
+              onPress={() => {}}
+            />
+            <Text style={styles.footerButtonText}>TV</Text>
+          </View>
+          <View style={styles.footerButton}>
+            <IconButton
+              icon="account"
+              size={width * 0.08}
+              iconColor="white"
+              onPress={() => {}}
+            />
+            <Text style={styles.footerButtonText}>Priest</Text>
+          </View>
+          <View style={styles.homeIconContainer}>
+            <IconButton
+              icon="home"
+              size={width * 0.08}
+              iconColor="white"
+              onPress={() => {}}
+            />
+          </View>
         </View>
-        <View style={styles.footerButton}>
-          <IconButton
-            icon="fire"
-            size={width * 0.08}
-            iconColor="white"
-            onPress={() => {}}
-          />
-          <Text style={styles.footerButtonText}>Puja</Text>
-        </View>
-        <View style={styles.footerButton}>
-          <IconButton
-            icon="television"
-            size={width * 0.08}
-            iconColor="white"
-            onPress={() => {}}
-          />
-          <Text style={styles.footerButtonText}>TV</Text>
-        </View>
-        <View style={styles.footerButton}>
-          <IconButton
-            icon="account"
-            size={width * 0.08}
-            iconColor="white"
-            onPress={() => {}}
-          />
-          <Text style={styles.footerButtonText}>Priest</Text>
-        </View>
-        <View style={styles.homeIconContainer}>
-          <IconButton
-            icon="home"
-            size={width * 0.08}
-            iconColor="white"
-            onPress={() => {}}
-          />
-        </View>
-      </View>
+      )}
     </View>
   );
 };

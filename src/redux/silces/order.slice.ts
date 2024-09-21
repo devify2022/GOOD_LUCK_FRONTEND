@@ -5,8 +5,6 @@ import {
   IOrder,
   IOrderListItem,
 } from "../redux.constants";
-import { act } from "react";
-import { RootState } from "..";
 
 // Redux Toolkit slice
 export const orderSlice = createSlice({

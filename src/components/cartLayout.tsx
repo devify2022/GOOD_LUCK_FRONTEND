@@ -21,6 +21,12 @@ const CartLayout: React.FC<{
   const { width } = Dimensions.get("window");
   const navigation = useNavigation<any>();
   const { productDetails } = useApiCalls();
+
+  const { addOrder } = useApiCalls();
+
+  const handleAddOrder = () => {
+    addOrder();
+  };
   return (
     <View style={styles.container}>
       {/* Header */}
@@ -54,16 +60,14 @@ const CartLayout: React.FC<{
       {/* Footer */}
       <View style={styles.footer}>
         <View>
-          <PaymentPage />
+          {/* <PaymentPage /> */}
           <Button
             style={styles.footerButton}
             onPress={() => {
-              console.log(productDetails, "while checking out");
+              //(productDetails, "while checking out");
               buttonText === "Buy Now"
-                ? navigation.navigate("checkout", {
-                    id: productDetails?.toString(),
-                  })
-                : navigation.navigate("paymentConfirm");
+                ? navigation.navigate("checkout")
+                : handleAddOrder();
             }}
           >
             <Text style={styles.buttonText}>{buttonText}</Text>

@@ -43,8 +43,8 @@ export const addProduct = (payload: any) => {
   return baseClient.post(endPoints.addProduct, payload);
 };
 
-export const getOrderList = (params?: any) => {
-  return baseClient.get(endPoints.orderList, { params });
+export const getOrderList = (params?: string) => {
+  return baseClient.get(endPoints.orderList + "/" + params);
 };
 
 export const getOrderDetails = (params: any) => {

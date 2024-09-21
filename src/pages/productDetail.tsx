@@ -5,6 +5,7 @@ import { Dimensions } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { useEffect, useState } from "react";
 import useApiCalls from "../hooks/useApiCalls";
+import { ActivityIndicator } from "react-native-paper";
 
 const image = {
   id: "1",
@@ -27,57 +28,68 @@ const ProductDetail = ({
 }) => {
   const [lines, setLines] = useState(2);
   const { getProductDetails, productDetails, loading } = useApiCalls();
-  console.log(id, "getting route");
+  //(id, "getting route");
   useEffect(() => {
     if (id) getProductDetails(id);
   }, []);
   return (
     <CartLayout buttonText="Buy Now" navigation={navigation}>
-      <View style={styles.titleContainer}>
-        <Icon name="arrow-back" size={24} color="black" style={{ top: -2 }} />
-        <Text style={styles.title}>Product Details</Text>
-      </View>
-      <View style={{ ...styles.imageWrapper }}>
-        <Image
-          source={productDetails?.source}
-          style={{
-            ...styles.image,
-            width: imgsize,
-            height: imgsize,
-          }}
-        />
-      </View>
-      <View>
-        <Text style={styles.productTitle}>{productDetails?.title}</Text>
-      </View>
-      <View style={styles.priceContainer}>
-        <Text style={styles.discountedPrice}>
-          {productDetails?.discountedPrice}
-        </Text>
-        {/* space was not added by using styles. so text is needed. */}
-        <Text>{"  "}</Text>
-        <Text style={styles.originalPrice}>
-          {productDetails?.originalPrice}
-        </Text>
-      </View>
-      <View style={styles.descriptionContainer}>
-        <Text numberOfLines={lines} style={styles.description}>
-          {productDetails?.description}
-        </Text>
-        <TouchableOpacity
-          onPress={() => {
-            if (lines == 2) {
-              setLines(10);
-            } else {
-              setLines(2);
-            }
-          }}
-        >
-          <Text style={styles.moreButton}>
-            {lines == 2 ? "read more" : "read less"}
-          </Text>
-        </TouchableOpacity>
-      </View>
+      {loading ? (
+        <ActivityIndicator style={{ alignSelf: "center" }} size={"large"} />
+      ) : (
+        <>
+          <View style={styles.titleContainer}>
+            <Icon
+              name="arrow-back"
+              size={24}
+              color="black"
+              style={{ top: -2 }}
+            />
+            <Text style={styles.title}>Product Details</Text>
+          </View>
+          <View style={{ ...styles.imageWrapper }}>
+            <Image
+              source={productDetails?.source}
+              style={{
+                ...styles.image,
+                width: imgsize,
+                height: imgsize,
+              }}
+            />
+          </View>
+          <View>
+            <Text style={styles.productTitle}>{productDetails?.title}</Text>
+          </View>
+          <View style={styles.priceContainer}>
+            <Text style={styles.discountedPrice}>
+              {productDetails?.discountedPrice}
+            </Text>
+            {/* space was not added by using styles. so text is needed. */}
+            <Text>{"  "}</Text>
+            <Text style={styles.originalPrice}>
+              {productDetails?.originalPrice}
+            </Text>
+          </View>
+          <View style={styles.descriptionContainer}>
+            <Text numberOfLines={lines} style={styles.description}>
+              {productDetails?.description}
+            </Text>
+            <TouchableOpacity
+              onPress={() => {
+                if (lines == 2) {
+                  setLines(10);
+                } else {
+                  setLines(2);
+                }
+              }}
+            >
+              <Text style={styles.moreButton}>
+                {lines == 2 ? "read more" : "read less"}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </>
+      )}
     </CartLayout>
   );
 };

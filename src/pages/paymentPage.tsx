@@ -32,9 +32,9 @@ const PaymentPage = (props: any) => {
   // Convert input string to SHA256 hash
   const convertSHA = async (inputText: string) => {
     try {
-      console.log(inputText);
+      //(inputText);
       const value = await sha256(inputText);
-      console.log(value);
+      //(value);
       return value;
     } catch (error) {
       console.error("SHA256 conversion error:", error);
@@ -53,7 +53,7 @@ const PaymentPage = (props: any) => {
         paymentEnv.enableLogging
       );
 
-      console.log("PhonePe SDK initialized:", initResp);
+      //("PhonePe SDK initialized:", initResp);
 
       // Create request payload
       const requestBody = {
@@ -89,7 +89,7 @@ const PaymentPage = (props: any) => {
       phonepeSDK
         .startTransaction(payload_main, finalChecksum, null, null)
         .then((transactionResponse) => {
-          console.log("Transaction started successfully:", transactionResponse);
+          //("Transaction started successfully:", transactionResponse);
         })
         .catch((transactionError) => {
           console.error("Transaction error:", transactionError);

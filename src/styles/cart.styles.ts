@@ -304,6 +304,10 @@ export const OrderDetailStyles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 4,
+    height: "85%",
+    paddingTop: 15,
+    borderTopRightRadius: 35,
+    borderTopLeftRadius: 35,
   },
   titleContainer: {
     flexDirection: "row",
@@ -340,6 +344,7 @@ export const OrderDetailStyles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "800", //600 in figma but 800 suites as per visuals. might be needed to change at titles also.
     fontFamily: styleConstants.fontFamily,
+    color: styleConstants.color.textBlackColor,
   },
   priceContainer: {
     flexDirection: "row",
@@ -368,6 +373,7 @@ export const OrderDetailStyles = StyleSheet.create({
     fontFamily: styleConstants.fontFamily,
     fontSize: 18,
     fontWeight: "600",
+    color: styleConstants.color.textBlackColor,
   },
   divider: {
     margin: 10,

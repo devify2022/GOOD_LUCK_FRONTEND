@@ -45,10 +45,20 @@ export const authSlice = createSlice({
       };
     },
     authSuccess: (state: IAuthState, action: PayloadAction<any>) => {
+      console.log(
+        state.userDetails?.phoneNumber,
+        action.payload.userID,
+        action.payload.accessToken
+      );
       return {
         ...state,
         isAuthenticated: true,
         isLoading: false,
+        userDetails: {
+          phoneNumber: state.userDetails?.phoneNumber,
+          userID: action.payload.userID,
+          accessToken: action.payload.accessToken,
+        },
       };
     },
     authFailed: (state: IAuthState, action: PayloadAction<any>) => {

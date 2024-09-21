@@ -171,11 +171,11 @@ export const homeLayOutStyle = StyleSheet.create({
     alignItems: "center",
     zIndex: 1000,
     borderWidth: 12,
-    borderColor: "white",
+    borderColor: styleConstants.color.textWhiteColor,
     backgroundColor: styleConstants.color.primaryColor,
   },
   homeIcon: {
-    backgroundColor: styleConstants.color.primaryColor,
+    backgroundColor: styleConstants.color.transparent,
     color: styleConstants.color.primaryColor,
     borderRadius: 30,
     height: 60,

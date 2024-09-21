@@ -19,11 +19,12 @@ const ProductList = ({
 }) => {
   const { productList, loading, getAllProductByCategory, getAllProduct } =
     useApiCalls();
-  console.log(id, "getting route");
+  //(id, "getting route");
   useEffect(() => {
     if (id) getAllProductByCategory(id);
     else {
       getAllProduct();
+      //(productList[0].source);
     }
   }, []);
 
@@ -44,6 +45,7 @@ const ProductList = ({
               height: "auto",
               position: "static",
             }}
+            size={"large"}
           />
         ) : (
           <GridView navigation={navigation} productList={productList} />

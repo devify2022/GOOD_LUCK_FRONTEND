@@ -3,13 +3,20 @@ import { IMenuItem } from "../components/scrollableTopMenu";
 
 import React from "react";
 import {
+  createOrder,
   getAllProductList,
   getCategoryList,
+  getOrderList,
   getProductDetailsById,
   getProductListbyCategory,
 } from "../services";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setCurrentProductDetails } from "../redux/silces/product.slice";
+import { RootState } from "../redux";
+import { ToastAndroid } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { setCurrentOrder } from "../redux/silces/order.slice";
+import moment from "moment";
 
 const useApiCalls = () => {
   const [categoryList, setCategoryList] = useState<IMenuItem[]>([]);
@@ -20,6 +27,21 @@ const useApiCalls = () => {
 
   const dispatch = useDispatch();
 
+  const navigation = useNavigation<any>();
+
+  const userId = useSelector(
+    (state: RootState) => state.auth.userDetails?.userID
+  );
+  const orderDetails = useSelector(
+    (state: RootState) => state.order.currentOrderDetails
+  );
+
+  const product = useSelector(
+    (state: RootState) => state.product.productDetails
+  );
+
+  //();
+
   const getAllCategory = async () => {
     try {
       setLoading(true);
@@ -28,7 +50,7 @@ const useApiCalls = () => {
       const tempList: IMenuItem[] = [];
 
       //(data);
-      console.log(data);
+      //(data);
       for (let i = 0; i < data.length; i++) {
         const tempData: IMenuItem = {
           id: data[i]._id,
@@ -79,7 +101,7 @@ const useApiCalls = () => {
       setLoading(true);
       const response = await getProductListbyCategory(categoryId);
       const data = response?.data?.data;
-      console.log(data);
+      //(data);
       const tempList = [];
       for (let i = 0; i < data.length; i++) {
         const element = {
@@ -105,7 +127,7 @@ const useApiCalls = () => {
     try {
       setLoading(true);
       const response = await getProductDetailsById(productId);
-      console.log(response?.data?.data);
+      //(response?.data?.data);
       const data = response?.data?.data;
       const newProductDetails = {
         id: data?._id,
@@ -124,6 +146,60 @@ const useApiCalls = () => {
       console.error(error);
     }
   };
+
+  const addOrder = async () => {
+    try {
+      setLoading(true);
+      const payload = {
+        name: orderDetails?.name,
+        phone: orderDetails?.phone,
+        userId: userId,
+        city: orderDetails?.city,
+        state: orderDetails?.state,
+        order_details: product?.id,
+        delivery_date: orderDetails?.date,
+        quantity: orderDetails?.count,
+        total_price: orderDetails?.totalPrice,
+        payment_method: "Cash on Delivery",
+        is_payment_done: false,
+        transaction_id: "txn_1234567890" + Date.now(),
+      };
+      //(payload);
+      const respons = await createOrder(payload);
+      //(respons?.data?.data);
+      dispatch(setCurrentOrder(orderDetails));
+      navigation.navigate("paymentConfirm");
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getOrderListByUserId = async () => {
+    try {
+      const response = await getOrderList(userId ?? "");
+      const data = response.data.data;
+      const tempList = [];
+      for (let i = 0; i < data.length; i++) {
+        const orderDetails = data[i].order_details;
+        //(data[i]);
+
+        const element = {
+          id: data[i]._id,
+          source: { uri: orderDetails.image }, // Accessing image from order_details
+          title: orderDetails?.productName, // Accessing productName from order_details
+          total: data[i]?.total_price,
+          isPaid: data[i].is_payment_done,
+          isComplete: data[i].is_order_complete,
+          deliveryDate: orderDetails.deliveryDate, // Formatting delivery date
+        };
+
+        tempList.push(element);
+      }
+
+      setOrderList(tempList);
+    } catch (error) {}
+  };
   return {
     getAllCategory,
     categoryList,
@@ -138,8 +214,10 @@ const useApiCalls = () => {
     getProductDetails,
     productDetails,
     setProductDetails,
+    getOrderListByUserId,
     orderList,
     setOrderList,
+    addOrder,
   };
 };
 

@@ -27,9 +27,11 @@ const useAuthService = () => {
       const response = await verifyOTP({ payload, verificationType });
 
       const data = response?.data?.data;
-      console.log(data);
       //(data);
-      dispatch(authSuccess({}));
+      //(data);
+      dispatch(
+        authSuccess({ accessToken: data?.accessToken, userID: data?.userId })
+      );
       navigation.navigate("home");
     } catch (error: any) {
       dispatch(authFailed("Something went wrong"));
@@ -44,6 +46,8 @@ const useAuthService = () => {
       const response = await sendOTP(payload);
 
       const data = response?.data?.data;
+
+      //(data);
 
       //(data);
     } catch (error: any) {

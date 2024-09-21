@@ -70,7 +70,11 @@ const Subcategories = ({ navigation }: { navigation: any }) => {
             <Text style={styles.showMoreText}>Show More</Text>
           </TouchableOpacity>
         </View>
-        <GridView productList={productList} navigation={navigation} />
+        {loading ? (
+          <ActivityIndicator style={{ alignSelf: "center" }} size={"large"} />
+        ) : (
+          <GridView productList={productList} navigation={navigation} />
+        )}
       </View>
     </HomeScreenLayout>
   );

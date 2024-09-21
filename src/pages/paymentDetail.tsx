@@ -20,13 +20,17 @@ import { setCurrentOrder } from "../redux/silces/order.slice";
 
 const PaymentDetail = ({ navigation }: { navigation: any }) => {
   const image = useSelector((state: RootState) => state.product.productDetails);
+  const phoneNumber = useSelector(
+    (state: RootState) => state.auth.userDetails?.phoneNumber
+  );
   const dispatch = useDispatch();
   const [formState, setFormState] = useState({
+    date: new Date().toDateString(),
     count: 1,
     name: "",
     city: "",
     state: "",
-    phone: "",
+    phone: phoneNumber ?? "",
     address: "",
     pincode: "",
     totalPrice: image ? image.discountedPrice.replace(/[^0-9.-]+/g, "") : 0,
@@ -113,6 +117,7 @@ const PaymentDetail = ({ navigation }: { navigation: any }) => {
               <View>
                 <View style={styles.inputContainer}>
                   <TextInput
+                    maxLength={200}
                     style={styles.input}
                     placeholder="Name"
                     placeholderTextColor="#B0B0B0"
@@ -120,6 +125,7 @@ const PaymentDetail = ({ navigation }: { navigation: any }) => {
                     onChangeText={(text) => handleInputChange("name", text)}
                   />
                   <TextInput
+                    maxLength={200}
                     style={styles.input}
                     placeholder="Address"
                     placeholderTextColor="#B0B0B0"
@@ -127,6 +133,7 @@ const PaymentDetail = ({ navigation }: { navigation: any }) => {
                     onChangeText={(text) => handleInputChange("address", text)}
                   />
                   <TextInput
+                    maxLength={200}
                     style={styles.input}
                     placeholder="City"
                     placeholderTextColor="#B0B0B0"
@@ -134,6 +141,7 @@ const PaymentDetail = ({ navigation }: { navigation: any }) => {
                     onChangeText={(text) => handleInputChange("city", text)}
                   />
                   <TextInput
+                    maxLength={200}
                     style={styles.input}
                     placeholder="State"
                     placeholderTextColor="#B0B0B0"
@@ -141,6 +149,8 @@ const PaymentDetail = ({ navigation }: { navigation: any }) => {
                     onChangeText={(text) => handleInputChange("state", text)}
                   />
                   <TextInput
+                    maxLength={6}
+                    inputMode="numeric"
                     style={styles.input}
                     placeholder="Pincode"
                     placeholderTextColor="#B0B0B0"
@@ -148,6 +158,8 @@ const PaymentDetail = ({ navigation }: { navigation: any }) => {
                     onChangeText={(text) => handleInputChange("pincode", text)}
                   />
                   <TextInput
+                    maxLength={10}
+                    inputMode="numeric"
                     style={styles.input}
                     placeholder="Phone Number"
                     placeholderTextColor="#B0B0B0"

@@ -21,6 +21,7 @@ import Matches from "./pages/matches";
 import ViewProfile from "./pages/viewProfile";
 import { useSelector } from "react-redux";
 import { RootState } from "./redux";
+import OrderListingPage from "./pages/orderListing";
 
 const Routes = () => {
   const Stack = createNativeStackNavigator();
@@ -96,6 +97,10 @@ const Routes = () => {
           <Stack.Screen
             name="viewProfile"
             component={isAuthenticated ? ViewProfile : SignInSignUp}
+          />
+          <Stack.Screen
+            name="orderListing"
+            component={isAuthenticated ? OrderListingPage : SignInSignUp}
           />
         </Stack.Group>
       </Stack.Navigator>

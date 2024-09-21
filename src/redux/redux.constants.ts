@@ -6,10 +6,10 @@ export interface IAuthState {
 }
 
 export interface IUserDetails {
-  userID: string | null;
-  accessToken: string | null;
-  userName: string;
-  fullname: string;
+  userID?: string | null;
+  accessToken?: string | null;
+  userName?: string;
+  fullname?: string;
   email?: string;
   phoneNumber?: string;
 }
