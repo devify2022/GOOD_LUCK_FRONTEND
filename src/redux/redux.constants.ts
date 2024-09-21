@@ -85,6 +85,7 @@ export interface IOrderState {
   dealerList: any[];
   orderList: IOrderListItem[];
   currentOrder: IOrder;
+  currentOrderDetails: any;
   selectedDealer: any;
   isLoading: boolean;
 }
@@ -108,6 +109,7 @@ export interface IProductState {
   productList: IProduct[];
   categoryList: category[];
   currentCategory: category | null;
+  productDetails: any;
 }
 
 export const productInitialState: IProductState = {
@@ -115,6 +117,7 @@ export const productInitialState: IProductState = {
   productList: [],
   categoryList: [],
   currentCategory: null,
+  productDetails: null,
 };
 
 export const cartInitialState: ICartState = {
@@ -132,6 +135,7 @@ export const orderInitialState: IOrderState = {
   selectedDealer: null,
   isLoading: false,
   orderList: [],
+  currentOrderDetails: null,
   currentOrder: {
     id: "",
     orderNumber: "0",

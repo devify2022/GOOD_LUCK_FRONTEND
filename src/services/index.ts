@@ -2,7 +2,7 @@ import { endPoints } from "./constants";
 import { authClient, baseClient } from "./services.clients";
 
 export const verifyOTP = (payload: any) => {
-  console.log(payload?.payload, payload?.verificationType);
+  //(payload?.payload, payload?.verificationType);
   return authClient.post(
     payload?.verificationType === "signin"
       ? endPoints.verifyOTP
@@ -16,7 +16,6 @@ export const sendOTP = (payload: any) => {
 };
 
 export const addNewUser = (payload: any) => {
-  console.log(payload);
   return baseClient.post(endPoints.addNewUser, payload);
 };
 
@@ -24,8 +23,16 @@ export const getCategoryList = () => {
   return baseClient.get(endPoints.categoryList);
 };
 
-export const getProductList = (params: any) => {
-  return baseClient.get(endPoints.productList, { params });
+export const getAllProductList = () => {
+  return baseClient.get(endPoints.productList);
+};
+
+export const getProductListbyCategory = (params: string) => {
+  return baseClient.get(endPoints.productListByCategory + "/" + params);
+};
+
+export const getProductDetailsById = (params: string) => {
+  return baseClient.get(endPoints.productDetailsById + "/" + params);
 };
 
 export const createOrder = (payload: any) => {
@@ -34,10 +41,6 @@ export const createOrder = (payload: any) => {
 
 export const addProduct = (payload: any) => {
   return baseClient.post(endPoints.addProduct, payload);
-};
-
-export const getAllDealers = (params: any) => {
-  return baseClient.get(endPoints.userList, { params });
 };
 
 export const getOrderList = (params?: any) => {
@@ -50,8 +53,4 @@ export const getOrderDetails = (params: any) => {
 
 export const addNewCategory = (payload: any) => {
   return baseClient.post(endPoints.addCategory, payload);
-};
-
-export const getInvoice = (payload: any) => {
-  return baseClient.post(endPoints.invoice, payload);
 };

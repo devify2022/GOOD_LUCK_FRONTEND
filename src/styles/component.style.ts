@@ -6,16 +6,16 @@ export const topscrollableMenu = StyleSheet.create({
   menu: {
     height: 115,
   },
-  menuItems:{
+  menuItems: {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    
   },
-  itemContainer:{
+  itemContainer: {
     marginHorizontal: 10,
     justifyContent: "center",
-    alignItems: "center",backgroundColor: styleConstants.color.backgroundGrayColor,
+    alignItems: "center",
+    backgroundColor: styleConstants.color.backgroundGrayColor,
     borderRadius: 12,
     padding: 10,
   },
@@ -25,12 +25,11 @@ export const topscrollableMenu = StyleSheet.create({
   //   backgroundColor: styleConstants.color.backgroundGrayColor,
   //   borderRadius: 12,
   //   padding: 5,
-    
+
   // },
   icon: {
     width: "90%",
     height: "70%",
-    
   },
   itemText: {
     color: styleConstants.color.textBlackColor,
@@ -89,6 +88,27 @@ export const gridViewStyle = StyleSheet.create({
 });
 
 export const homeLayOutStyle = StyleSheet.create({
+  drawerOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  drawerContainer: {
+    width: "70%",
+    height: "100%",
+    backgroundColor: "white",
+    paddingTop: 40,
+    paddingLeft: 20,
+    position: "absolute",
+    left: 0,
+    top: 0,
+  },
+
+  drawerContent: {
+    backgroundColor: "white",
+    padding: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+  },
   container: {
     flex: 1,
   },
@@ -117,7 +137,6 @@ export const homeLayOutStyle = StyleSheet.create({
   },
   content: {
     flex: 1, // Ensure content takes up available space
-    
   },
   footer: {
     flexDirection: "row",
@@ -153,15 +172,16 @@ export const homeLayOutStyle = StyleSheet.create({
     zIndex: 1000,
     borderWidth: 12,
     borderColor: "white",
+    backgroundColor: styleConstants.color.primaryColor,
   },
   homeIcon: {
     backgroundColor: styleConstants.color.primaryColor,
+    color: styleConstants.color.primaryColor,
     borderRadius: 30,
     height: 60,
     width: 60,
     paddingLeft: 12,
     paddingVertical: 8,
-    
   },
   homeIconLabel: {
     color: styleConstants.color.backgroundWhiteColor,

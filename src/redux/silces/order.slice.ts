@@ -1,28 +1,31 @@
-import {type PayloadAction, createSlice} from '@reduxjs/toolkit';
+import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
 import {
   orderInitialState,
   IOrderState,
   IOrder,
   IOrderListItem,
-} from '../redux.constants';
-import {act} from 'react';
-import {RootState} from '..';
+} from "../redux.constants";
+import { act } from "react";
+import { RootState } from "..";
 
 // Redux Toolkit slice
 export const orderSlice = createSlice({
-  name: 'order',
+  name: "order",
   initialState: orderInitialState,
 
   reducers: {
     setCurrentOrder: (state: IOrderState, action: PayloadAction<any>) => {
       return {
         ...state,
-        currentOrder: action.payload,
+        currentOrderDetails: {
+          ...state.currentOrderDetails,
+          ...action.payload,
+        },
       };
     },
     addNewOrderInIListRequested: (
       state: IOrderState,
-      action: PayloadAction<any>,
+      action: PayloadAction<any>
     ) => {
       return {
         ...state,
@@ -32,7 +35,7 @@ export const orderSlice = createSlice({
 
     addNewOrderInListSuccess: (
       state: IOrderState,
-      action: PayloadAction<IOrderListItem>,
+      action: PayloadAction<IOrderListItem>
     ) => {
       return {
         ...state,
@@ -43,7 +46,7 @@ export const orderSlice = createSlice({
 
     addNewOrderInListFailed: (
       state: IOrderState,
-      action: PayloadAction<any>,
+      action: PayloadAction<any>
     ) => {
       return {
         ...state,
@@ -72,7 +75,7 @@ export const orderSlice = createSlice({
 
     getOrderListSuccess: (
       state: IOrderState,
-      action: PayloadAction<IOrderListItem[]>,
+      action: PayloadAction<IOrderListItem[]>
     ) => {
       return {
         ...state,
@@ -90,7 +93,7 @@ export const orderSlice = createSlice({
 
     getOrderDetailsRequested: (
       state: IOrderState,
-      action: PayloadAction<any>,
+      action: PayloadAction<any>
     ) => {
       return {
         ...state,
@@ -100,7 +103,7 @@ export const orderSlice = createSlice({
 
     getOrderDetailsSuccess: (
       state: IOrderState,
-      action: PayloadAction<IOrder>,
+      action: PayloadAction<IOrder>
     ) => {
       return {
         ...state,
@@ -121,7 +124,7 @@ export const orderSlice = createSlice({
       return {
         ...state,
         orderList: state.orderList.filter(
-          (order: any) => order.id !== action.payload.id,
+          (order: any) => order.id !== action.payload.id
         ),
       };
     },
@@ -135,7 +138,7 @@ export const orderSlice = createSlice({
 
     getDealerListRequested: (
       state: IOrderState,
-      action: PayloadAction<{roleid: string}>,
+      action: PayloadAction<{ roleid: string }>
     ) => {
       return {
         ...state,
@@ -145,7 +148,7 @@ export const orderSlice = createSlice({
 
     getDealerListSuccess: (
       state: IOrderState,
-      action: PayloadAction<any[]>,
+      action: PayloadAction<any[]>
     ) => {
       return {
         ...state,
@@ -162,7 +165,7 @@ export const orderSlice = createSlice({
     },
     addNewDealerInListRequested: (
       state: IOrderState,
-      action: PayloadAction<any>,
+      action: PayloadAction<any>
     ) => {
       return {
         ...state,
@@ -171,7 +174,7 @@ export const orderSlice = createSlice({
     },
     addNewDealerInListSuccess: (
       state: IOrderState,
-      action: PayloadAction<any>,
+      action: PayloadAction<any>
     ) => {
       return {
         ...state,
@@ -182,7 +185,7 @@ export const orderSlice = createSlice({
 
     addNewDealerInListFailed: (
       state: IOrderState,
-      action: PayloadAction<any>,
+      action: PayloadAction<any>
     ) => {
       return {
         ...state,

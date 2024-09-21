@@ -1,22 +1,42 @@
-// HomeScreenLayout.tsx
-import React from "react";
-import { View, StyleSheet, Text, Dimensions } from "react-native";
-import { Avatar, IconButton, Button } from "react-native-paper";
+import React, { useState } from "react";
+import {
+  View,
+  StyleSheet,
+  Text,
+  Dimensions,
+  Modal,
+  TouchableWithoutFeedback,
+} from "react-native";
+import { Avatar, IconButton, Drawer } from "react-native-paper";
+import { useDispatch } from "react-redux";
+import { logOut } from "../redux/silces/auth.silce";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { homeLayOutStyle as styles } from "../styles";
+import { styleConstants } from "../styles/constants";
+import { useNavigation } from "@react-navigation/native";
 
 const HomeScreenLayout: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const { width } = Dimensions.get("window");
+  const dispatch = useDispatch();
 
+  // State to control the drawer visibility
+  const [drawerVisible, setDrawerVisible] = useState(false);
+
+  // Function to toggle drawer visibility
+  const toggleDrawer = () => setDrawerVisible(!drawerVisible);
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.headerLeft}>
+          {/* Profile Avatar opens the drawer */}
           <Avatar.Image
             size={width * 0.1}
             source={require("../assets/girlOne.png")}
+            onTouchEnd={toggleDrawer} // Open modal on avatar click
           />
           <Text style={styles.welcomeText}>Welcome, User!</Text>
         </View>
@@ -30,11 +50,84 @@ const HomeScreenLayout: React.FC<{ children: React.ReactNode }> = ({
           <IconButton
             icon="wallet"
             size={width * 0.06}
-            onPress={() => {}}
+            onPress={() => {
+              dispatch(logOut());
+            }}
             iconColor="white"
           />
         </View>
       </View>
+
+      {/* Drawer Modal */}
+      <Modal
+        visible={drawerVisible}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={toggleDrawer}
+      >
+        <TouchableWithoutFeedback onPress={toggleDrawer}>
+          <View style={styles.drawerOverlay} />
+        </TouchableWithoutFeedback>
+        <View style={styles.drawerContainer}>
+          <Drawer.Section>
+            <Drawer.Item
+              icon={() => (
+                <MaterialCommunityIcons
+                  color={styleConstants.color.textGrayColor}
+                  name="package-variant"
+                  size={24}
+                />
+              )}
+              label="My Orders"
+              onPress={() => toggleDrawer()}
+            />
+            <Drawer.Item
+              icon={() => (
+                <MaterialCommunityIcons
+                  color={styleConstants.color.textGrayColor}
+                  name="account"
+                  size={24}
+                />
+              )}
+              label="My Account"
+              onPress={() => toggleDrawer()}
+            />
+            <Drawer.Item
+              icon={() => (
+                <MaterialCommunityIcons
+                  color={styleConstants.color.textGrayColor}
+                  name="map-marker-radius"
+                  size={24}
+                />
+              )}
+              label="Shipping Address"
+              onPress={() => toggleDrawer()}
+            />
+            <Drawer.Item
+              icon={() => (
+                <MaterialCommunityIcons
+                  color={styleConstants.color.textGrayColor}
+                  name="phone"
+                  size={24}
+                />
+              )}
+              label="Contact Us"
+              onPress={() => toggleDrawer()}
+            />
+            <Drawer.Item
+              icon={() => (
+                <MaterialCommunityIcons
+                  color={styleConstants.color.textGrayColor}
+                  name="share-variant"
+                  size={24}
+                />
+              )}
+              label="Share"
+              onPress={() => toggleDrawer()}
+            />
+          </Drawer.Section>
+        </View>
+      </Modal>
 
       {/* Content */}
       <View style={styles.content}>{children}</View>
@@ -78,13 +171,12 @@ const HomeScreenLayout: React.FC<{ children: React.ReactNode }> = ({
           <Text style={styles.footerButtonText}>Priest</Text>
         </View>
         <View style={styles.homeIconContainer}>
-          <Button
+          <IconButton
             icon="home"
-            labelStyle={styles.homeIconLabel}
-            style={styles.homeIcon}
+            size={width * 0.08}
+            iconColor="white"
             onPress={() => {}}
-          >
-          </Button>
+          />
         </View>
       </View>
     </View>

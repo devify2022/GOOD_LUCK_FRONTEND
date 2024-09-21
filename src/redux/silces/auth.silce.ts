@@ -44,12 +44,11 @@ export const authSlice = createSlice({
         isLoading: true,
       };
     },
-    authSuccess: (state: IAuthState, action: PayloadAction<IUserDetails>) => {
+    authSuccess: (state: IAuthState, action: PayloadAction<any>) => {
       return {
         ...state,
         isAuthenticated: true,
         isLoading: false,
-        userDetails: action.payload,
       };
     },
     authFailed: (state: IAuthState, action: PayloadAction<any>) => {

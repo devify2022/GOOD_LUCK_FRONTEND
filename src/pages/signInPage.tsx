@@ -86,7 +86,7 @@ const LoginPage = ({ navigation }: any) => {
               status={checked === "user" ? "checked" : "unchecked"}
               onPress={() => setChecked("user")}
             />
-            <Text>User1</Text>
+            <Text>User</Text>
           </View>
           <View style={styles.radioButton}>
             <RadioButton

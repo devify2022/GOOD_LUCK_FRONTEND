@@ -17,6 +17,7 @@ const SignUp = ({ navigation }: any) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
   const [phoneNumber, setPhoneNumber] = useState("");
 
   const { handleRegisterNewUser } = useAuthService();

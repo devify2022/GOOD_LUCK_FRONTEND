@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons"; // Import the icon set you want to use
 import ScrollableMenu, { IMenuItem } from "../components/scrollableTopMenu";
 import GridView from "../components/gridView";
 import HomeScreenLayout from "../components/homeLayOut";
 import { subCategoriesstyle as styles } from "../styles";
+import useApiCalls from "../hooks/useApiCalls";
+import { ActivityIndicator } from "react-native-paper";
 const menuItems: IMenuItem[] = [
   {
     id: "1",
@@ -33,16 +35,28 @@ const menuItems: IMenuItem[] = [
 ];
 
 const Subcategories = ({ navigation }: { navigation: any }) => {
+  const { categoryList, getAllCategory, getAllProduct, loading, productList } =
+    useApiCalls();
+  useEffect(() => {
+    getAllCategory();
+    getAllProduct();
+    //(categoryList);
+  }, []);
+
   return (
     <HomeScreenLayout>
       <View style={styles.container}>
         <View style={styles.headerContainer}>
-          <Icon name="arrow-back" size={24} color="black" style={{top: -2}}/>
+          <Icon name="arrow-back" size={24} color="black" style={{ top: -2 }} />
           <Text style={styles.title}>Catogory</Text>
         </View>
 
         <View>
-          <ScrollableMenu navigation={navigation} menuItems={menuItems} />
+          {loading ? (
+            <ActivityIndicator />
+          ) : (
+            <ScrollableMenu navigation={navigation} menuItems={categoryList} />
+          )}
         </View>
 
         <View style={styles.newArrivalsContainer}>
@@ -56,7 +70,7 @@ const Subcategories = ({ navigation }: { navigation: any }) => {
             <Text style={styles.showMoreText}>Show More</Text>
           </TouchableOpacity>
         </View>
-        <GridView navigation={navigation}/>
+        <GridView productList={productList} navigation={navigation} />
       </View>
     </HomeScreenLayout>
   );

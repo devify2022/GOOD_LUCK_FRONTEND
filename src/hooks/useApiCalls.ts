@@ -1,87 +1,146 @@
-import {useState} from 'react';
-import {addNewDealer, getAllDealers, getInvoice} from '../services';
-import {AxiosResponse} from 'axios';
-import {Alert} from 'react-native';
-export interface IAddDealer {
-  fullname: string;
-  firstName: string;
-  lastName: string;
-  role: string;
-  email: string;
-  password: string;
-  phoneNumber: string;
-  roleId: string;
-}
-export interface User {
-  userId: string;
-  fullname: string;
-  email: string;
-  roleId: string;
-  phoneNumber: string;
-}
+import { useState } from "react";
+import { IMenuItem } from "../components/scrollableTopMenu";
 
-const useApiservices = () => {
-  const [userList, setUserList] = useState<User[]>([]);
+import React from "react";
+import {
+  getAllProductList,
+  getCategoryList,
+  getProductDetailsById,
+  getProductListbyCategory,
+} from "../services";
+import { useDispatch } from "react-redux";
+import { setCurrentProductDetails } from "../redux/silces/product.slice";
 
-  const [dealerAdded, setdealerAdded] = useState(false);
-  const [loading, setloading] = useState<boolean>(false);
-  const fetchUserList = async (roleid: string) => {
-    setloading(true);
+const useApiCalls = () => {
+  const [categoryList, setCategoryList] = useState<IMenuItem[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [productList, setProductList] = useState<any[]>([]);
+  const [orderList, setOrderList] = useState<any[]>([]);
+  const [productDetails, setProductDetails] = useState<any>();
+
+  const dispatch = useDispatch();
+
+  const getAllCategory = async () => {
     try {
-      //(roleid);
-      const response = await getAllDealers({roleid});
-      //(response?.data?.data);
-      setUserList(response?.data?.data);
-      //(userList);
-      setloading(false);
-    } catch (error) {
-      console.error(error);
-      setloading(false);
-    }
-  };
+      setLoading(true);
+      const response = await getCategoryList();
+      const data = response?.data?.data;
+      const tempList: IMenuItem[] = [];
 
-  const addDealer = async (payload: IAddDealer) => {
-    //(payload);
-    setloading(true);
-    try {
-      const response: AxiosResponse = await addNewDealer(payload);
-      //(response?.data?.data);
-      if (response?.data?.data) {
-        Alert.alert('Dealer added successfully');
-        setloading(false);
-        setdealerAdded(true);
+      //(data);
+      console.log(data);
+      for (let i = 0; i < data.length; i++) {
+        const tempData: IMenuItem = {
+          id: data[i]._id,
+          title: data[i].category_name,
+          icon: { uri: data[i].image },
+          route: "productlisting",
+        };
+
+        tempList.push(tempData);
       }
+
+      setCategoryList(tempList);
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       console.error(error);
-      Alert.alert('Something went wrong');
-      setloading(false);
     }
   };
 
-  const getInvoiceFile = async (payload: {html: string}) => {
+  const getAllProduct = async () => {
     try {
-      setloading(true);
-      const response: AxiosResponse = await getInvoice(payload);
-      setloading(false);
-      // console.log(response.request._response);
-
-      return response.request._response ?? '';
+      setLoading(true);
+      const response = await getAllProductList();
+      const data = response?.data?.data;
+      //(data);
+      const tempList = [];
+      for (let i = 0; i < data.length; i++) {
+        const element = {
+          id: data[i]._id,
+          source: { uri: data[i].image },
+          title: data[i].productName,
+          originalPrice: `₹${data[i].originalPrice}`,
+          discountedPrice: `₹${data[i].displayPrice}`,
+          categoryName: data[i].category_name,
+        };
+        tempList.push(element);
+      }
+      setProductList(tempList);
+      setLoading(false);
     } catch (error) {
-      setloading(false);
+      setLoading(false);
       console.error(error);
-      Alert.alert('Something went wrong');
     }
   };
 
+  const getAllProductByCategory = async (categoryId: string) => {
+    try {
+      setLoading(true);
+      const response = await getProductListbyCategory(categoryId);
+      const data = response?.data?.data;
+      console.log(data);
+      const tempList = [];
+      for (let i = 0; i < data.length; i++) {
+        const element = {
+          id: data[i]._id,
+          source: { uri: data[i].image },
+          title: data[i].productName,
+          originalPrice: `₹${data[i].originalPrice}`,
+          discountedPrice: `₹${data[i].displayPrice}`,
+          categoryName: data[i].category,
+        };
+        tempList.push(element);
+      }
+
+      setProductList(tempList);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.error(error);
+    }
+  };
+
+  const getProductDetails = async (productId: string) => {
+    try {
+      setLoading(true);
+      const response = await getProductDetailsById(productId);
+      console.log(response?.data?.data);
+      const data = response?.data?.data;
+      const newProductDetails = {
+        id: data?._id,
+        source: { uri: data?.image },
+        title: data?.productName,
+        originalPrice: `₹${data.originalPrice}`,
+        discountedPrice: `₹${data.displayPrice}`,
+        categoryName: data.category,
+        description: data?.productDescription,
+      };
+      setProductDetails(newProductDetails);
+      dispatch(setCurrentProductDetails(newProductDetails));
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.error(error);
+    }
+  };
   return {
-    userList,
+    getAllCategory,
+    categoryList,
+    setCategoryList,
     loading,
-    fetchUserList,
-    addDealer,
-    dealerAdded,
-    setdealerAdded,
-    getInvoiceFile,
+    setLoading,
+    getAllProduct,
+    getAllProductByCategory,
+    getProductDetailsById,
+    productList,
+    setProductList,
+    getProductDetails,
+    productDetails,
+    setProductDetails,
+    orderList,
+    setOrderList,
   };
 };
 
-export default useApiservices;
+export default useApiCalls;

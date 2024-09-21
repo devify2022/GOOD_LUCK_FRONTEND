@@ -7,6 +7,7 @@ import {
   FlatList,
   Dimensions,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 
 import { gridViewStyle as styles } from "../styles";
@@ -55,34 +56,47 @@ const images = [
   },
 ];
 
-const GridView = ({ navigation }: { navigation: any }) => {
+const GridView = ({
+  navigation,
+  productList,
+}: {
+  navigation: any;
+  productList: any[];
+}) => {
   return (
-    <FlatList showsVerticalScrollIndicator={false}
-      data={images}
-      renderItem={({ item }) => (
-        <TouchableOpacity onPress={()=>{navigation.navigate("buyProduct")}}>
-        <View
-          style={{
-            ...styles.itemContainer,
-            width: itemSize - 18,
-            height: itemSize + 80,
+    <FlatList
+      showsVerticalScrollIndicator={false}
+      data={productList}
+      renderItem={({
+        item: { id, source, title, originalPrice, discountedPrice },
+      }) => (
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("buyProduct", { id: id });
           }}
         >
-          <Image
-            source={item.source}
+          <View
             style={{
-              ...styles.image,
-              height: itemSize - 10,
-              width: itemSize - 10,
+              ...styles.itemContainer,
+              width: itemSize - 18,
+              height: itemSize + 80,
             }}
-          />
-          <Text style={styles.title}>{item.title}</Text>
-          <View style={styles.priceContainer}>
-            <Text style={styles.originalPrice}>{item.originalPrice}</Text>
-            <Text style={styles.discountedPrice}>{item.discountedPrice}</Text>
+          >
+            <Image
+              source={source}
+              style={{
+                ...styles.image,
+                height: itemSize - 30,
+                width: itemSize - 30,
+              }}
+            />
+            <Text style={styles.title}>{title}</Text>
+            <View style={styles.priceContainer}>
+              <Text style={styles.originalPrice}>{originalPrice}</Text>
+              <Text style={styles.discountedPrice}>{discountedPrice}</Text>
+            </View>
           </View>
-        </View>
-        </TouchableOpacity> 
+        </TouchableOpacity>
       )}
       keyExtractor={(item) => item.id}
       numColumns={numberOfColumns}

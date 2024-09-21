@@ -10,8 +10,7 @@ import {
 } from "react-native";
 import { topscrollableMenu as styles } from "../styles";
 
-
-const itemwidth = (Dimensions.get("window").width) * 0.33;
+const itemwidth = Dimensions.get("window").width * 0.33;
 const itemHeight = itemwidth * 0.65;
 
 export interface IMenuItem {
@@ -32,16 +31,13 @@ const ScrollableMenu = ({ navigation, menuItems }: ScrollableMenuProps) => {
       <TouchableOpacity
         style={[styles.itemContainer, { width: itemwidth, height: itemHeight }]}
         onPress={() => {
-          console.log(item.title);
-          navigation.navigate(item.route);
+          //(item.title);
+          navigation.navigate(item.route, { id: item.id });
         }}
       >
         <Image style={styles.icon} source={item.icon} resizeMode="contain" />
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => {
-        console.log(item.title);
-        navigation.navigate(item.route);
-      }}>
+      <TouchableOpacity>
         <Text style={styles.itemText}>{item.title}</Text>
       </TouchableOpacity>
     </View>

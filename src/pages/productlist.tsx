@@ -1,21 +1,53 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons"; // Import the icon set you want to use
 
 import GridView from "../components/gridView";
 import HomeScreenLayout from "../components/homeLayOut";
 import { productListstyle as styles } from "../styles";
+import useApiCalls from "../hooks/useApiCalls";
+import { ActivityIndicator } from "react-native-paper";
 
-const ProductList = ({ navigation }: { navigation: any }) => {
+const ProductList = ({
+  navigation,
+  route: {
+    params: { id },
+  },
+}: {
+  navigation: any;
+  route: any;
+}) => {
+  const { productList, loading, getAllProductByCategory, getAllProduct } =
+    useApiCalls();
+  console.log(id, "getting route");
+  useEffect(() => {
+    if (id) getAllProductByCategory(id);
+    else {
+      getAllProduct();
+    }
+  }, []);
+
   return (
     <HomeScreenLayout>
       <View style={styles.container}>
         <View style={styles.headerContainer}>
           <Icon name="arrow-back" size={24} color="black" />
-          <Text style={styles.title}>God Idol</Text>
+          <Text style={styles.title}>
+            {id ? productList[0]?.categoryName : "New Arrivals "}
+          </Text>
         </View>
-
-        <GridView navigation={navigation}/>
+        {loading ? (
+          <ActivityIndicator
+            style={{
+              justifyContent: "center",
+              alignSelf: "center",
+              height: "auto",
+              position: "static",
+            }}
+          />
+        ) : (
+          <GridView navigation={navigation} productList={productList} />
+        )}
       </View>
     </HomeScreenLayout>
   );

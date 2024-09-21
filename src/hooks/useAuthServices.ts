@@ -28,6 +28,8 @@ const useAuthService = () => {
 
       const data = response?.data?.data;
       console.log(data);
+      //(data);
+      dispatch(authSuccess({}));
       navigation.navigate("home");
     } catch (error: any) {
       dispatch(authFailed("Something went wrong"));
@@ -43,7 +45,21 @@ const useAuthService = () => {
 
       const data = response?.data?.data;
 
-      console.log(data);
+      //(data);
+    } catch (error: any) {
+      Alert.alert("Something went wrong");
+      console.error(error);
+    }
+  };
+
+  const handleResendOTP = async (payload: any) => {
+    try {
+      dispatch(otpSuccess({ phoneNumber: payload?.phone }));
+      const response = await sendOTP(payload);
+
+      const data = response?.data?.data;
+
+      //(data);
     } catch (error: any) {
       Alert.alert("Something went wrong");
       console.error(error);
@@ -62,7 +78,7 @@ const useAuthService = () => {
         isAdmin: false,
       });
 
-      console.log(response?.data?.data);
+      //(response?.data?.data);
     } catch (error: any) {
       Alert.alert(error?.message);
       console.error(error);
@@ -81,6 +97,7 @@ const useAuthService = () => {
     handleLogOut,
     handleSendOTP,
     handleRegisterNewUser,
+    handleResendOTP,
   };
 };
 

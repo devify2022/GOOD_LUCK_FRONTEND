@@ -1,4 +1,4 @@
-import {ActionType} from 'typesafe-actions';
+import { ActionType } from "typesafe-actions";
 
 import {
   addNewDealer,
@@ -6,9 +6,9 @@ import {
   getAllDealers,
   getOrderDetails,
   getOrderList,
-} from '../../services';
-import {AxiosResponse} from 'axios';
-import {call, put, select, takeLatest} from 'redux-saga/effects';
+} from "../../services";
+import { AxiosResponse } from "axios";
+import { call, put, select, takeLatest } from "redux-saga/effects";
 
 import {
   addNewDealerInListRequested,
@@ -26,26 +26,26 @@ import {
   getOrderListFailed,
   getOrderListSuccess,
   getOrdersListRequested,
-} from '../silces/order.slice';
-import {Alert} from 'react-native';
+} from "../silces/order.slice";
+import { Alert } from "react-native";
 import {
   ICartItem,
   IOrder,
   IOrderListItem,
   cartInitialState,
-} from '../redux.constants';
-import {clearCurrentCart, removeCartItem} from '../silces/cart.slice';
-import {RootState} from '..';
+} from "../redux.constants";
+import { clearCurrentCart, removeCartItem } from "../silces/cart.slice";
+import { RootState } from "..";
 
 function* addNewOrder(
-  action: ActionType<typeof addNewOrderInIListRequested>,
+  action: ActionType<typeof addNewOrderInIListRequested>
 ): Generator<any, void, any> {
   try {
     const currentCart = yield select(
-      (state: RootState) => state.cart.currentCart,
+      (state: RootState) => state.cart.currentCart
     );
 
-    // console.log(action.payload);
+    // //(action.payload);
 
     const response: AxiosResponse = yield call(createOrder, action.payload);
     const responseData = response?.data?.data;
@@ -59,24 +59,24 @@ function* addNewOrder(
       };
       yield put(getOrderDetailsRequested(responseData?.orderId));
 
-      Alert.alert('Order added successfully');
+      Alert.alert("Order added successfully");
 
       yield put(addNewOrderInListSuccess(obj));
 
       yield put(removeCartItem(currentCart));
       yield put(clearCurrentCart(cartInitialState.currentCart));
     } else {
-      throw new Error('Invalid response data');
+      throw new Error("Invalid response data");
     }
   } catch (error) {
     console.error(error);
-    yield put(addNewOrderInListFailed('Something went wrong'));
-    Alert.alert('Something went wrong');
+    yield put(addNewOrderInListFailed("Something went wrong"));
+    Alert.alert("Something went wrong");
   }
 }
 
 function* getAllOrderList(
-  action: ActionType<typeof getOrdersListRequested>,
+  action: ActionType<typeof getOrdersListRequested>
 ): Generator<any, void, any> {
   try {
     const response: AxiosResponse = yield call(getOrderList);
@@ -95,15 +95,15 @@ function* getAllOrderList(
     ////(newOrderList);
     yield put(getOrderListSuccess(newOrderList));
   } catch (error) {
-    yield put(getOrderListFailed('Something went wrong'));
+    yield put(getOrderListFailed("Something went wrong"));
     console.error(error);
 
-    Alert.alert('Something went wrong');
+    Alert.alert("Something went wrong");
   }
 }
 
 function* getOrder(
-  action: ActionType<typeof getOrderDetailsRequested>,
+  action: ActionType<typeof getOrderDetailsRequested>
 ): Generator<any, void, any> {
   try {
     const orderDetails: AxiosResponse = yield call(getOrderDetails, {
@@ -116,7 +116,7 @@ function* getOrder(
     const items: ICartItem[] =
       newData?.orderItems?.map((order: any) => ({
         id: order.orderItemId,
-        productName: order?.productName ?? order?.productId ?? 'Product name',
+        productName: order?.productName ?? order?.productId ?? "Product name",
         productPrice: (parseFloat(order?.totalPrice) / order?.qty).toFixed(2),
         count: order?.qty,
         totalPrice: parseFloat(order?.totalPrice),
@@ -139,13 +139,13 @@ function* getOrder(
     yield put(getOrderDetailsSuccess(newOrderData));
   } catch (error) {
     console.error(error);
-    yield put(getOrderDetailsFailed('Something went wrong'));
-    Alert.alert('Something went wrong');
+    yield put(getOrderDetailsFailed("Something went wrong"));
+    Alert.alert("Something went wrong");
   }
 }
 
 function* getDealerList(
-  action: ActionType<typeof getDealerListRequested>,
+  action: ActionType<typeof getDealerListRequested>
 ): Generator<any, void, any> {
   try {
     const response: AxiosResponse = yield call(getAllDealers, action.payload);
@@ -154,13 +154,13 @@ function* getDealerList(
     yield put(getDealerListSuccess(responseData));
   } catch (error) {
     console.error(error);
-    yield put(getDealerListFailed('Something went wrong'));
-    Alert.alert('Something went wrong');
+    yield put(getDealerListFailed("Something went wrong"));
+    Alert.alert("Something went wrong");
   }
 }
 
 function* addDealer(
-  action: ActionType<typeof addNewDealerInListRequested>,
+  action: ActionType<typeof addNewDealerInListRequested>
 ): Generator<any, void, any> {
   try {
     const response: AxiosResponse = yield call(addNewDealer, action.payload);
@@ -169,8 +169,8 @@ function* addDealer(
     yield put(addNewDealerInListSuccess(responseData));
   } catch (error) {
     console.error(error);
-    yield put(addNewDealerInListFailed('Something went wrong'));
-    Alert.alert('Something went wrong');
+    yield put(addNewDealerInListFailed("Something went wrong"));
+    Alert.alert("Something went wrong");
   }
 }
 

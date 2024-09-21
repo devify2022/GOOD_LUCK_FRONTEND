@@ -1,15 +1,16 @@
-import {PayloadAction, createSlice} from '@reduxjs/toolkit';
-import {IconProps} from 'react-native-paper/lib/typescript/components/MaterialCommunityIcon';
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { IconProps } from "react-native-paper/lib/typescript/components/MaterialCommunityIcon";
 import {
   ICartItem,
   IProduct,
   IProductState,
   category,
   productInitialState,
-} from '../redux.constants';
+} from "../redux.constants";
+import { RootState } from "..";
 
 export const productSLice = createSlice({
-  name: 'product',
+  name: "product",
   initialState: productInitialState,
 
   reducers: {
@@ -22,7 +23,7 @@ export const productSLice = createSlice({
 
     categoryListSuccess: (
       state: IProductState,
-      action: PayloadAction<category[]>,
+      action: PayloadAction<category[]>
     ) => {
       return {
         ...state,
@@ -40,7 +41,7 @@ export const productSLice = createSlice({
     },
     addNewCategoryRequested: (
       state: IProductState,
-      action: PayloadAction<string>,
+      action: PayloadAction<string>
     ) => {
       return {
         ...state,
@@ -50,7 +51,7 @@ export const productSLice = createSlice({
 
     setCurrentCategory: (
       state: IProductState,
-      action: PayloadAction<category>,
+      action: PayloadAction<category>
     ) => {
       return {
         ...state,
@@ -60,7 +61,7 @@ export const productSLice = createSlice({
 
     addNewCategorySuccess: (
       state: IProductState,
-      action: PayloadAction<category>,
+      action: PayloadAction<category>
     ) => {
       return {
         ...state,
@@ -71,7 +72,7 @@ export const productSLice = createSlice({
 
     addNewCategoryFailed: (
       state: IProductState,
-      action: PayloadAction<any>,
+      action: PayloadAction<any>
     ) => {
       return {
         ...state,
@@ -82,7 +83,7 @@ export const productSLice = createSlice({
 
     productListRequested: (
       state: IProductState,
-      action: PayloadAction<string>,
+      action: PayloadAction<string>
     ) => {
       return {
         ...state,
@@ -92,7 +93,7 @@ export const productSLice = createSlice({
 
     productListSuccess: (
       state: IProductState,
-      action: PayloadAction<IProduct[]>,
+      action: PayloadAction<IProduct[]>
     ) => {
       return {
         ...state,
@@ -111,7 +112,7 @@ export const productSLice = createSlice({
 
     addNewProductInListRequested: (
       state: IProductState,
-      action: PayloadAction<any>,
+      action: PayloadAction<any>
     ) => {
       return {
         ...state,
@@ -120,7 +121,7 @@ export const productSLice = createSlice({
     },
     addNewProductInListSuccess: (
       state: IProductState,
-      action: PayloadAction<IProduct>,
+      action: PayloadAction<IProduct>
     ) => {
       return {
         ...state,
@@ -131,12 +132,22 @@ export const productSLice = createSlice({
 
     addNewProductInListFailed: (
       state: IProductState,
-      action: PayloadAction<any>,
+      action: PayloadAction<any>
     ) => {
       return {
         ...state,
         isLoading: false,
         error: action.payload,
+      };
+    },
+
+    setCurrentProductDetails: (
+      state: IProductState,
+      action: PayloadAction<any>
+    ) => {
+      return {
+        ...state,
+        productDetails: action.payload,
       };
     },
 
@@ -161,6 +172,7 @@ export const {
   addNewProductInListFailed,
   addNewProductInListRequested,
   addNewProductInListSuccess,
+  setCurrentProductDetails,
   clearProductS,
 } = productSLice.actions;
 
