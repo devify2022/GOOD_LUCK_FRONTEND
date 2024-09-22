@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import HomeScreenLayout from "../components/homeLayOut";
 import ScrollableMenu, { IMenuItem } from "../components/scrollableTopMenu";
-
+import Sound from "react-native-sound";
 import { homePageStyle as styles } from "../styles";
 
 // Static import for the images
@@ -49,6 +49,42 @@ const menuItems: IMenuItem[] = [
 ];
 
 const HomeScreen = ({ navigation }: { navigation: any }) => {
+  useEffect(() => {
+    playBellSound();
+  }, [navigation]);
+  const playBellSound = () => {
+    const bell = new Sound('bell.mp3', Sound.MAIN_BUNDLE, (error) => {
+      if (error) {
+        console.log('Failed to load the sound', error);
+        return;
+      }
+      bell.play((success) => {
+        if (!success) {
+          console.log('Playback failed due to audio decoding errors');
+        }
+      });
+    });
+    
+  };
+  // const [bell, setbell] = useState<Sound | null>(null);
+
+  // useEffect(() => {
+  //   // Load the sound once
+  //   const sound = new Sound('bell.mp3', Sound.MAIN_BUNDLE, (error) => {
+  //     if (error) {
+  //       console.log('Failed to load the sound', error);
+  //       return;
+  //     }
+  //     setbell(sound); // Store the sound instance
+  //   });
+
+  //   // Play the sound when the screen is focused
+    
+
+  //   // Cleanup function
+    
+  // }, [navigation, bell]);
+
   return (
     <HomeScreenLayout>
       <ScrollView showsVerticalScrollIndicator={false}>
