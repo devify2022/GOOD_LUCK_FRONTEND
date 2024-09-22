@@ -64,7 +64,7 @@ const Subcategories = ({ navigation }: { navigation: any }) => {
             color="black"
             style={{ top: -2 }}
           />
-          <Text style={styles.title}>Catogory</Text>
+          <Text style={styles.title}>Category</Text>
         </View>
 
         <View>
