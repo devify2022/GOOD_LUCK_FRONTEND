@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Modal } from "react-native";
+import { View, Text, StyleSheet, Modal, BackHandler } from "react-native";
 import { styleConstants } from "../styles/constants";
 import { Button } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -8,9 +8,25 @@ import OrderDetails from "../components/orderDetails";
 const ConfirmPayment = ({ navigation }: { navigation: any }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [buttonEnable, setButtonEnable] = useState(false);
+
   const toggleVisiblity = () => {
     setIsVisible(!isVisible);
   };
+
+  useEffect(() => {
+    const backAction = () => {
+      navigation.navigate("subproducts"); // Navigate to home page on back button press
+      return true; // Prevent default back button behavior
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove(); // Cleanup on component unmount
+  }, []);
+
   useEffect(() => {
     setTimeout(() => {
       setIsVisible(true);
@@ -24,8 +40,7 @@ const ConfirmPayment = ({ navigation }: { navigation: any }) => {
     <View style={styles.container}>
       <Icon name="check-circle" style={styles.icon} size={160}></Icon>
       <Text style={styles.text}>
-        {" "}
-        Your Order is complete. Please check the delivery status at order
+        Your Order is complete. Please check the delivery status at the order
         tracking page.
       </Text>
       <Button
@@ -75,7 +90,7 @@ const styles = StyleSheet.create({
     marginTop: 25,
     height: 50,
     justifyContent: "center",
-    width: 310, //try to get screen-width
+    width: 310,
     textAlign: "center",
   },
   disabledButton: {
@@ -84,7 +99,7 @@ const styles = StyleSheet.create({
     marginTop: 25,
     height: 50,
     justifyContent: "center",
-    width: 310, //try to get screen-width
+    width: 310,
     textAlign: "center",
   },
   buttonText: {

@@ -7,6 +7,7 @@ export const baseURLS = {
 
 export const endPoints = {
   getOTP: "/auth/login",
+  resendOTP: "/auth/resend_otp",
   verifyOTP: "/auth/loginVerifyotp",
   addNewUser: "/auth/newUserRequest",
   newUserVerifyOTP: "/auth/authRequestVerifyotp",

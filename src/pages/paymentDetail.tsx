@@ -99,7 +99,7 @@ const PaymentDetail = ({ navigation }: { navigation: any }) => {
   }, [formState]);
 
   return (
-    <CartLayout buttonText="Pay Now" navigation={navigation}>
+    <CartLayout buttonText="Place order" navigation={navigation}>
       <View style={styles.titleContainer}>
         <Icon
           name="arrow-back"

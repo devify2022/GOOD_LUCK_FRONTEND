@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../redux";
 import { ActivityIndicator } from "react-native";
 import { styleConstants } from "../styles/constants";
+import { useNavigation } from "@react-navigation/native";
 
 const OrderDetails: React.FC<{
   closeModal?: any;
@@ -20,6 +21,8 @@ const OrderDetails: React.FC<{
   const productDetails = useSelector(
     (state: RootState) => state.product.productDetails
   );
+
+  const navigation = useNavigation<any>();
 
   const { loadingOrderList } = useApiCalls();
   const image = {
@@ -40,7 +43,15 @@ const OrderDetails: React.FC<{
     <View style={styles.container}>
       <View style={styles.titleContainer}>
         <TouchableOpacity onPress={closeModal}>
-          <Icon name="arrow-back" size={24} color="black" style={{ top: -2 }} />
+          <Icon
+            onPress={() => {
+              navigation.goBack();
+            }}
+            name="arrow-back"
+            size={24}
+            color="black"
+            style={{ top: -2, zIndex: 10000000000000 }}
+          />
         </TouchableOpacity>
         <Text style={styles.title}>Order Details</Text>
       </View>

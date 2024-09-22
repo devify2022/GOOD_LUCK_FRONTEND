@@ -17,6 +17,10 @@ export const sendOTP = (payload: any) => {
   return authClient.post(endPoints.getOTP, payload);
 };
 
+export const reSendOTP = (payload: any) => {
+  return authClient.post(endPoints.resendOTP, payload);
+};
+
 export const addNewUser = (payload: any) => {
   console.log("again and again");
   return baseClient.post(endPoints.addNewUser, payload);

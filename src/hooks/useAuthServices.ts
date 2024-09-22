@@ -4,17 +4,19 @@ import {
   authRequested,
   authSuccess,
   logOut,
+  otpRequested,
   otpSuccess,
 } from "../redux/silces/auth.silce";
 
 import { IUserDetails } from "../redux/redux.constants";
-import { addNewUser, sendOTP, verifyOTP } from "../services";
+import { addNewUser, reSendOTP, sendOTP, verifyOTP } from "../services";
 import { clearCart } from "../redux/silces/cart.slice";
 import { clearOrder } from "../redux/silces/order.slice";
 import { clearProductS } from "../redux/silces/product.slice";
 import { Alert } from "react-native";
 import { RootState } from "../redux";
 import { notifyMessage } from "./useApiCalls";
+import { useNavigation } from "@react-navigation/native";
 
 const useAuthService = () => {
   const dispatch = useDispatch();
@@ -24,6 +26,8 @@ const useAuthService = () => {
   const phoneNumber = useSelector(
     (state: RootState) => state.auth.userDetails?.phoneNumber
   );
+
+  const navigation = useNavigation<any>();
   const handleVerifyOTP = async (payload: any, navigation: any) => {
     dispatch(authRequested());
     console.log("verifying");
@@ -40,24 +44,30 @@ const useAuthService = () => {
       navigation.navigate("home");
     } catch (error: any) {
       dispatch(authFailed("Something went wrong"));
-      notifyMessage(error?.message);
+      notifyMessage("Wrong OTP");
       console.error(error.message);
     }
   };
 
   const handleSendOTP = async (payload: any) => {
     try {
-      dispatch(otpSuccess({ phoneNumber: payload?.phone }));
-      console.log("trying to fetch");
+      dispatch(otpRequested());
+
       const response = await sendOTP(payload);
 
       const data = response?.data?.data;
       console.log(data);
+      navigation.navigate("otpverify");
+      dispatch(otpSuccess({ phoneNumber: payload?.phone }));
       notifyMessage(response?.data?.message);
 
       //(data);
     } catch (error: any) {
-      notifyMessage("Something went wrong");
+      {
+        notifyMessage("User not registered");
+        navigation.navigate("signup");
+        // dispatch(otpFailed(error));
+      }
       console.error(error);
     }
   };
@@ -65,7 +75,8 @@ const useAuthService = () => {
   const handleResendOTP = async () => {
     try {
       if (verificationType === "signin") {
-        const response = await sendOTP({ phone: phoneNumber });
+        const response = await reSendOTP({ phone: phoneNumber });
+        console.log(response?.data?.data);
         notifyMessage(response?.data?.message);
       } else {
         handleRegisterNewUser({ phone: phoneNumber });
@@ -90,10 +101,12 @@ const useAuthService = () => {
       });
       console.log(response?.data?.data);
       notifyMessage(response?.data?.message);
+      navigation.navigate("otpverify");
 
       //(response?.data?.data);
     } catch (error: any) {
-      notifyMessage(error?.message);
+      notifyMessage("User already registered");
+      navigation.navigate("signin");
       console.error(error);
     }
   };

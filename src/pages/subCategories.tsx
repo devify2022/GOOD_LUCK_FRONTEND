@@ -62,7 +62,7 @@ const Subcategories = ({ navigation }: { navigation: any }) => {
             name="arrow-back"
             size={24}
             color="black"
-            style={{ top: -2 }}
+            style={{ top: -2, zIndex: 10000000 }}
           />
           <Text style={styles.title}>Category</Text>
         </View>

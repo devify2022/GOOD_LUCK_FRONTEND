@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -12,14 +12,16 @@ import Layout from "../components/authLayOut";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { signInPageStyle as styles } from "../styles";
-import { RadioButton } from "react-native-paper";
+import { ActivityIndicator, RadioButton } from "react-native-paper";
 import useAuthService from "../hooks/useAuthServices";
-import { useDispatch } from "react-redux";
-import { setOtpFlow } from "../redux/silces/auth.silce";
+import { useDispatch, useSelector } from "react-redux";
+import { logOut, setOtpFlow } from "../redux/silces/auth.silce";
 import { notifyMessage } from "../hooks/useApiCalls";
+import { RootState } from "../redux";
 
 const LoginPage = ({ navigation }: any) => {
   const { handleSendOTP } = useAuthService();
+  const isloading = useSelector((state: RootState) => state.auth.isLoading);
   const dispatch = useDispatch();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [password, setPassword] = useState("");
@@ -34,7 +36,6 @@ const LoginPage = ({ navigation }: any) => {
     }
     dispatch(setOtpFlow("signin"));
     handleSendOTP({ phone: phoneNumber });
-    navigation.navigate("otpverify");
   };
 
   const handleForgotPassword = () => {
@@ -44,6 +45,10 @@ const LoginPage = ({ navigation }: any) => {
   const handleBack = () => {
     navigation.goBack();
   };
+
+  useEffect(() => {
+    dispatch(logOut());
+  }, []);
 
   return (
     <Layout
@@ -55,10 +60,11 @@ const LoginPage = ({ navigation }: any) => {
     >
       <View style={styles.container}>
         <TextInput
+          maxLength={10}
           style={styles.input}
           placeholder="Phone Number"
           placeholderTextColor="#B0B0B0"
-          keyboardType="phone-pad"
+          keyboardType="numeric"
           value={phoneNumber}
           onChangeText={setPhoneNumber}
         />
@@ -118,8 +124,16 @@ const LoginPage = ({ navigation }: any) => {
         >
           <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
         </TouchableOpacity> */}
-        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-          <Text style={styles.loginButtonText}>Log In</Text>
+        <TouchableOpacity
+          disabled={isloading}
+          style={styles.loginButton}
+          onPress={handleLogin}
+        >
+          {isloading ? (
+            <ActivityIndicator />
+          ) : (
+            <Text style={styles.loginButtonText}>Log In</Text>
+          )}
         </TouchableOpacity>
       </View>
     </Layout>
