@@ -7,6 +7,7 @@ import HomeScreenLayout from "../components/homeLayOut";
 import { productListstyle as styles } from "../styles";
 import useApiCalls from "../hooks/useApiCalls";
 import { ActivityIndicator } from "react-native-paper";
+import { styleConstants } from "../styles/constants";
 
 const ProductList = ({
   navigation,
@@ -17,8 +18,12 @@ const ProductList = ({
   navigation: any;
   route: any;
 }) => {
-  const { productList, loading, getAllProductByCategory, getAllProduct } =
-    useApiCalls();
+  const {
+    productList,
+    loadingProducts,
+    getAllProductByCategory,
+    getAllProduct,
+  } = useApiCalls();
   //(id, "getting route");
   useEffect(() => {
     if (id) getAllProductByCategory(id);
@@ -32,20 +37,23 @@ const ProductList = ({
     <HomeScreenLayout>
       <View style={styles.container}>
         <View style={styles.headerContainer}>
-          <Icon name="arrow-back" size={24} color="black" />
+          <Icon
+            onPress={() => {
+              navigation.goBack();
+            }}
+            name="arrow-back"
+            size={24}
+            color="black"
+          />
           <Text style={styles.title}>
             {id ? productList[0]?.categoryName : "New Arrivals "}
           </Text>
         </View>
-        {loading ? (
+        {loadingProducts ? (
           <ActivityIndicator
-            style={{
-              justifyContent: "center",
-              alignSelf: "center",
-              height: "auto",
-              position: "static",
-            }}
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
             size={"large"}
+            color={styleConstants.color.primaryColor}
           />
         ) : (
           <GridView navigation={navigation} productList={productList} />

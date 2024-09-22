@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { IMenuItem } from "../components/scrollableTopMenu";
-
 import React from "react";
 import {
   createOrder,
   getAllProductList,
   getCategoryList,
+  getOrderDetails,
   getOrderList,
   getProductDetailsById,
   getProductListbyCategory,
@@ -13,20 +13,23 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentProductDetails } from "../redux/silces/product.slice";
 import { RootState } from "../redux";
-import { ToastAndroid } from "react-native";
+import { Platform, ToastAndroid } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { setCurrentOrder } from "../redux/silces/order.slice";
-import moment from "moment";
 
 const useApiCalls = () => {
   const [categoryList, setCategoryList] = useState<IMenuItem[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loadingCategories, setLoadingCategories] = useState<boolean>(false);
+  const [loadingProducts, setLoadingProducts] = useState<boolean>(false);
+  const [loadingOrderList, setLoadingOrderList] = useState<boolean>(false);
+  const [loadingProductDetails, setLoadingProductDetails] =
+    useState<boolean>(false);
+  const [loadingAddOrder, setLoadingAddOrder] = useState<boolean>(false);
   const [productList, setProductList] = useState<any[]>([]);
   const [orderList, setOrderList] = useState<any[]>([]);
   const [productDetails, setProductDetails] = useState<any>();
 
   const dispatch = useDispatch();
-
   const navigation = useNavigation<any>();
 
   const userId = useSelector(
@@ -40,94 +43,71 @@ const useApiCalls = () => {
     (state: RootState) => state.product.productDetails
   );
 
-  //();
-
   const getAllCategory = async () => {
     try {
-      setLoading(true);
+      setLoadingCategories(true);
       const response = await getCategoryList();
       const data = response?.data?.data;
-      const tempList: IMenuItem[] = [];
-
-      //(data);
-      //(data);
-      for (let i = 0; i < data.length; i++) {
-        const tempData: IMenuItem = {
-          id: data[i]._id,
-          title: data[i].category_name,
-          icon: { uri: data[i].image },
-          route: "productlisting",
-        };
-
-        tempList.push(tempData);
-      }
-
+      const tempList: IMenuItem[] = data.map((item: any) => ({
+        id: item._id,
+        title: item.category_name,
+        icon: { uri: item.image },
+        route: "productlisting",
+      }));
       setCategoryList(tempList);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
+      setLoadingCategories(false);
+    } catch (error: any) {
+      setLoadingCategories(false);
       console.error(error);
     }
   };
 
   const getAllProduct = async () => {
     try {
-      setLoading(true);
+      setLoadingProducts(true);
       const response = await getAllProductList();
       const data = response?.data?.data;
-      //(data);
-      const tempList = [];
-      for (let i = 0; i < data.length; i++) {
-        const element = {
-          id: data[i]._id,
-          source: { uri: data[i].image },
-          title: data[i].productName,
-          originalPrice: `₹${data[i].originalPrice}`,
-          discountedPrice: `₹${data[i].displayPrice}`,
-          categoryName: data[i].category_name,
-        };
-        tempList.push(element);
-      }
+      const tempList = data.map((item: any) => ({
+        id: item._id,
+        source: { uri: item.image },
+        title: item.productName,
+        originalPrice: `₹${item.originalPrice}`,
+        discountedPrice: `₹${item.displayPrice}`,
+        categoryName: item.category_name,
+      }));
       setProductList(tempList);
-      setLoading(false);
+      setLoadingProducts(false);
     } catch (error) {
-      setLoading(false);
+      setLoadingProducts(false);
       console.error(error);
     }
   };
 
   const getAllProductByCategory = async (categoryId: string) => {
     try {
-      setLoading(true);
+      setLoadingProducts(true);
       const response = await getProductListbyCategory(categoryId);
       const data = response?.data?.data;
-      //(data);
-      const tempList = [];
-      for (let i = 0; i < data.length; i++) {
-        const element = {
-          id: data[i]._id,
-          source: { uri: data[i].image },
-          title: data[i].productName,
-          originalPrice: `₹${data[i].originalPrice}`,
-          discountedPrice: `₹${data[i].displayPrice}`,
-          categoryName: data[i].category,
-        };
-        tempList.push(element);
-      }
-
+      const tempList = data.map((item: any) => ({
+        id: item._id,
+        source: { uri: item.image },
+        title: item.productName,
+        originalPrice: `₹${item.originalPrice}`,
+        discountedPrice: `₹${item.displayPrice}`,
+        categoryName: item.category,
+      }));
       setProductList(tempList);
-      setLoading(false);
+      setLoadingProducts(false);
     } catch (error) {
-      setLoading(false);
+      setLoadingProducts(false);
       console.error(error);
     }
   };
 
   const getProductDetails = async (productId: string) => {
     try {
-      setLoading(true);
+      setLoadingProductDetails(true);
       const response = await getProductDetailsById(productId);
-      //(response?.data?.data);
       const data = response?.data?.data;
       const newProductDetails = {
         id: data?._id,
@@ -140,16 +120,16 @@ const useApiCalls = () => {
       };
       setProductDetails(newProductDetails);
       dispatch(setCurrentProductDetails(newProductDetails));
-      setLoading(false);
+      setLoadingProductDetails(false);
     } catch (error) {
-      setLoading(false);
+      setLoadingProductDetails(false);
       console.error(error);
     }
   };
 
   const addOrder = async () => {
     try {
-      setLoading(true);
+      setLoadingAddOrder(true);
       const payload = {
         name: orderDetails?.name,
         phone: orderDetails?.phone,
@@ -164,61 +144,120 @@ const useApiCalls = () => {
         is_payment_done: false,
         transaction_id: "txn_1234567890" + Date.now(),
       };
-      //(payload);
-      const respons = await createOrder(payload);
-      //(respons?.data?.data);
-      dispatch(setCurrentOrder(orderDetails));
+      const response = await createOrder(payload);
+      const order = response?.data?.data;
+
+      const newOrderData = {
+        id: order._id,
+        source: { uri: order.order_details.image },
+        title: order.order_details?.productName,
+        total: order?.total_price,
+        isPaid: order.is_payment_done,
+        isComplete: order.is_order_complete,
+        deliveryDate: order.order_details.deliveryDate,
+        originalPrice: `₹${order?.order_details.originalPrice}`,
+        discountedPrice: `₹${order?.order_details.displayPrice}`,
+        state: order.state,
+        name: order.name,
+        city: order.city,
+        phone: order.phone,
+        paymentMethod: order.payment_method,
+      };
+      console.log(response?.data?.data);
+      dispatch(setCurrentOrder(newOrderData));
+
       navigation.navigate("paymentConfirm");
-      setLoading(false);
-    } catch (error) {
+      notifyMessage("Order added successfully");
+      setLoadingAddOrder(false);
+    } catch (error: any) {
+      setLoadingAddOrder(false);
       console.error(error);
+      notifyMessage(error.message);
     }
   };
 
   const getOrderListByUserId = async () => {
     try {
+      setLoadingOrderList(true);
       const response = await getOrderList(userId ?? "");
       const data = response.data.data;
-      const tempList = [];
-      for (let i = 0; i < data.length; i++) {
-        const orderDetails = data[i].order_details;
-        //(data[i]);
-
-        const element = {
-          id: data[i]._id,
-          source: { uri: orderDetails.image }, // Accessing image from order_details
-          title: orderDetails?.productName, // Accessing productName from order_details
-          total: data[i]?.total_price,
-          isPaid: data[i].is_payment_done,
-          isComplete: data[i].is_order_complete,
-          deliveryDate: orderDetails.deliveryDate, // Formatting delivery date
-        };
-
-        tempList.push(element);
-      }
-
+      const tempList = data.map((order: any) => ({
+        id: order._id,
+        source: { uri: order.order_details.image },
+        title: order.order_details?.productName,
+        total: order?.total_price,
+        isPaid: order.is_payment_done,
+        isComplete: order.is_order_complete,
+        deliveryDate: order.order_details.deliveryDate,
+      }));
       setOrderList(tempList);
-    } catch (error) {}
+      setLoadingOrderList(false);
+    } catch (error) {
+      setLoadingOrderList(false);
+      console.error(error);
+    }
   };
+
+  const getOrderDetailsByOrderId = async (payload: string) => {
+    try {
+      dispatch(setCurrentOrder(null));
+      setLoadingOrderList(true);
+      const response = await getOrderDetails(payload);
+      const order = response?.data?.data;
+      console.log(order?.order_details.originalPrice);
+      const newOrderData = {
+        id: order._id,
+        source: { uri: order.order_details.image },
+        title: order.order_details?.productName,
+        total: order?.total_price,
+        isPaid: order.is_payment_done,
+        isComplete: order.is_order_complete,
+        deliveryDate: order.order_details.deliveryDate,
+        originalPrice: `₹${order?.order_details.originalPrice}`,
+        discountedPrice: `₹${order?.order_details.displayPrice}`,
+        state: order.state,
+        name: order.name,
+        city: order.city,
+        phone: order.phone,
+        paymentMethod: order.payment_method,
+      };
+      console.log(response?.data?.data);
+      dispatch(setCurrentOrder(newOrderData));
+      setLoadingOrderList(false);
+    } catch (error) {
+      setLoadingOrderList(false);
+    }
+  };
+
   return {
     getAllCategory,
     categoryList,
     setCategoryList,
-    loading,
-    setLoading,
+    loadingCategories,
     getAllProduct,
     getAllProductByCategory,
+    loadingProducts,
     getProductDetailsById,
     productList,
     setProductList,
     getProductDetails,
     productDetails,
     setProductDetails,
+    loadingProductDetails,
     getOrderListByUserId,
     orderList,
     setOrderList,
+    loadingOrderList,
     addOrder,
+    loadingAddOrder,
+    getOrderDetailsByOrderId,
   };
 };
 
 export default useApiCalls;
+
+export function notifyMessage(msg: string) {
+  if (Platform.OS === "android") {
+    ToastAndroid.show(msg, ToastAndroid.SHORT);
+  }
+}

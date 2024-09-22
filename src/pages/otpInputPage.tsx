@@ -21,11 +21,13 @@ const OTPPage = ({ navigation }: { navigation: any }) => {
   const [resendEnabled, setResendEnabled] = useState(true);
   const inputRefs = useRef<(TextInput | null)[]>([]);
 
-  const { handleVerifyOTP } = useAuthService();
+  const { handleVerifyOTP, handleResendOTP } = useAuthService();
 
   const phoneNumber = useSelector(
     (state: RootState) => state.auth.userDetails?.phoneNumber
   );
+
+  const otpFlow = useSelector((state: RootState) => state.auth.otpFlow);
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
@@ -53,6 +55,7 @@ const OTPPage = ({ navigation }: { navigation: any }) => {
   };
 
   const handleResend = () => {
+    handleResendOTP();
     setTimer(60);
     setResendEnabled(true);
   };
@@ -117,7 +120,9 @@ const OTPPage = ({ navigation }: { navigation: any }) => {
           </Text>
         </View>
         <TouchableOpacity style={styles.signUpButton} onPress={handleSignUp}>
-          <Text style={styles.signUpButtonText}>Sign Up</Text>
+          <Text style={styles.signUpButtonText}>
+            {otpFlow === "signin" ? "Sign in" : "Sign up"}
+          </Text>
         </TouchableOpacity>
       </View>
     </Layout>

@@ -5,6 +5,8 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import useApiCalls from "../hooks/useApiCalls";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux";
+import { ActivityIndicator } from "react-native";
+import { styleConstants } from "../styles/constants";
 
 const OrderDetails: React.FC<{
   closeModal?: any;
@@ -18,6 +20,8 @@ const OrderDetails: React.FC<{
   const productDetails = useSelector(
     (state: RootState) => state.product.productDetails
   );
+
+  const { loadingOrderList } = useApiCalls();
   const image = {
     id: "1",
     source: require("../assets/ganesha.png"),
@@ -40,60 +44,76 @@ const OrderDetails: React.FC<{
         </TouchableOpacity>
         <Text style={styles.title}>Order Details</Text>
       </View>
+      <>
+        {loadingOrderList || orderDetails === null ? (
+          <ActivityIndicator
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+            size={"large"}
+            color={styleConstants.color.primaryColor}
+          />
+        ) : (
+          <>
+            <View style={styles.orderDetailsContainer}>
+              <View style={styles.imageContainer}>
+                <Image
+                  source={orderDetails.source ?? productDetails?.source}
+                  style={styles.image}
+                />
+              </View>
+              <View style={styles.details}>
+                <Text style={styles.name}>{orderDetails.title}</Text>
+                <View style={styles.priceContainer}>
+                  <Text style={styles.discountedPrice}>
+                    {orderDetails.discountedPrice}
+                  </Text>
+                  <Text style={styles.originalPrice}>
+                    {orderDetails.originalPrice}
+                  </Text>
+                </View>
+                <View style={styles.count}>
+                  <Text style={styles.countText}>Quantity :</Text>
+                  <Text style={styles.countText}>{orderDetails.count}</Text>
+                </View>
+              </View>
+            </View>
+            <View style={styles.divider} />
 
-      <View style={styles.orderDetailsContainer}>
-        <View style={styles.imageContainer}>
-          <Image source={productDetails.source} style={styles.image} />
-        </View>
-        <View style={styles.details}>
-          <Text style={styles.name}>{productDetails.title}</Text>
-          <View style={styles.priceContainer}>
-            <Text style={styles.discountedPrice}>
-              {productDetails.discountedPrice}
-            </Text>
-            <Text style={styles.originalPrice}>
-              {productDetails.originalPrice}
-            </Text>
-          </View>
-          <View style={styles.count}>
-            <Text style={styles.countText}>Quantity :</Text>
-            <Text style={styles.countText}>{orderDetails.count}</Text>
-          </View>
-        </View>
-      </View>
-      <View style={styles.divider} />
+            <View style={styles.orderDetails}>
+              <View style={styles.orderDetailCategory}>
+                <Text style={styles.categoryName}>Name:</Text>
+                <Text style={styles.categoryValue}>{orderDetails.name}</Text>
+              </View>
+              <View style={styles.orderDetailCategory}>
+                <Text style={styles.categoryName}>City:</Text>
+                <Text style={styles.categoryValue}>{orderDetails.city}</Text>
+              </View>
+              <View style={styles.orderDetailCategory}>
+                <Text style={styles.categoryName}>State:</Text>
+                <Text style={styles.categoryValue}>{orderDetails.state}</Text>
+              </View>
+              <View style={styles.orderDetailCategory}>
+                <Text style={styles.categoryName}>Phone Number:</Text>
+                <Text style={styles.categoryValue}>₹{orderDetails.phone}</Text>
+              </View>
+            </View>
 
-      <View style={styles.orderDetails}>
-        <View style={styles.orderDetailCategory}>
-          <Text style={styles.categoryName}>Name:</Text>
-          <Text style={styles.categoryValue}>{orderDetails.name}</Text>
-        </View>
-        <View style={styles.orderDetailCategory}>
-          <Text style={styles.categoryName}>City:</Text>
-          <Text style={styles.categoryValue}>{orderDetails.city}</Text>
-        </View>
-        <View style={styles.orderDetailCategory}>
-          <Text style={styles.categoryName}>State:</Text>
-          <Text style={styles.categoryValue}>{orderDetails.state}</Text>
-        </View>
-        <View style={styles.orderDetailCategory}>
-          <Text style={styles.categoryName}>Phone Number:</Text>
-          <Text style={styles.categoryValue}>₹{orderDetails.phone}</Text>
-        </View>
-      </View>
+            <View style={styles.divider} />
 
-      <View style={styles.divider} />
-
-      <View style={styles.orderDetails}>
-        <View style={styles.orderDetailCategory}>
-          <Text style={styles.categoryName}>Order Date:</Text>
-          <Text style={styles.categoryValue}>{orderDetails?.date}</Text>
-        </View>
-        <View style={styles.total}>
-          <Text style={styles.totalText}>Total</Text>
-          <Text style={styles.totalAmount}>{orderDetails.totalPrice}</Text>
-        </View>
-      </View>
+            <View style={styles.orderDetails}>
+              <View style={styles.orderDetailCategory}>
+                <Text style={styles.categoryName}>Order Date:</Text>
+                <Text style={styles.categoryValue}>{orderDetails?.date}</Text>
+              </View>
+              <View style={styles.total}>
+                <Text style={styles.totalText}>Total</Text>
+                <Text style={styles.totalAmount}>
+                  ₹{orderDetails.totalPrice}
+                </Text>
+              </View>
+            </View>
+          </>
+        )}
+      </>
     </View>
   );
 };

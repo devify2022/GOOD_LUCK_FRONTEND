@@ -16,6 +16,7 @@ export const sendOTP = (payload: any) => {
 };
 
 export const addNewUser = (payload: any) => {
+  console.log("again and again");
   return baseClient.post(endPoints.addNewUser, payload);
 };
 
@@ -48,7 +49,7 @@ export const getOrderList = (params?: string) => {
 };
 
 export const getOrderDetails = (params: any) => {
-  return baseClient.get(endPoints.orderDetails, { params });
+  return baseClient.get(endPoints.orderDetails + "/" + params);
 };
 
 export const addNewCategory = (payload: any) => {

@@ -1,60 +1,60 @@
-import {PermissionsAndroid, Alert} from 'react-native';
+import { PermissionsAndroid, Alert } from "react-native";
 
-import RNFS from 'react-native-fs';
+import RNFS from "react-native-fs";
 
-import uuid from 'react-native-uuid';
-import {IOrder} from './redux.constants';
-import {toPascalCase} from '../products.config';
+import uuid from "react-native-uuid";
+import { IOrder } from "./redux.constants";
+import { toPascalCase } from "../products.config";
 export const genetateUUID = () => {
   return uuid.v4().toString();
 };
 
 export const Category = {
-  Agriculture: 'Agri',
-  CPVCPro: 'CPVC',
-  FoamCore: 'Foam',
-  DrainPro: 'Drain',
+  Agriculture: "Agri",
+  CPVCPro: "CPVC",
+  FoamCore: "Foam",
+  DrainPro: "Drain",
 };
 
 export const LargeCategoryName = {
-  Agriculture: 'Agriculture',
-  CPVC: 'CPVC',
-  CPVCPro: 'CPVC Pro',
-  DrainMaster: 'Drain Master',
-  DrainPro: 'Drain Pro',
-  UPVC: 'UPVC',
-  Silencio: 'Silencio',
-  FoamCore: 'Foam Core',
-  Drex: 'Drex',
+  Agriculture: "Agriculture",
+  CPVC: "CPVC",
+  CPVCPro: "CPVC Pro",
+  DrainMaster: "Drain Master",
+  DrainPro: "Drain Pro",
+  UPVC: "UPVC",
+  Silencio: "Silencio",
+  FoamCore: "Foam Core",
+  Drex: "Drex",
 };
 
 export const UppercaseLargeCategoryName = {
-  AGRICULTURE: 'Agriculture',
-  CPVC: 'CPVC',
-  CPVCPRO: 'CPVC Pro',
-  DRAINMASTER: 'Drain Master',
-  DRAINPRO: 'Drain Pro',
-  UPVC: 'UPVC',
-  SILENCIO: 'Silencio',
-  FOAMCORE: 'Foam Core',
-  DREX: 'Drex',
+  AGRICULTURE: "Agriculture",
+  CPVC: "CPVC",
+  CPVCPRO: "CPVC Pro",
+  DRAINMASTER: "Drain Master",
+  DRAINPRO: "Drain Pro",
+  UPVC: "UPVC",
+  SILENCIO: "Silencio",
+  FOAMCORE: "Foam Core",
+  DREX: "Drex",
 };
 
 export const getCategoryEnumValueByString = (
-  stringValue: string,
+  stringValue: string
 ): string | undefined => {
   const enumKey = Object.keys(Category).find(
-    key => Category[key as keyof typeof Category] === stringValue,
+    (key) => Category[key as keyof typeof Category] === stringValue
   );
 
   return enumKey ? Category[enumKey as keyof typeof Category] : undefined;
 };
 
 export const getCategoryLargeEnumValueByString = (
-  stringValue: string,
+  stringValue: string
 ): string | undefined => {
   const enumKey = Object.keys(LargeCategoryName).find(
-    key => LargeCategoryName[key as keyof typeof Category] === stringValue,
+    (key) => LargeCategoryName[key as keyof typeof Category] === stringValue
   );
 
   return enumKey
@@ -65,8 +65,8 @@ export const getCategoryLargeEnumValueByString = (
 export const filterArrayByString = (data: any[], search: string): any[] => {
   if (search.length < 3) return data;
 
-  return data.filter(item =>
-    item?.title?.toLowerCase().includes(search.toLowerCase()),
+  return data.filter((item) =>
+    item?.title?.toLowerCase().includes(search.toLowerCase())
   );
 };
 
@@ -80,89 +80,89 @@ export const parseBillingAddress = (address: string) => {
 };
 
 export const COMPANY_DETAILS = {
-  name: 'Kedia Polymer',
+  name: "Kedia Polymer",
   address:
-    '25 Strand Road, Marshall House, 2nd Floor R.N. - 201 & 202, Kolkata - 700 001',
-  phone: '2213-7428/7429/7430',
-  email: 'vipul@kediapipes.com',
-  website: 'www.kediapipes.com',
+    "25 Strand Road, Marshall House, 2nd Floor R.N. - 201 & 202, Kolkata - 700 001",
+  phone: "2213-7428/7429/7430",
+  email: "vipul@kediapipes.com",
+  website: "www.kediapipes.com",
   bankDetails: {
-    bankName: 'KEDIA POLYMER, ICICI BANK , NS Road Branch',
-    accountNumber: '695205600075',
-    ifscCode: 'ICIC0006952',
+    bankName: "KEDIA POLYMER, ICICI BANK , NS Road Branch",
+    accountNumber: "695205600075",
+    ifscCode: "ICIC0006952",
   },
 };
 
 // Function to convert number to words
 export const convertNumberToWords: any = (amount: number) => {
   const units = [
-    '',
-    'One',
-    'Two',
-    'Three',
-    'Four',
-    'Five',
-    'Six',
-    'Seven',
-    'Eight',
-    'Nine',
-    'Ten',
-    'Eleven',
-    'Twelve',
-    'Thirteen',
-    'Fourteen',
-    'Fifteen',
-    'Sixteen',
-    'Seventeen',
-    'Eighteen',
-    'Nineteen',
+    "",
+    "One",
+    "Two",
+    "Three",
+    "Four",
+    "Five",
+    "Six",
+    "Seven",
+    "Eight",
+    "Nine",
+    "Ten",
+    "Eleven",
+    "Twelve",
+    "Thirteen",
+    "Fourteen",
+    "Fifteen",
+    "Sixteen",
+    "Seventeen",
+    "Eighteen",
+    "Nineteen",
   ];
   const tens = [
-    '',
-    '',
-    'Twenty',
-    'Thirty',
-    'Forty',
-    'Fifty',
-    'Sixty',
-    'Seventy',
-    'Eighty',
-    'Ninety',
+    "",
+    "",
+    "Twenty",
+    "Thirty",
+    "Forty",
+    "Fifty",
+    "Sixty",
+    "Seventy",
+    "Eighty",
+    "Ninety",
   ];
 
   if (amount < 20) return units[amount];
   if (amount < 100)
     return (
       tens[Math.floor(amount / 10)] +
-      (amount % 10 ? ' ' + units[amount % 10] : '')
+      (amount % 10 ? " " + units[amount % 10] : "")
     );
   if (amount < 1000)
     return (
       units[Math.floor(amount / 100)] +
-      ' Hundred ' +
-      (amount % 100 ? convertNumberToWords(amount % 100) : '')
+      " Hundred " +
+      (amount % 100 ? convertNumberToWords(amount % 100) : "")
     );
   if (amount < 100000)
     return (
       convertNumberToWords(Math.floor(amount / 1000)) +
-      ' Thousand ' +
-      (amount % 1000 ? convertNumberToWords(amount % 1000) : '')
+      " Thousand " +
+      (amount % 1000 ? convertNumberToWords(amount % 1000) : "")
     );
   if (amount < 10000000)
     return (
       convertNumberToWords(Math.floor(amount / 100000)) +
-      ' Lakh ' +
-      (amount % 100000 ? convertNumberToWords(amount % 100000) : '')
+      " Lakh " +
+      (amount % 100000 ? convertNumberToWords(amount % 100000) : "")
     );
   return (
     convertNumberToWords(Math.floor(amount / 10000000)) +
-    ' Crore ' +
-    (amount % 10000000 ? convertNumberToWords(amount % 10000000) : '')
+    " Crore " +
+    (amount % 10000000 ? convertNumberToWords(amount % 10000000) : "")
   );
 };
 
 export const formatAddress = (address: any) => {
-  if (!address) return '';
+  if (!address) return "";
   const parsedAddress = JSON.parse(address);
   //(parsedAddress?.phone, parsedAddress.phone);
   if (
@@ -175,18 +175,18 @@ export const formatAddress = (address: any) => {
     parsedAddress?.state
   )
     return `
-       ${parsedAddress.name || ''}<br>
-      ${parsedAddress.phone || ''}<br>
-      ${parsedAddress.addressline1 || ''}
-      ${parsedAddress.addressline2 || ''}
-      ${parsedAddress.city || ''}, ${parsedAddress.state || ''} - ${
-      parsedAddress.pincode || ''
+       ${parsedAddress.name || ""}<br>
+      ${parsedAddress.phone || ""}<br>
+      ${parsedAddress.addressline1 || ""}
+      ${parsedAddress.addressline2 || ""}
+      ${parsedAddress.city || ""}, ${parsedAddress.state || ""} - ${
+      parsedAddress.pincode || ""
     }
     `;
 };
 
 export const formatAddressSingleLine = (address: any) => {
-  if (!address) return '';
+  if (!address) return "";
 
   const parsedAddress = JSON.parse(address);
 
@@ -198,7 +198,7 @@ export const formatAddressSingleLine = (address: any) => {
     !parsedAddress.pincode &&
     !parsedAddress.state
   ) {
-    return '';
+    return "";
   }
 
   // Collect all address parts that are not empty
@@ -210,18 +210,18 @@ export const formatAddressSingleLine = (address: any) => {
     parsedAddress.city,
     parsedAddress.state,
     parsedAddress.pincode,
-  ].filter(part => part && part.trim() !== '');
+  ].filter((part) => part && part.trim() !== "");
 
   // Join the parts with a comma and space
-  return parts.join(', ');
+  return parts.join(", ");
 };
 
 export const formatDate = (date: string | undefined) => {
-  if (!date) return '';
-  return new Date(date).toLocaleDateString('en-IN', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
+  if (!date) return "";
+  return new Date(date).toLocaleDateString("en-IN", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
   });
 };
 
@@ -233,34 +233,34 @@ export function formatCurrentDateTime(): string {
 
   // Get ordinal suffix for the day
   const getOrdinalSuffix = (day: number): string => {
-    if (day > 3 && day < 21) return 'th';
+    if (day > 3 && day < 21) return "th";
     switch (day % 10) {
       case 1:
-        return 'st';
+        return "st";
       case 2:
-        return 'nd';
+        return "nd";
       case 3:
-        return 'rd';
+        return "rd";
       default:
-        return 'th';
+        return "th";
     }
   };
   const dayWithSuffix = day + getOrdinalSuffix(day);
 
   // Get month name
   const monthNames = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
   ];
   const month = monthNames[date.getMonth()];
 
@@ -269,10 +269,10 @@ export function formatCurrentDateTime(): string {
 
   // Get hours and minutes
   let hours = date.getHours();
-  const minutes = date.getMinutes().toString().padStart(2, '0');
+  const minutes = date.getMinutes().toString().padStart(2, "0");
 
   // Determine AM/PM
-  const ampm = hours >= 12 ? 'PM' : 'AM';
+  const ampm = hours >= 12 ? "PM" : "AM";
   hours = hours % 12;
   hours = hours ? hours : 12; // the hour '0' should be '12'
 
@@ -288,25 +288,25 @@ export const fRequestAndroidPermission = async () => {
     const grantedOne = await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
       {
-        title: 'Kedia Polymer Permission Request',
+        title: "Kedia Polymer Permission Request",
         message:
-          'Kedia Polymer needs access to your storage so you can save files to your device.',
-        buttonNeutral: 'Ask Me Later',
-        buttonNegative: 'Cancel',
-        buttonPositive: 'OK',
-      },
+          "Kedia Polymer needs access to your storage so you can save files to your device.",
+        buttonNeutral: "Ask Me Later",
+        buttonNegative: "Cancel",
+        buttonPositive: "OK",
+      }
     );
 
     const grantedTwo = await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
       {
-        title: 'Kedia Polymer Permission Request',
+        title: "Kedia Polymer Permission Request",
         message:
-          'Kedia Polymer needs access to your storage so you can save files to your device.',
-        buttonNeutral: 'Ask Me Later',
-        buttonNegative: 'Cancel',
-        buttonPositive: 'OK',
-      },
+          "Kedia Polymer needs access to your storage so you can save files to your device.",
+        buttonNeutral: "Ask Me Later",
+        buttonNegative: "Cancel",
+        buttonPositive: "OK",
+      }
     );
 
     if (
@@ -320,7 +320,7 @@ export const fRequestAndroidPermission = async () => {
       return false;
     }
   } catch (err) {
-    console.error('fRequestAndroidPermission error:', err);
+    console.error("fRequestAndroidPermission error:", err);
     return false;
   }
 };
@@ -330,7 +330,7 @@ export const getHTMLForInVoice = (
   roundedTotalAmount: number,
   amountInWords: string,
   phoneNumber: string,
-  showPrintButton?: boolean, // Optional parameter
+  showPrintButton?: boolean // Optional parameter
 ) => {
   return `<html>
   <head>
@@ -437,9 +437,9 @@ export const getHTMLForInVoice = (
     ${
       formatAddress(currentOrder?.billingAddress)
         ? `<h2>Billing Address: ${formatAddress(
-            currentOrder?.billingAddress,
+            currentOrder?.billingAddress
           )}</h2>`
-        : ''
+        : ""
     }
     <h1>Order Summary</h1>
     <table>
@@ -470,9 +470,9 @@ export const getHTMLForInVoice = (
             <td>${line.count}</td>
             <td>&#8377; ${line.totalPrice}</td>
           </tr>
-        `,
+        `
           )
-          .join('')}
+          .join("")}
       </table>
 
        <h1>Price Summary</h1>
@@ -514,7 +514,7 @@ export const getHTMLForInVoice = (
     ${
       showPrintButton
         ? `<button class="print-button" onclick="printPage()">Print</button>`
-        : ''
+        : ""
     }
    
   </body>
@@ -524,20 +524,20 @@ export const getHTMLForInVoice = (
 // Function to save base64 PDF to storage
 export const saveBase64PdfToStorage = async (
   base64Pdf: string,
-  fileName: string,
+  fileName: string
 ): Promise<string | void> => {
   // Define the file path
   const filePath = `${RNFS.DownloadDirectoryPath}/${fileName}.pdf`;
 
   try {
     // Write the file
-    await RNFS.writeFile(filePath, base64Pdf, 'base64');
-    Alert.alert('Success', `PDF saved successfully to ${filePath}`);
+    await RNFS.writeFile(filePath, base64Pdf, "base64");
+    notifyMessage("Success", `PDF saved successfully to ${filePath}`);
     return filePath; // Return the file path
   } catch (error) {
-    Alert.alert(
-      'Error',
-      'Error saving PDF to storage:' + error?.toString() ?? '',
+    notifyMessage(
+      "Error",
+      "Error saving PDF to storage:" + error?.toString() ?? ""
     );
     throw error; // Re-throw the error if you want to handle it further up
   }
@@ -545,7 +545,7 @@ export const saveBase64PdfToStorage = async (
 
 export const savePdfToStorage = async (
   pdf: string | Blob,
-  fileName: string,
+  fileName: string
 ): Promise<string | void> => {
   // Define the file path
   const filePath = `${RNFS.DownloadDirectoryPath}/${fileName}.pdf`;
@@ -561,23 +561,23 @@ export const savePdfToStorage = async (
       const reader = new FileReader();
       reader.readAsDataURL(pdf as Blob);
       reader.onloadend = async () => {
-        const base64Data = (reader.result as string)?.split(',')[1];
+        const base64Data = (reader.result as string)?.split(",")[1];
         if (base64Data) {
-          await RNFS.writeFile(filePath, base64Data, 'base64');
-          Alert.alert('Success', `PDF saved successfully to ${filePath}`);
+          await RNFS.writeFile(filePath, base64Data, "base64");
+          notifyMessage("Success", `PDF saved successfully to ${filePath}`);
           return filePath; // Return the file path
         } else {
-          throw new Error('Failed to convert Blob to base64');
+          throw new Error("Failed to convert Blob to base64");
         }
       };
     }
 
-    Alert.alert('Success', `PDF saved successfully to ${filePath}`);
+    notifyMessage("Success", `PDF saved successfully to ${filePath}`);
     return filePath; // Return the file path
   } catch (error) {
-    Alert.alert(
-      'Error',
-      'Error saving PDF to storage: ' + error?.toString() ?? '',
+    notifyMessage(
+      "Error",
+      "Error saving PDF to storage: " + error?.toString() ?? ""
     );
     throw error; // Re-throw the error if you want to handle it further up
   }

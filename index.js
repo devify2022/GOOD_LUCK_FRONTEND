@@ -10,6 +10,7 @@ import { ActivityIndicator, PaperProvider } from "react-native-paper";
 import { persistor, store } from "./src/redux";
 import { Provider } from "react-redux";
 import { Image } from "react-native-svg";
+import { styleConstants } from "./src/styles/constants";
 
 const RNRedux = () => (
   <Provider store={store}>
@@ -20,7 +21,11 @@ const RNRedux = () => (
             source={require("./src/assets/loginLogo.png")}
             // style={styles.logo}
           />
-          <ActivityIndicator style={{ alignSelf: "center" }} size="large" />
+          <ActivityIndicator
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+            size={"large"}
+            color={styleConstants.color.primaryColor}
+          />
         </View>
       }
       persistor={persistor}

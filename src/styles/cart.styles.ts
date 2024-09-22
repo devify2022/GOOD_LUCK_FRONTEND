@@ -317,7 +317,7 @@ export const OrderDetailStyles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontWeight: "600",
+    // fontWeight: "600",
     fontFamily: styleConstants.fontFamily,
     color: styleConstants.color.textBlackColor,
     marginLeft: 15,
@@ -342,7 +342,7 @@ export const OrderDetailStyles = StyleSheet.create({
   },
   name: {
     fontSize: 16,
-    fontWeight: "800", //600 in figma but 800 suites as per visuals. might be needed to change at titles also.
+    // fontWeight: "800", //600 in figma but 800 suites as per visuals. might be needed to change at titles also.
     fontFamily: styleConstants.fontFamily,
     color: styleConstants.color.textBlackColor,
   },
@@ -372,7 +372,7 @@ export const OrderDetailStyles = StyleSheet.create({
     marginHorizontal: 5,
     fontFamily: styleConstants.fontFamily,
     fontSize: 18,
-    fontWeight: "600",
+    // fontWeight: "600",
     color: styleConstants.color.textBlackColor,
   },
   divider: {
@@ -392,13 +392,13 @@ export const OrderDetailStyles = StyleSheet.create({
   categoryName: {
     fontFamily: styleConstants.fontFamily,
     fontSize: 16,
-    fontWeight: "300",
+    // fontWeight: "300",
     color: styleConstants.color.textBlackColor,
   },
   categoryValue: {
     fontFamily: styleConstants.fontFamily,
     fontSize: 16,
-    fontWeight: "700",
+    // fontWeight: "700",
     color: styleConstants.color.textBlackColor,
   },
   total: {
@@ -410,13 +410,13 @@ export const OrderDetailStyles = StyleSheet.create({
   totalText: {
     fontFamily: styleConstants.fontFamily,
     fontSize: 16,
-    fontWeight: "300",
+    // fontWeight: "300",
     color: styleConstants.color.textBlackColor,
   },
   totalAmount: {
     fontFamily: styleConstants.fontFamily,
     fontSize: 18,
-    fontWeight: "700",
+    // fontWeight: "700",
     color: styleConstants.color.textBlackColor,
   },
 });

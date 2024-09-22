@@ -6,7 +6,9 @@ import GridView from "../components/gridView";
 import HomeScreenLayout from "../components/homeLayOut";
 import { subCategoriesstyle as styles } from "../styles";
 import useApiCalls from "../hooks/useApiCalls";
-import { ActivityIndicator } from "react-native-paper";
+import { ActivityIndicator, Divider } from "react-native-paper";
+import { styleConstants } from "../styles/constants";
+import { useNavigation } from "@react-navigation/native";
 const menuItems: IMenuItem[] = [
   {
     id: "1",
@@ -35,8 +37,14 @@ const menuItems: IMenuItem[] = [
 ];
 
 const Subcategories = ({ navigation }: { navigation: any }) => {
-  const { categoryList, getAllCategory, getAllProduct, loading, productList } =
-    useApiCalls();
+  const {
+    categoryList,
+    getAllCategory,
+    getAllProduct,
+    loadingCategories,
+    productList,
+    loadingProducts,
+  } = useApiCalls();
   useEffect(() => {
     getAllCategory();
     getAllProduct();
@@ -47,13 +55,28 @@ const Subcategories = ({ navigation }: { navigation: any }) => {
     <HomeScreenLayout>
       <View style={styles.container}>
         <View style={styles.headerContainer}>
-          <Icon name="arrow-back" size={24} color="black" style={{ top: -2 }} />
+          <Icon
+            onPress={() => {
+              navigation.goBack();
+            }}
+            name="arrow-back"
+            size={24}
+            color="black"
+            style={{ top: -2 }}
+          />
           <Text style={styles.title}>Catogory</Text>
         </View>
 
         <View>
-          {loading ? (
-            <ActivityIndicator />
+          {loadingCategories ? (
+            <ActivityIndicator
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              color={styleConstants.color.primaryColor}
+            />
           ) : (
             <ScrollableMenu navigation={navigation} menuItems={categoryList} />
           )}
@@ -70,8 +93,13 @@ const Subcategories = ({ navigation }: { navigation: any }) => {
             <Text style={styles.showMoreText}>Show More</Text>
           </TouchableOpacity>
         </View>
-        {loading ? (
-          <ActivityIndicator style={{ alignSelf: "center" }} size={"large"} />
+        <Divider />
+        {loadingProducts ? (
+          <ActivityIndicator
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+            size={"large"}
+            color={styleConstants.color.primaryColor}
+          />
         ) : (
           <GridView productList={productList} navigation={navigation} />
         )}

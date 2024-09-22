@@ -15,7 +15,17 @@ import { styleConstants } from "../styles/constants";
 import HomeScreenLayout from "../components/homeLayOut";
 
 const OrderListingPage = ({ navigation }: { navigation: any }) => {
-  const { orderList, loading, getOrderListByUserId } = useApiCalls(); // Fetching orders from an API
+  const {
+    orderList,
+    loadingOrderList,
+    getOrderListByUserId,
+    getOrderDetailsByOrderId,
+  } = useApiCalls(); // Fetching orders from an API
+
+  const handleItemClick = (id: string) => {
+    getOrderDetailsByOrderId(id);
+    navigation.navigate("orderdetails", { orderId: id });
+  };
 
   useEffect(() => {
     getOrderListByUserId(); // Fetch orders when component mounts
@@ -24,7 +34,9 @@ const OrderListingPage = ({ navigation }: { navigation: any }) => {
   const renderItem = ({ item }: { item: any }) => (
     <TouchableOpacity
       style={styles.orderItem}
-      onPress={() => navigation.navigate("OrderDetail", { orderId: item.id })}
+      onPress={() => {
+        handleItemClick(item?.id);
+      }}
     >
       <View style={styles.orderHeader}>
         <View style={styles.orderDetails}>
@@ -49,10 +61,12 @@ const OrderListingPage = ({ navigation }: { navigation: any }) => {
 
   return (
     <HomeScreenLayout hideFooter>
-      {loading ? (
-        <View style={styles.loader}>
-          <ActivityIndicator style={{ alignSelf: "center" }} size={"large"} />
-        </View>
+      {loadingOrderList ? (
+        <ActivityIndicator
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          size={"large"}
+          color={styleConstants.color.primaryColor}
+        />
       ) : (
         <>
           <View style={styles.header}>

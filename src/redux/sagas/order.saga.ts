@@ -59,7 +59,7 @@ function* addNewOrder(
       };
       yield put(getOrderDetailsRequested(responseData?.orderId));
 
-      Alert.alert("Order added successfully");
+      notifyMessage("Order added successfully");
 
       yield put(addNewOrderInListSuccess(obj));
 
@@ -71,7 +71,7 @@ function* addNewOrder(
   } catch (error) {
     console.error(error);
     yield put(addNewOrderInListFailed("Something went wrong"));
-    Alert.alert("Something went wrong");
+    notifyMessage("Something went wrong");
   }
 }
 
@@ -98,7 +98,7 @@ function* getAllOrderList(
     yield put(getOrderListFailed("Something went wrong"));
     console.error(error);
 
-    Alert.alert("Something went wrong");
+    notifyMessage("Something went wrong");
   }
 }
 
@@ -140,7 +140,7 @@ function* getOrder(
   } catch (error) {
     console.error(error);
     yield put(getOrderDetailsFailed("Something went wrong"));
-    Alert.alert("Something went wrong");
+    notifyMessage("Something went wrong");
   }
 }
 
@@ -155,7 +155,7 @@ function* getDealerList(
   } catch (error) {
     console.error(error);
     yield put(getDealerListFailed("Something went wrong"));
-    Alert.alert("Something went wrong");
+    notifyMessage("Something went wrong");
   }
 }
 
@@ -170,7 +170,7 @@ function* addDealer(
   } catch (error) {
     console.error(error);
     yield put(addNewDealerInListFailed("Something went wrong"));
-    Alert.alert("Something went wrong");
+    notifyMessage("Something went wrong");
   }
 }
 

@@ -6,6 +6,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import { useEffect, useState } from "react";
 import useApiCalls from "../hooks/useApiCalls";
 import { ActivityIndicator } from "react-native-paper";
+import { styleConstants } from "../styles/constants";
 
 const image = {
   id: "1",
@@ -27,15 +28,20 @@ const ProductDetail = ({
   route: any;
 }) => {
   const [lines, setLines] = useState(2);
-  const { getProductDetails, productDetails, loading } = useApiCalls();
+  const { getProductDetails, productDetails, loadingProductDetails } =
+    useApiCalls();
   //(id, "getting route");
   useEffect(() => {
     if (id) getProductDetails(id);
   }, []);
   return (
     <CartLayout buttonText="Buy Now" navigation={navigation}>
-      {loading ? (
-        <ActivityIndicator style={{ alignSelf: "center" }} size={"large"} />
+      {loadingProductDetails ? (
+        <ActivityIndicator
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          size={"large"}
+          color={styleConstants.color.primaryColor}
+        />
       ) : (
         <>
           <View style={styles.titleContainer}>
@@ -44,6 +50,9 @@ const ProductDetail = ({
               size={24}
               color="black"
               style={{ top: -2 }}
+              onPress={() => {
+                navigation.goBack();
+              }}
             />
             <Text style={styles.title}>Product Details</Text>
           </View>

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import phonepeSDK from "react-native-phonepe-pg";
 import base64 from "react-native-base64";
 import { sha256 } from "react-native-sha256";
+import { notifyMessage } from "../hooks/useApiCalls";
 
 // Define the environment interface
 interface IPaymentEnv {
@@ -79,7 +80,7 @@ const PaymentPage = (props: any) => {
       const checksum = await convertSHA(stringToHash);
 
       if (!checksum) {
-        Alert.alert("Error", "Failed to generate checksum");
+        notifyMessage("Failed to generate checksum");
         return;
       }
 
@@ -93,11 +94,11 @@ const PaymentPage = (props: any) => {
         })
         .catch((transactionError) => {
           console.error("Transaction error:", transactionError);
-          Alert.alert("Transaction Error", "Failed to start transaction");
+          notifyMessage("Failed to start transaction");
         });
     } catch (error) {
       console.error("Payment initialization error:", error);
-      Alert.alert("Payment Error", "Failed to initialize payment");
+      notifyMessage("Failed to initialize payment");
     }
   };
 

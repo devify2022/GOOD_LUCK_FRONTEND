@@ -1,13 +1,13 @@
-import {ActionType} from 'typesafe-actions';
+import { ActionType } from "typesafe-actions";
 
 import {
   addNewCategory,
   addProduct,
   getCategoryList,
   getProductList,
-} from '../../services';
-import {AxiosResponse} from 'axios';
-import {call, put, takeLatest} from 'redux-saga/effects';
+} from "../../services";
+import { AxiosResponse } from "axios";
+import { call, put, takeLatest } from "redux-saga/effects";
 import {
   addNewCategoryFailed,
   addNewCategoryRequested,
@@ -21,12 +21,12 @@ import {
   productListFailed,
   productListRequested,
   productListSuccess,
-} from '../silces/product.slice';
-import {IProduct, category} from '../redux.constants';
-import {Alert} from 'react-native';
+} from "../silces/product.slice";
+import { IProduct, category } from "../redux.constants";
+import { Alert } from "react-native";
 
 function* getCategoryListData(
-  action: ActionType<typeof categoryListRequested>,
+  action: ActionType<typeof categoryListRequested>
 ): Generator<any, void, any> {
   try {
     // API call logic here
@@ -46,30 +46,30 @@ function* getCategoryListData(
     yield put(categoryListSuccess(data));
   } catch (error) {
     console.error(error);
-    yield put(categoryListFailed('Something went wrong'));
-    Alert.alert('Something went wrong');
+    yield put(categoryListFailed("Something went wrong"));
+    notifyMessage("Something went wrong");
   }
 }
 
 function* addCategory(
-  action: ActionType<typeof addNewCategoryRequested>,
+  action: ActionType<typeof addNewCategoryRequested>
 ): Generator<any, void, any> {
   try {
-    const body = [{name: action.payload}];
+    const body = [{ name: action.payload }];
     const response = yield call(addNewCategory, body);
     const data = response?.data?.data[0];
-    const newCategory: category = {name: data?.name, id: data?.categoryId};
+    const newCategory: category = { name: data?.name, id: data?.categoryId };
     yield put(addNewCategorySuccess(newCategory));
-    Alert.alert('Category created successfully');
+    notifyMessage("Category created successfully");
   } catch (error) {
     console.error(error);
-    yield put(addNewCategoryFailed('Something went wrong'));
-    Alert.alert('Something went wrong');
+    yield put(addNewCategoryFailed("Something went wrong"));
+    notifyMessage("Something went wrong");
   }
 }
 
 function* getProductListData(
-  action: ActionType<typeof productListRequested>,
+  action: ActionType<typeof productListRequested>
 ): Generator<any, void, any> {
   try {
     // API call logic here
@@ -94,13 +94,13 @@ function* getProductListData(
     }
     yield put(productListSuccess(data));
   } catch (error) {
-    yield put(productListFailed('Something went wrong'));
-    Alert.alert('Something went wrong');
+    yield put(productListFailed("Something went wrong"));
+    notifyMessage("Something went wrong");
   }
 }
 
 function* addNewProduct(
-  action: ActionType<typeof addNewProductInListRequested>,
+  action: ActionType<typeof addNewProductInListRequested>
 ): Generator<any, void, any> {
   try {
     // API call logic here
@@ -121,8 +121,8 @@ function* addNewProduct(
     yield put(addNewProductInListSuccess(newObj));
   } catch (error) {
     console.error(error);
-    yield put(addNewProductInListFailed('Something went wrong'));
-    Alert.alert('Something went wrong');
+    yield put(addNewProductInListFailed("Something went wrong"));
+    notifyMessage("Something went wrong");
   }
 }
 
