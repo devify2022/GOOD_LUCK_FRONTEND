@@ -25,7 +25,7 @@ const PaymentDetail = ({ navigation }: { navigation: any }) => {
   );
   const dispatch = useDispatch();
   const [formState, setFormState] = useState({
-    date: new Date().toDateString(),
+    date: moment().add(10, "days").format("MMM DD, YYYY"),
     count: 1,
     name: "",
     city: "",
@@ -33,6 +33,8 @@ const PaymentDetail = ({ navigation }: { navigation: any }) => {
     phone: phoneNumber ?? "",
     address: "",
     pincode: "",
+    totalPrice:
+      image?.discountedPrice * 1 + 100 + image?.discountedPrice * 1 * 0.18,
   });
   const [paymentBreakUp, setpaymentBreakUp] = useState({
     subTotal: image?.discountedPrice * formState.count,
@@ -71,6 +73,10 @@ const PaymentDetail = ({ navigation }: { navigation: any }) => {
       return {
         ...prevState,
         count: newCount,
+        totalPrice:
+          image?.discountedPrice * newCount +
+          100 +
+          image?.discountedPrice * newCount * 0.18,
       };
     });
   };
@@ -143,7 +149,7 @@ const PaymentDetail = ({ navigation }: { navigation: any }) => {
                   <TextInput
                     maxLength={200}
                     style={styles.input}
-                    placeholder="Name *"
+                    placeholder="Name "
                     placeholderTextColor="#B0B0B0"
                     value={formState.name}
                     onChangeText={(text) => handleInputChange("name", text)}
@@ -151,7 +157,7 @@ const PaymentDetail = ({ navigation }: { navigation: any }) => {
                   <TextInput
                     maxLength={200}
                     style={styles.input}
-                    placeholder="Address *"
+                    placeholder="Address "
                     placeholderTextColor="#B0B0B0"
                     value={formState.address}
                     onChangeText={(text) => handleInputChange("address", text)}
@@ -176,7 +182,7 @@ const PaymentDetail = ({ navigation }: { navigation: any }) => {
                     maxLength={6}
                     inputMode="numeric"
                     style={styles.input}
-                    placeholder="Pincode *"
+                    placeholder="Pincode "
                     placeholderTextColor="#B0B0B0"
                     value={formState.pincode}
                     onChangeText={(text) => handleInputChange("pincode", text)}
@@ -185,7 +191,7 @@ const PaymentDetail = ({ navigation }: { navigation: any }) => {
                     maxLength={10}
                     inputMode="numeric"
                     style={styles.input}
-                    placeholder="Phone Number *"
+                    placeholder="Phone Number "
                     placeholderTextColor="#B0B0B0"
                     keyboardType="phone-pad"
                     value={formState.phone}
