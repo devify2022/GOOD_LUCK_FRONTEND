@@ -75,12 +75,12 @@ const CartLayout: React.FC<{
       {/* Footer */}
       <View style={styles.footer}>
         <View>
-          {buttonText !== "Buy now" && (
+          {/* {buttonText !== "Buy now" && (
             <PaymentPage
               amount={orderDetails?.totalPrice}
               mobileNumber={phoneNumber ?? ""}
             />
-          )}
+          )} */}
 
           <Button
             style={styles.footerButton}
