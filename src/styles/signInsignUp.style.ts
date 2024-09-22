@@ -274,11 +274,13 @@ export const authLayOutStyle = StyleSheet.create({
   logoImageContainer: {
     alignItems: "center",
     marginBottom: 210,
+    borderRadius: 100,
   },
   logoImageStyle: {
     width: 200,
     height: 200,
-    borderRadius: 100,
+    
+    backgroundColor: "transparent"
   },
   inputsContainer: {
     width: "100%",
