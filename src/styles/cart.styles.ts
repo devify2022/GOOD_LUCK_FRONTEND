@@ -277,7 +277,7 @@ export const paymentDetailStyles = StyleSheet.create({
   date: {
     fontFamily: styleConstants.fontFamily,
     fontSize: 16,
-    fontWeight: "700",
+
     color: styleConstants.color.textBlackColor,
   },
   total: {
@@ -295,7 +295,7 @@ export const paymentDetailStyles = StyleSheet.create({
   totalAmount: {
     fontFamily: styleConstants.fontFamily,
     fontSize: 18,
-    fontWeight: "700",
+
     color: styleConstants.color.textBlackColor,
   },
 });

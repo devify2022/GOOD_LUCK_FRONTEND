@@ -1,8 +1,10 @@
+import axios from "axios";
 import { endPoints } from "./constants";
 import { authClient, baseClient } from "./services.clients";
 
 export const verifyOTP = (payload: any) => {
-  //(payload?.payload, payload?.verificationType);
+  console.log(payload?.payload, payload?.verificationType);
+
   return authClient.post(
     payload?.verificationType === "signin"
       ? endPoints.verifyOTP
@@ -54,4 +56,9 @@ export const getOrderDetails = (params: any) => {
 
 export const addNewCategory = (payload: any) => {
   return baseClient.post(endPoints.addCategory, payload);
+};
+
+export const makePayment = (payload: any) => {
+  console.log("getting value");
+  return axios.post("https://good-luck-backend.onrender.com/pay", payload);
 };

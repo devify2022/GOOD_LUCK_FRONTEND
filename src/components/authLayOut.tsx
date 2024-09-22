@@ -4,6 +4,7 @@ import { Text, useTheme } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { authLayOutStyle as styles } from "../styles";
+import { useNavigation } from "@react-navigation/native";
 
 export interface Props {
   children: React.ReactNode;
@@ -19,14 +20,17 @@ const Layout = (props: Props) => {
   const theme = useTheme();
   const {
     children,
-    navigation,
+
     headerTextLineOne,
     headerTextLineTwo,
     hideButton,
     shouldShowOverLay,
     textColor,
   } = props;
-
+  const navigation = useNavigation<any>();
+  const handleBackButtonClick = () => {
+    navigation.goBack();
+  };
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.surface }]}>
       <ImageBackground
@@ -47,7 +51,7 @@ const Layout = (props: Props) => {
               name="arrow-left"
               size={24}
               color={theme.colors.onSurface}
-              onPress={navigation}
+              onPress={handleBackButtonClick}
               style={styles.icon}
             />
           )}

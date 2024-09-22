@@ -21,6 +21,13 @@ export const orderSlice = createSlice({
         },
       };
     },
+
+    setButtonState: (state: IOrderState, action: PayloadAction<boolean>) => {
+      return {
+        ...state,
+        disableButton: action.payload,
+      };
+    },
     addNewOrderInIListRequested: (
       state: IOrderState,
       action: PayloadAction<any>
@@ -195,6 +202,7 @@ export const orderSlice = createSlice({
 });
 export const {
   setCurrentOrder,
+  setButtonState,
   addNewOrderInList,
   removeFromOrderList,
   clearOrder,

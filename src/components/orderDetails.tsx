@@ -64,10 +64,10 @@ const OrderDetails: React.FC<{
                 <Text style={styles.name}>{orderDetails.title}</Text>
                 <View style={styles.priceContainer}>
                   <Text style={styles.discountedPrice}>
-                    {orderDetails.discountedPrice}
+                    ₹ {orderDetails.discountedPrice * orderDetails.count}
                   </Text>
                   <Text style={styles.originalPrice}>
-                    {orderDetails.originalPrice}
+                    ₹ {orderDetails.originalPrice * orderDetails.count}
                   </Text>
                 </View>
                 <View style={styles.count}>
@@ -93,7 +93,7 @@ const OrderDetails: React.FC<{
               </View>
               <View style={styles.orderDetailCategory}>
                 <Text style={styles.categoryName}>Phone Number:</Text>
-                <Text style={styles.categoryValue}>₹{orderDetails.phone}</Text>
+                <Text style={styles.categoryValue}>{orderDetails.phone}</Text>
               </View>
             </View>
 
@@ -101,14 +101,32 @@ const OrderDetails: React.FC<{
 
             <View style={styles.orderDetails}>
               <View style={styles.orderDetailCategory}>
+                <Text style={styles.categoryName}>Create Date:</Text>
+                <Text style={styles.categoryValue}>
+                  {orderDetails?.createDate}
+                </Text>
+              </View>
+              <View style={styles.orderDetailCategory}>
                 <Text style={styles.categoryName}>Order Date:</Text>
-                <Text style={styles.categoryValue}>{orderDetails?.date}</Text>
+                <Text style={styles.categoryValue}>
+                  {orderDetails?.deliveryDate}
+                </Text>
+              </View>
+              <View style={styles.total}>
+                <Text style={styles.totalText}>Subtotal</Text>
+                <Text style={styles.totalAmount}>₹{orderDetails.subTotal}</Text>
+              </View>
+              <View style={styles.total}>
+                <Text style={styles.totalText}>GST</Text>
+                <Text style={styles.totalAmount}>₹{orderDetails.tax}</Text>
+              </View>
+              <View style={styles.total}>
+                <Text style={styles.totalText}>Shipping</Text>
+                <Text style={styles.totalAmount}>₹{orderDetails.shipping}</Text>
               </View>
               <View style={styles.total}>
                 <Text style={styles.totalText}>Total</Text>
-                <Text style={styles.totalAmount}>
-                  ₹{orderDetails.totalPrice}
-                </Text>
+                <Text style={styles.totalAmount}>₹{orderDetails.total}</Text>
               </View>
             </View>
           </>

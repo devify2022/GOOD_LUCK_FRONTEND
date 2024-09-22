@@ -9,11 +9,12 @@ import {
 } from "react-native";
 import Layout from "../components/authLayOut";
 
-import { Button } from "react-native-paper";
+import { ActivityIndicator, Button } from "react-native-paper";
 import { otpInputStyle as styles } from "../styles";
 import useAuthService from "../hooks/useAuthServices";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux";
+import { notifyMessage } from "../hooks/useApiCalls";
 
 const OTPPage = ({ navigation }: { navigation: any }) => {
   const [otp, setOtp] = useState(["", "", "", ""]);
@@ -27,7 +28,7 @@ const OTPPage = ({ navigation }: { navigation: any }) => {
     (state: RootState) => state.auth.userDetails?.phoneNumber
   );
 
-  const otpFlow = useSelector((state: RootState) => state.auth.otpFlow);
+  const { otpFlow, isLoading } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
@@ -63,6 +64,10 @@ const OTPPage = ({ navigation }: { navigation: any }) => {
   const handleSignUp = () => {
     // Implement sign up logic here
     const otpString = otp[0] + otp[1] + otp[2] + otp[3];
+    if (otpString.length < 4) {
+      notifyMessage("Enter valid otp");
+      return;
+    }
     handleVerifyOTP(
       { otp: parseInt(otpString), phone: phoneNumber },
       navigation
@@ -119,10 +124,18 @@ const OTPPage = ({ navigation }: { navigation: any }) => {
             )}
           </Text>
         </View>
-        <TouchableOpacity style={styles.signUpButton} onPress={handleSignUp}>
-          <Text style={styles.signUpButtonText}>
-            {otpFlow === "signin" ? "Sign in" : "Sign up"}
-          </Text>
+        <TouchableOpacity
+          disabled={isLoading}
+          style={styles.signUpButton}
+          onPress={handleSignUp}
+        >
+          {isLoading ? (
+            <ActivityIndicator />
+          ) : (
+            <Text style={styles.signUpButtonText}>
+              {otpFlow === "signin" ? "Sign in" : "Sign up"}
+            </Text>
+          )}
         </TouchableOpacity>
       </View>
     </Layout>

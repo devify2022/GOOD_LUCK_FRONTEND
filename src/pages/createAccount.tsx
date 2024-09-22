@@ -12,6 +12,7 @@ import useAuthService from "../hooks/useAuthServices";
 import { createAccountStyle as styles } from "../styles";
 import { useDispatch } from "react-redux";
 import { setOtpFlow } from "../redux/silces/auth.silce";
+import { notifyMessage } from "../hooks/useApiCalls";
 
 const SignUp = ({ navigation }: any) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -26,6 +27,10 @@ const SignUp = ({ navigation }: any) => {
 
   const handleSignUp = () => {
     // Implement your sign-up logic here
+    if (phoneNumber.length < 10) {
+      notifyMessage("Enter valid phone number");
+      return;
+    }
     dispatch(setOtpFlow("signup"));
     navigation.navigate("otpverify");
     handleRegisterNewUser({ phone: phoneNumber });

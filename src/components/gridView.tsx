@@ -92,8 +92,8 @@ const GridView = ({
             />
             <Text style={styles.title}>{title}</Text>
             <View style={styles.priceContainer}>
-              <Text style={styles.originalPrice}>{originalPrice}</Text>
-              <Text style={styles.discountedPrice}>{discountedPrice}</Text>
+              <Text style={styles.originalPrice}>₹{originalPrice}</Text>
+              <Text style={styles.discountedPrice}>₹{discountedPrice}</Text>
             </View>
           </View>
         </TouchableOpacity>

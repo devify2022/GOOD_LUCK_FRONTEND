@@ -4,6 +4,7 @@ import phonepeSDK from "react-native-phonepe-pg";
 import base64 from "react-native-base64";
 import { sha256 } from "react-native-sha256";
 import { notifyMessage } from "../hooks/useApiCalls";
+import { useSelector } from "react-redux";
 
 // Define the environment interface
 interface IPaymentEnv {
@@ -16,6 +17,7 @@ interface IPaymentEnv {
 // Component definition
 const PaymentPage = (props: any) => {
   // Initialize payment environment state
+  const userId = useSelector;
   const [paymentEnv, setPaymentEnv] = useState<IPaymentEnv>({
     environment: "SANDBOX",
     merchantId: "PGTESTPAYUAT86",
@@ -60,7 +62,7 @@ const PaymentPage = (props: any) => {
       const requestBody = {
         merchantId: paymentEnv.merchantId,
         merchantTransactionId: getID(),
-        merchantUserId: "your-merchant-user-id", // Replace with actual merchant user ID
+        merchantUserId: getID(), // Replace with actual merchant user ID
         amount: 10000, // Amount in paise (₹100.00)
         mobileNumber: "7679039012", // Optional
         callbackUrl: "your-callback-url-here", // Replace with actual callback URL

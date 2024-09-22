@@ -10,27 +10,43 @@ const ConfirmPayment = ({ navigation }: { navigation: any }) => {
   const [buttonEnable, setButtonEnable] = useState(false);
   const toggleVisiblity = () => {
     setIsVisible(!isVisible);
-  }
-  useEffect(()=>{
-    setTimeout(()=>{setIsVisible(true)},2000);
-    setTimeout(()=>{setButtonEnable(true)},4000);
-  },[]);
-  
+  };
+  useEffect(() => {
+    setTimeout(() => {
+      setIsVisible(true);
+    }, 2000);
+    setTimeout(() => {
+      setButtonEnable(true);
+    }, 4000);
+  }, []);
+
   return (
     <View style={styles.container}>
       <Icon name="check-circle" style={styles.icon} size={160}></Icon>
-      <Text style={styles.text}> Your Order is complete. Please check the delivery status at order tracking page.</Text>
-      <Button disabled={!buttonEnable} style={buttonEnable?styles.enableButton:styles.disabledButton} onPress={() => { navigation.navigate("subproducts") }}>
-        <Text style={styles.buttonText}>
-          Continue Shopping
-        </Text>
+      <Text style={styles.text}>
+        {" "}
+        Your Order is complete. Please check the delivery status at order
+        tracking page.
+      </Text>
+      <Button
+        disabled={!buttonEnable}
+        style={buttonEnable ? styles.enableButton : styles.disabledButton}
+        onPress={() => {
+          navigation.navigate("subproducts");
+        }}
+      >
+        <Text style={styles.buttonText}>Continue Shopping</Text>
       </Button>
-      
-      <Modal visible={isVisible} onRequestClose={() => toggleVisiblity()} animationType="slide">
-          <OrderDetails closeModal={() => toggleVisiblity()}/>
-    </Modal>
+
+      <Modal
+        visible={isVisible}
+        onRequestClose={() => toggleVisiblity()}
+        animationType="slide"
+      >
+        <OrderDetails closeModal={() => toggleVisiblity()} />
+      </Modal>
     </View>
-  )
+  );
 };
 
 export default ConfirmPayment;
@@ -51,7 +67,7 @@ const styles = StyleSheet.create({
     fontFamily: styleConstants.fontFamily,
     fontSize: 16,
     fontWeight: "500",
-    color: styleConstants.color.textWhiteColor
+    color: styleConstants.color.textWhiteColor,
   },
   enableButton: {
     backgroundColor: styleConstants.color.textWhiteColor,
@@ -59,17 +75,17 @@ const styles = StyleSheet.create({
     marginTop: 25,
     height: 50,
     justifyContent: "center",
-    width: 310, //try to get screen-width 
-    textAlign: "center"
+    width: 310, //try to get screen-width
+    textAlign: "center",
   },
-  disabledButton:{
+  disabledButton: {
     backgroundColor: styleConstants.color.textGrayColor,
     borderRadius: 25,
     marginTop: 25,
     height: 50,
     justifyContent: "center",
-    width: 310, //try to get screen-width 
-    textAlign: "center"
+    width: 310, //try to get screen-width
+    textAlign: "center",
   },
   buttonText: {
     color: styleConstants.color.primaryColor,
@@ -77,5 +93,4 @@ const styles = StyleSheet.create({
     fontFamily: styleConstants.fontFamily,
     fontWeight: "500",
   },
-  
-})
+});

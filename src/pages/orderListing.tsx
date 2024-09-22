@@ -50,7 +50,7 @@ const OrderListingPage = ({ navigation }: { navigation: any }) => {
 
         {item?.source && (
           <Image
-            source={{ uri: item.source.uri }} // Correctly format the image source
+            source={{ uri: item?.source?.uri }} // Correctly format the image source
             style={styles.orderImage} // Apply styles to the image
             resizeMode="contain" // Adjust the image size as needed
           />

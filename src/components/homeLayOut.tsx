@@ -35,6 +35,7 @@ const HomeScreenLayout: React.FC<{
         <View style={styles.headerLeft}>
           {/* Profile Avatar opens the drawer */}
           <Avatar.Image
+            style={{ zIndex: 10000000000000 }}
             size={width * 0.1}
             source={require("../assets/girlOne.png")}
             onTouchEnd={toggleDrawer} // Open modal on avatar click
@@ -179,7 +180,9 @@ const HomeScreenLayout: React.FC<{
               icon="home"
               size={width * 0.08}
               iconColor="white"
-              onPress={() => {}}
+              onPress={() => {
+                navigation.navigate("home");
+              }}
             />
           </View>
         </View>

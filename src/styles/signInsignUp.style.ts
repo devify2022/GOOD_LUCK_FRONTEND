@@ -88,14 +88,14 @@ export const signInPageStyle = StyleSheet.create({
     fontWeight: "600",
     fontFamily: styleConstants.fontFamily,
   },
-  selectRoleButtons:{
+  selectRoleButtons: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
-  radioButton:{
+  radioButton: {
     alignItems: "center",
-    flexDirection: "row"
+    flexDirection: "row",
   },
 });
 
@@ -231,6 +231,7 @@ export const authLayOutStyle = StyleSheet.create({
     position: "absolute",
     left: 20,
     top: 20,
+    zIndex: 10000,
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,

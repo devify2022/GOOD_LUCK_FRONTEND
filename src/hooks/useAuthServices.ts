@@ -26,13 +26,13 @@ const useAuthService = () => {
   );
   const handleVerifyOTP = async (payload: any, navigation: any) => {
     dispatch(authRequested());
+    console.log("verifying");
 
     try {
       const response = await verifyOTP({ payload, verificationType });
 
       const data = response?.data?.data;
-      //(data);
-      //(data);
+
       dispatch(
         authSuccess({ accessToken: data?.accessToken, userID: data?.userId })
       );
@@ -48,11 +48,11 @@ const useAuthService = () => {
   const handleSendOTP = async (payload: any) => {
     try {
       dispatch(otpSuccess({ phoneNumber: payload?.phone }));
-
+      console.log("trying to fetch");
       const response = await sendOTP(payload);
 
       const data = response?.data?.data;
-
+      console.log(data);
       notifyMessage(response?.data?.message);
 
       //(data);

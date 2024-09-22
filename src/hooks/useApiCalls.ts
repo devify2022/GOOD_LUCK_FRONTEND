@@ -9,13 +9,16 @@ import {
   getOrderList,
   getProductDetailsById,
   getProductListbyCategory,
+  makePayment,
 } from "../services";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentProductDetails } from "../redux/silces/product.slice";
 import { RootState } from "../redux";
 import { Platform, ToastAndroid } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { setCurrentOrder } from "../redux/silces/order.slice";
+import { clearOrder, setCurrentOrder } from "../redux/silces/order.slice";
+import axios from "axios";
+import moment from "moment";
 
 const useApiCalls = () => {
   const [categoryList, setCategoryList] = useState<IMenuItem[]>([]);
@@ -92,8 +95,8 @@ const useApiCalls = () => {
         id: item._id,
         source: { uri: item.image },
         title: item.productName,
-        originalPrice: `₹${item.originalPrice}`,
-        discountedPrice: `₹${item.displayPrice}`,
+        originalPrice: item.originalPrice,
+        discountedPrice: item.displayPrice,
         categoryName: item.category,
       }));
       setProductList(tempList);
@@ -113,8 +116,8 @@ const useApiCalls = () => {
         id: data?._id,
         source: { uri: data?.image },
         title: data?.productName,
-        originalPrice: `₹${data.originalPrice}`,
-        discountedPrice: `₹${data.displayPrice}`,
+        originalPrice: data.originalPrice,
+        discountedPrice: data.displayPrice,
         categoryName: data.category,
         description: data?.productDescription,
       };
@@ -147,24 +150,7 @@ const useApiCalls = () => {
       const response = await createOrder(payload);
       const order = response?.data?.data;
 
-      const newOrderData = {
-        id: order._id,
-        source: { uri: order.order_details.image },
-        title: order.order_details?.productName,
-        total: order?.total_price,
-        isPaid: order.is_payment_done,
-        isComplete: order.is_order_complete,
-        deliveryDate: order.order_details.deliveryDate,
-        originalPrice: `₹${order?.order_details.originalPrice}`,
-        discountedPrice: `₹${order?.order_details.displayPrice}`,
-        state: order.state,
-        name: order.name,
-        city: order.city,
-        phone: order.phone,
-        paymentMethod: order.payment_method,
-      };
-      console.log(response?.data?.data);
-      dispatch(setCurrentOrder(newOrderData));
+      getOrderDetailsByOrderId(order?._id);
 
       navigation.navigate("paymentConfirm");
       notifyMessage("Order added successfully");
@@ -181,15 +167,21 @@ const useApiCalls = () => {
       setLoadingOrderList(true);
       const response = await getOrderList(userId ?? "");
       const data = response.data.data;
-      const tempList = data.map((order: any) => ({
-        id: order._id,
-        source: { uri: order.order_details.image },
-        title: order.order_details?.productName,
-        total: order?.total_price,
-        isPaid: order.is_payment_done,
-        isComplete: order.is_order_complete,
-        deliveryDate: order.order_details.deliveryDate,
-      }));
+      const tempList: any[] = [];
+      for (let index = data.length - 1; index >= 0; index--) {
+        const order = data[index];
+        const temp = {
+          id: order._id,
+          source: { uri: order.order_details.image },
+          title: order.order_details?.productName,
+          total: order?.total_price,
+          isPaid: order.is_payment_done,
+          isComplete: order.is_order_complete,
+          deliveryDate: order.order_details.deliveryDate,
+        };
+        tempList.push(temp);
+      }
+
       setOrderList(tempList);
       setLoadingOrderList(false);
     } catch (error) {
@@ -200,21 +192,28 @@ const useApiCalls = () => {
 
   const getOrderDetailsByOrderId = async (payload: string) => {
     try {
-      dispatch(setCurrentOrder(null));
       setLoadingOrderList(true);
+      dispatch(clearOrder());
+
       const response = await getOrderDetails(payload);
       const order = response?.data?.data;
-      console.log(order?.order_details.originalPrice);
+      console.log(order?.order_details);
       const newOrderData = {
         id: order._id,
         source: { uri: order.order_details.image },
         title: order.order_details?.productName,
         total: order?.total_price,
+        count: order?.quantity,
+        shipping: 100,
+        subTotal: order?.order_details?.displayPrice * order?.quantity,
+        tax: order?.order_details?.originalPrice * order?.quantity * 0.18,
+
         isPaid: order.is_payment_done,
         isComplete: order.is_order_complete,
-        deliveryDate: order.order_details.deliveryDate,
-        originalPrice: `₹${order?.order_details.originalPrice}`,
-        discountedPrice: `₹${order?.order_details.displayPrice}`,
+        deliveryDate: moment(order?.delivery_date).format("MMM DD, YYYY"),
+        createDate: moment(order?.createdAt).format("MMM DD, YYYY"),
+        originalPrice: order?.order_details.originalPrice,
+        discountedPrice: order?.order_details.displayPrice,
         state: order.state,
         name: order.name,
         city: order.city,
@@ -226,6 +225,27 @@ const useApiCalls = () => {
       setLoadingOrderList(false);
     } catch (error) {
       setLoadingOrderList(false);
+    }
+  };
+
+  const handlePayment = async () => {
+    const payload = {
+      userId: userId,
+      amount: 54364532647,
+      mobileNumber: "9876543210",
+      merchantTransactionId: generatedTranscId(),
+    };
+
+    try {
+      console.log("Trying to pay...");
+      const response = await axios.post(
+        "https://good-luck-backend.onrender.com/pay",
+        payload // Pass the payload here
+      );
+      console.log("getting data");
+      console.log(response.data); // Log the response data
+    } catch (error) {
+      console.error("Payment failed", error); // Handle error
     }
   };
 
@@ -251,6 +271,7 @@ const useApiCalls = () => {
     addOrder,
     loadingAddOrder,
     getOrderDetailsByOrderId,
+    handlePayment,
   };
 };
 
@@ -260,4 +281,8 @@ export function notifyMessage(msg: string) {
   if (Platform.OS === "android") {
     ToastAndroid.show(msg, ToastAndroid.SHORT);
   }
+}
+
+function generatedTranscId() {
+  return "T" + Date.now();
 }

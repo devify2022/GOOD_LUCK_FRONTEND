@@ -16,6 +16,7 @@ import { RadioButton } from "react-native-paper";
 import useAuthService from "../hooks/useAuthServices";
 import { useDispatch } from "react-redux";
 import { setOtpFlow } from "../redux/silces/auth.silce";
+import { notifyMessage } from "../hooks/useApiCalls";
 
 const LoginPage = ({ navigation }: any) => {
   const { handleSendOTP } = useAuthService();
@@ -27,6 +28,10 @@ const LoginPage = ({ navigation }: any) => {
 
   const handleLogin = () => {
     // Implement your login logic here
+    if (phoneNumber.length < 10) {
+      notifyMessage("Enter valid phone number");
+      return;
+    }
     dispatch(setOtpFlow("signin"));
     handleSendOTP({ phone: phoneNumber });
     navigation.navigate("otpverify");
@@ -37,7 +42,7 @@ const LoginPage = ({ navigation }: any) => {
     // navigation.navigate("ForgotPasswordPage");
   };
   const handleBack = () => {
-    navigation.navigate("signinsignup");
+    navigation.goBack();
   };
 
   return (
@@ -78,7 +83,7 @@ const LoginPage = ({ navigation }: any) => {
           </TouchableOpacity>
         </View> */}
 
-        <View style={styles.selectRoleButtons}>
+        {/* <View style={styles.selectRoleButtons}>
           <View style={styles.radioButton}>
             <RadioButton
               color="#FD7A5B"
@@ -112,7 +117,7 @@ const LoginPage = ({ navigation }: any) => {
           onPress={handleForgotPassword}
         >
           <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
           <Text style={styles.loginButtonText}>Log In</Text>
         </TouchableOpacity>

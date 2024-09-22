@@ -88,6 +88,7 @@ export interface IOrderState {
   currentOrderDetails: any;
   selectedDealer: any;
   isLoading: boolean;
+  disableButton: boolean;
 }
 
 export interface category {
@@ -144,4 +145,5 @@ export const orderInitialState: IOrderState = {
     tax: "0",
     items: [],
   },
+  disableButton: false,
 };

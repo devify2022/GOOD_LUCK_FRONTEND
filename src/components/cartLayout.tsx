@@ -10,8 +10,10 @@ import {
 import { Avatar, IconButton, Button } from "react-native-paper";
 import { cartLayoutStyle as styles } from "../styles/cart.styles";
 import { useNavigation } from "@react-navigation/native";
-import useApiCalls from "../hooks/useApiCalls";
+import useApiCalls, { notifyMessage } from "../hooks/useApiCalls";
 import PaymentPage from "../pages/paymentPage";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux";
 
 const CartLayout: React.FC<{
   children: React.ReactNode;
@@ -22,9 +24,17 @@ const CartLayout: React.FC<{
   const navigation = useNavigation<any>();
   const { productDetails } = useApiCalls();
 
-  const { addOrder } = useApiCalls();
+  const buttonState = useSelector(
+    (state: RootState) => state.order.disableButton
+  );
+
+  const { addOrder, handlePayment } = useApiCalls();
 
   const handleAddOrder = () => {
+    if (buttonState) {
+      notifyMessage("Please fill the mandatory fields");
+      return;
+    }
     addOrder();
   };
   return (
@@ -60,7 +70,6 @@ const CartLayout: React.FC<{
       {/* Footer */}
       <View style={styles.footer}>
         <View>
-          {/* <PaymentPage /> */}
           <Button
             style={styles.footerButton}
             onPress={() => {

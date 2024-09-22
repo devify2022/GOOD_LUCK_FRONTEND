@@ -71,12 +71,12 @@ const ProductDetail = ({
           </View>
           <View style={styles.priceContainer}>
             <Text style={styles.discountedPrice}>
-              {productDetails?.discountedPrice}
+              ₹{productDetails?.discountedPrice}
             </Text>
             {/* space was not added by using styles. so text is needed. */}
             <Text>{"  "}</Text>
             <Text style={styles.originalPrice}>
-              {productDetails?.originalPrice}
+              ₹ {productDetails?.originalPrice}
             </Text>
           </View>
           <View style={styles.descriptionContainer}>

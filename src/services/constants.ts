@@ -20,6 +20,7 @@ export const endPoints = {
   allOrderList: "/order",
   orderList: "/order/user",
   orderDetails: "/order",
+  payment: "/pay",
 };
 
 const env = "devBaseURL";

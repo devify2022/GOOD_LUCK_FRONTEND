@@ -16,7 +16,7 @@ import { Button, Divider, IconButton } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux";
 import moment from "moment";
-import { setCurrentOrder } from "../redux/silces/order.slice";
+import { setButtonState, setCurrentOrder } from "../redux/silces/order.slice";
 
 const PaymentDetail = ({ navigation }: { navigation: any }) => {
   const image = useSelector((state: RootState) => state.product.productDetails);
@@ -33,7 +33,15 @@ const PaymentDetail = ({ navigation }: { navigation: any }) => {
     phone: phoneNumber ?? "",
     address: "",
     pincode: "",
-    totalPrice: image ? image.discountedPrice.replace(/[^0-9.-]+/g, "") : 0,
+  });
+  const [paymentBreakUp, setpaymentBreakUp] = useState({
+    subTotal: image?.discountedPrice * formState.count,
+    shipping: 100,
+    gst: image?.discountedPrice * formState.count * 0.18,
+    total:
+      image?.discountedPrice * formState.count +
+      100 +
+      image?.discountedPrice * formState.count * 0.18,
   });
   const handleInputChange = (key: string, value: string) => {
     setFormState((prevState) => ({
@@ -49,16 +57,20 @@ const PaymentDetail = ({ navigation }: { navigation: any }) => {
       // Prevent the count from dropping below 1
       if (newCount < 1) return prevState;
 
-      // Update total price based on count
-
-      const newTotalPrice =
-        newCount *
-        parseFloat(image.discountedPrice.replace(/[^0-9.-]+/g, "") ?? 0);
+      // Update total price based on newCount
+      setpaymentBreakUp({
+        subTotal: image?.discountedPrice * newCount,
+        shipping: 100,
+        gst: parseFloat((image?.discountedPrice * newCount * 0.18).toFixed(2)),
+        total:
+          image?.discountedPrice * newCount +
+          100 +
+          image?.discountedPrice * newCount * 0.18,
+      });
 
       return {
         ...prevState,
         count: newCount,
-        totalPrice: newTotalPrice.toFixed(2),
       };
     });
   };
@@ -68,6 +80,16 @@ const PaymentDetail = ({ navigation }: { navigation: any }) => {
 
   useEffect(() => {
     dispatch(setCurrentOrder(formState));
+    const buttonState =
+      formState.name === "" ||
+      formState.address === "" ||
+      formState.city === "" ||
+      formState.state === "" ||
+      formState.phone.length < 10 ||
+      formState.phone.includes(".") ||
+      formState.pincode.length < 6 ||
+      formState.pincode.includes(".");
+    dispatch(setButtonState(buttonState));
   }, [formState]);
 
   return (
@@ -92,9 +114,11 @@ const PaymentDetail = ({ navigation }: { navigation: any }) => {
               <Text style={styles.name}>{image.title}</Text>
               <View style={styles.priceContainer}>
                 <Text style={styles.discountedPrice}>
-                  {image.discountedPrice}
+                  ₹ {image.discountedPrice * formState.count}
                 </Text>
-                <Text style={styles.originalPrice}>{image.originalPrice}</Text>
+                <Text style={styles.originalPrice}>
+                  ₹{image.originalPrice * formState.count}
+                </Text>
               </View>
               <View style={styles.count}>
                 <IconButton
@@ -119,7 +143,7 @@ const PaymentDetail = ({ navigation }: { navigation: any }) => {
                   <TextInput
                     maxLength={200}
                     style={styles.input}
-                    placeholder="Name"
+                    placeholder="Name *"
                     placeholderTextColor="#B0B0B0"
                     value={formState.name}
                     onChangeText={(text) => handleInputChange("name", text)}
@@ -127,7 +151,7 @@ const PaymentDetail = ({ navigation }: { navigation: any }) => {
                   <TextInput
                     maxLength={200}
                     style={styles.input}
-                    placeholder="Address"
+                    placeholder="Address *"
                     placeholderTextColor="#B0B0B0"
                     value={formState.address}
                     onChangeText={(text) => handleInputChange("address", text)}
@@ -152,7 +176,7 @@ const PaymentDetail = ({ navigation }: { navigation: any }) => {
                     maxLength={6}
                     inputMode="numeric"
                     style={styles.input}
-                    placeholder="Pincode"
+                    placeholder="Pincode *"
                     placeholderTextColor="#B0B0B0"
                     value={formState.pincode}
                     onChangeText={(text) => handleInputChange("pincode", text)}
@@ -161,7 +185,7 @@ const PaymentDetail = ({ navigation }: { navigation: any }) => {
                     maxLength={10}
                     inputMode="numeric"
                     style={styles.input}
-                    placeholder="Phone Number"
+                    placeholder="Phone Number *"
                     placeholderTextColor="#B0B0B0"
                     keyboardType="phone-pad"
                     value={formState.phone}
@@ -212,8 +236,20 @@ const PaymentDetail = ({ navigation }: { navigation: any }) => {
               <Text style={styles.date}>{deliveryDate}</Text>
             </View>
             <View style={styles.total}>
+              <Text style={styles.totalText}>Subtotal</Text>
+              <Text style={styles.totalAmount}>₹{paymentBreakUp.subTotal}</Text>
+            </View>
+            <View style={styles.total}>
+              <Text style={styles.totalText}>Tax</Text>
+              <Text style={styles.totalAmount}>₹{paymentBreakUp.gst}</Text>
+            </View>
+            <View style={styles.total}>
+              <Text style={styles.totalText}>Shipping</Text>
+              <Text style={styles.totalAmount}>₹{paymentBreakUp.shipping}</Text>
+            </View>
+            <View style={styles.total}>
               <Text style={styles.totalText}>Total</Text>
-              <Text style={styles.totalAmount}>₹{formState.totalPrice}</Text>
+              <Text style={styles.totalAmount}>₹{paymentBreakUp.total}</Text>
             </View>
           </View>
         </ScrollView>
