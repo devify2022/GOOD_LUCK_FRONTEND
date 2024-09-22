@@ -22,7 +22,12 @@ const CartLayout: React.FC<{
 }> = ({ children, buttonText }) => {
   const { width } = Dimensions.get("window");
   const navigation = useNavigation<any>();
-  const { productDetails } = useApiCalls();
+  const orderDetails = useSelector(
+    (state: RootState) => state.order.currentOrderDetails
+  );
+  const phoneNumber = useSelector(
+    (state: RootState) => state.auth.userDetails?.phoneNumber
+  );
 
   const buttonState = useSelector(
     (state: RootState) => state.order.disableButton
@@ -70,6 +75,13 @@ const CartLayout: React.FC<{
       {/* Footer */}
       <View style={styles.footer}>
         <View>
+          {buttonText !== "Buy now" && (
+            <PaymentPage
+              amount={orderDetails?.totalPrice}
+              mobileNumber={phoneNumber ?? ""}
+            />
+          )}
+
           <Button
             style={styles.footerButton}
             onPress={() => {

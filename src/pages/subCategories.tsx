@@ -67,7 +67,7 @@ const Subcategories = ({ navigation }: { navigation: any }) => {
           <Text style={styles.title}>Category</Text>
         </View>
 
-        <View>
+        <View style={{ minHeight: "15%" }}>
           {loadingCategories ? (
             <ActivityIndicator
               style={{

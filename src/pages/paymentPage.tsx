@@ -1,27 +1,35 @@
-import { View, Button, Alert } from "react-native";
+import { View, Alert, StyleSheet } from "react-native";
 import React, { useState } from "react";
-import phonepeSDK from "react-native-phonepe-pg";
+import PhonePePaymentSDK from "react-native-phonepe-pg"; // Fix import name
 import base64 from "react-native-base64";
 import { sha256 } from "react-native-sha256";
 import { notifyMessage } from "../hooks/useApiCalls";
 import { useSelector } from "react-redux";
+import { styleConstants } from "../styles/constants";
+import { Button, Text } from "react-native-paper";
+import { RootState } from "../redux";
 
 // Define the environment interface
 interface IPaymentEnv {
   environment: string;
   merchantId: string;
-  appId: string;
+  appId: string | null;
   enableLogging: boolean;
 }
 
 // Component definition
-const PaymentPage = (props: any) => {
+const PaymentPage = (props: { mobileNumber: string; amount: number }) => {
+  // Dynamically pass the phone number and amount via props
+  const { mobileNumber, amount } = props;
+
   // Initialize payment environment state
-  const userId = useSelector;
+  const userId = useSelector(
+    (state: RootState) => state.auth.userDetails?.userID
+  ); // Correct usage of useSelector
   const [paymentEnv, setPaymentEnv] = useState<IPaymentEnv>({
     environment: "SANDBOX",
     merchantId: "PGTESTPAYUAT86",
-    appId: "your-app-id-here", // Replace with your actual appId
+    appId: null, // Replace with your actual appId
     enableLogging: true,
   });
 
@@ -35,9 +43,7 @@ const PaymentPage = (props: any) => {
   // Convert input string to SHA256 hash
   const convertSHA = async (inputText: string) => {
     try {
-      //(inputText);
       const value = await sha256(inputText);
-      //(value);
       return value;
     } catch (error) {
       console.error("SHA256 conversion error:", error);
@@ -47,24 +53,31 @@ const PaymentPage = (props: any) => {
 
   // Handle the payment button click
   const handlePaymentButtonClick = async () => {
+    if (amount < 1 || mobileNumber === "") {
+      notifyMessage("Enter valid payment details");
+      return;
+    }
     try {
       // Initialize PhonePe SDK
-      const initResp = await phonepeSDK.init(
+      const initResp = await PhonePePaymentSDK.init(
         paymentEnv.environment,
         paymentEnv.merchantId,
-        paymentEnv.appId,
+        "",
         paymentEnv.enableLogging
       );
 
-      //("PhonePe SDK initialized:", initResp);
+      if (!initResp) {
+        notifyMessage("Failed to initialize PhonePe SDK");
+        return;
+      }
 
       // Create request payload
       const requestBody = {
         merchantId: paymentEnv.merchantId,
         merchantTransactionId: getID(),
-        merchantUserId: getID(), // Replace with actual merchant user ID
-        amount: 10000, // Amount in paise (₹100.00)
-        mobileNumber: "7679039012", // Optional
+        merchantUserId: userId, // Use the actual userId from Redux
+        amount: amount * 100, // Amount in paise (₹100.00 -> 10000 paise)
+        mobileNumber: mobileNumber || "7679039012", // Optional mobile number
         callbackUrl: "your-callback-url-here", // Replace with actual callback URL
         paymentInstrument: {
           type: "PAY_PAGE", // Payment page type
@@ -89,10 +102,14 @@ const PaymentPage = (props: any) => {
       const finalChecksum = checksum + "###" + salt_Index;
 
       // Start the PhonePe transaction
-      phonepeSDK
-        .startTransaction(payload_main, finalChecksum, null, null)
+      PhonePePaymentSDK.startTransaction(
+        payload_main,
+        finalChecksum,
+        null,
+        null
+      )
         .then((transactionResponse) => {
-          //("Transaction started successfully:", transactionResponse);
+          notifyMessage("Transaction started successfully");
         })
         .catch((transactionError) => {
           console.error("Transaction error:", transactionError);
@@ -106,9 +123,29 @@ const PaymentPage = (props: any) => {
 
   return (
     <View>
-      <Button onPress={handlePaymentButtonClick} title="Click to Pay" />
+      <Button style={style.footerButton} onPress={handlePaymentButtonClick}>
+        <Text style={style.buttonText}>{"Pay online"}</Text>
+      </Button>
     </View>
   );
 };
 
 export default PaymentPage;
+
+const style = StyleSheet.create({
+  footerButton: {
+    backgroundColor: styleConstants.color.primaryColor,
+    borderRadius: 25,
+    marginTop: 5,
+    height: 50,
+    justifyContent: "center",
+    width: 310, //try to get screen-width
+    textAlign: "center",
+  },
+  buttonText: {
+    color: styleConstants.color.textWhiteColor,
+    fontSize: 18,
+    fontFamily: styleConstants.fontFamily,
+    fontWeight: "700",
+  },
+});

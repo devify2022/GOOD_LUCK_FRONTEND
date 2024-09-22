@@ -1,6 +1,6 @@
 import { Button, Image, Text, TouchableOpacity, View } from "react-native";
 import { OrderDetailStyles as styles } from "../styles/cart.styles";
-import { IconButton } from "react-native-paper";
+import { Divider, IconButton } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import useApiCalls from "../hooks/useApiCalls";
 import { useSelector } from "react-redux";
@@ -101,17 +101,18 @@ const OrderDetails: React.FC<{
 
             <View style={styles.orderDetails}>
               <View style={styles.orderDetailCategory}>
-                <Text style={styles.categoryName}>Create Date:</Text>
+                <Text style={styles.categoryName}>Order Date</Text>
                 <Text style={styles.categoryValue}>
                   {orderDetails?.createDate}
                 </Text>
               </View>
               <View style={styles.orderDetailCategory}>
-                <Text style={styles.categoryName}>Order Date:</Text>
+                <Text style={styles.categoryName}>Delivery Date</Text>
                 <Text style={styles.categoryValue}>
                   {orderDetails?.deliveryDate}
                 </Text>
               </View>
+              <Divider />
               <View style={styles.total}>
                 <Text style={styles.totalText}>Subtotal</Text>
                 <Text style={styles.totalAmount}>₹{orderDetails.subTotal}</Text>
