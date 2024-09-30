@@ -1,6 +1,12 @@
-// MyProfile.tsx
 import React from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Image,
+  Linking,
+} from "react-native";
 import { Avatar, IconButton, Divider } from "react-native-paper";
 import { styleConstants } from "../styles/constants";
 import { useNavigation } from "@react-navigation/native";
@@ -8,34 +14,50 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 
 const MyProfile = () => {
   const navigation = useNavigation<any>();
+
+  const openWhatsApp = () => {
+    Linking.openURL("whatsapp://send?phone=1234567890");
+  };
+
+  const openFacebook = () => {
+    Linking.openURL("https://www.facebook.com/johndoe");
+  };
+
   return (
-    <View style={{flex:1}}>
+    <View style={{ flex: 1 }}>
       <View style={styles.titleContainer}>
         <Icon name="arrow-back" size={24} color="black" style={{ top: -2 }} />
-        <Text style={styles.title}>
-          Your Profile
-        </Text>
+        <Text style={styles.title}>Your Profile</Text>
         <View></View>
       </View>
       <ScrollView contentContainerStyle={styles.container}>
         {/* Profile Section */}
         <View style={styles.profileSection}>
-          <View>
-            <IconButton
-              icon="pencil"
-              iconColor={styleConstants.color.primaryColor}
-              size={24}
-              onPress={() => {
-                navigation.navigate("createdatingprofile");
-              }}
-              style={styles.editIcon}
+          <View style={styles.imageContainer}>
+            <Image
+              source={require("../assets/girlOne.png")}
+              style={styles.profileImage}
             />
-            <Avatar.Image size={100} source={require("../assets/girlOne.png")} />
+
+            {/* WhatsApp and Facebook buttons */}
+            <View style={styles.socialButtonsContainer}>
+              <IconButton
+                icon="whatsapp"
+                size={30}
+                iconColor="#25D366"
+                style={styles.socialButton}
+                onPress={openWhatsApp}
+              />
+              <IconButton
+                icon="facebook"
+                size={30}
+                iconColor="#3b5998"
+                style={styles.socialButton}
+                onPress={openFacebook}
+              />
+            </View>
           </View>
-          <Text style={styles.nameAgeText}>John Doe, 30</Text>
         </View>
-
-
 
         <Divider style={styles.divider} />
 
@@ -95,7 +117,8 @@ const MyProfile = () => {
           <View style={styles.detailItem}>
             <IconButton icon="star" size={20} style={styles.detailIcon} />
             <Text style={styles.detailText}>
-              <Text style={styles.detailLabel}>Interests:</Text> Music, Technology
+              <Text style={styles.detailLabel}>Interests:</Text> Music,
+              Technology
             </Text>
           </View>
 
@@ -136,34 +159,40 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 5,
     marginTop: 25,
-},
-title: {
+  },
+  title: {
     fontSize: 24,
     fontWeight: "600",
     fontFamily: styleConstants.fontFamily,
-    color: styleConstants.color.textBlackColor,    
-},
+    color: styleConstants.color.textBlackColor,
+  },
   container: {
     padding: 20,
     backgroundColor: styleConstants.color.transparent,
   },
   profileSection: {
     alignItems: "center",
-    justifyContent: "center", 
+    justifyContent: "center",
     marginHorizontal: 10,
   },
-  editIcon: {
-    position: "absolute",
-    left: 60,
-    bottom: 60,
-    zIndex: 100,
-
+  imageContainer: {
+    position: "relative",
   },
-  nameAgeText: {
-    fontSize: 22,
-    marginTop: 10,
-    fontFamily: styleConstants.fontFamily,
-    color: styleConstants.color.textBlackColor,
+  profileImage: {
+    height: 430,
+    width: 400,
+    borderRadius: 20,
+  },
+  socialButtonsContainer: {
+    position: "absolute",
+    bottom: 10,
+    flexDirection: "row",
+    justifyContent: "space-around",
+    width: "100%",
+  },
+  socialButton: {
+    backgroundColor: "white",
+    borderRadius: 25,
   },
   divider: {
     marginVertical: 20,

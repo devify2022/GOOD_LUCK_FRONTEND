@@ -5,7 +5,7 @@ import Icon from "react-native-vector-icons/MaterialIcons"; // Import the icon s
 import GridView from "../components/gridView";
 import HomeScreenLayout from "../components/homeLayOut";
 import { productListstyle as styles } from "../styles";
-import useApiCalls from "../hooks/useApiCalls";
+import useDivineShopServices from "../hooks/useDivineShopServices";
 import { ActivityIndicator } from "react-native-paper";
 import { styleConstants } from "../styles/constants";
 
@@ -23,7 +23,7 @@ const ProductList = ({
     loadingProducts,
     getAllProductByCategory,
     getAllProduct,
-  } = useApiCalls();
+  } = useDivineShopServices();
   //(id, "getting route");
   useEffect(() => {
     if (id) getAllProductByCategory(id);

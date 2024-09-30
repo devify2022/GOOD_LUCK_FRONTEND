@@ -12,10 +12,10 @@ import { Button } from "react-native-paper";
 import { styleConstants } from "../styles/constants";
 
 interface Iplan {
-  name: string,
-  price: string,
-  features: string[],
-  isPopular: boolean,
+  name: string;
+  price: string;
+  features: string[];
+  isPopular: boolean;
 }
 
 const plans: Iplan[] = [
@@ -45,11 +45,10 @@ const PlanSelectionComponent = ({ navigation }: { navigation: any }) => {
   const handlePlanSelection = (planName: string) => {
     setSelectedPlan(planName);
   };
-  const renderPlans = ({ item }: { item: Iplan }) => (
 
+  const renderPlans = ({ item }: { item: Iplan }) => (
     <View>
       <TouchableOpacity
-
         style={[
           styles.card,
           {
@@ -64,8 +63,7 @@ const PlanSelectionComponent = ({ navigation }: { navigation: any }) => {
         <Text style={styles.price}>{item.price}</Text>
       </TouchableOpacity>
     </View>
-  )
-
+  );
 
   return (
     <View style={styles.container}>
@@ -82,59 +80,34 @@ const PlanSelectionComponent = ({ navigation }: { navigation: any }) => {
         See Who Likes You and match with them instantly with Gold.
       </Text>
 
-      {/* Scrollable Plans */}
-      {/* <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={styles.scrollView}
-        contentContainerStyle={styles.scrollViewContent}
-      > */}
-
-      {/* {plans.map((plan, index) => (
-          <TouchableOpacity
-            key={index}
-            style={[
-              styles.card,
-              {
-                borderColor: selectedPlan === plan.name ? "#FFD700" : "#FFFFFF",
-              },
-            ]}
-            onPress={() => handlePlanSelection(plan.name)}
-          >
-            {plan.isPopular && <Text style={styles.popular}>Popular</Text>}
-            {selectedPlan === plan.name && <Text style={styles.tick}>✓</Text>}
-            <Text style={styles.planName}>{plan.name}</Text>
-            <Text style={styles.price}>{plan.price}</Text>
-          </TouchableOpacity>
-        ))} */}
-
-      {/* </ScrollView> */}
-
-      {/* Features of Selected Plan */}
-      {/* {selectedPlan && (
-        <View style={styles.additionalCard}>
-          <View style={styles.additionalCardTop}>
-            <Text style={styles.additionalCardText}>
-              Features of Gold Plan:
-            </Text>
-          </View>
-          <View style={styles.additionalCardMain}>
-            {plans[2].features.map((feature, index) => (
-              <Text key={index} style={styles.additionalCardMainText}>
-                ✓ {feature}
-              </Text>
-            ))}
-          </View>
-        </View>
-      )} */}
-
-
+      {/* Plans Section */}
       <FlatList
         data={plans}
         keyExtractor={(item) => item.name}
         horizontal
         renderItem={renderPlans}
-      ></FlatList>
+        showsHorizontalScrollIndicator={false}
+      />
+
+      {/* Features of Selected Plan */}
+      {selectedPlan && (
+        <View style={styles.additionalCard}>
+          <View style={styles.additionalCardTop}>
+            <Text style={styles.additionalCardText}>
+              Features of {selectedPlan} Plan:
+            </Text>
+          </View>
+          <View style={styles.additionalCard}>
+            {plans
+              .find((plan) => plan.name === selectedPlan)
+              ?.features.map((feature, index) => (
+                <Text key={index} style={styles.additionalCardMainText}>
+                  ✓ {feature}
+                </Text>
+              ))}
+          </View>
+        </View>
+      )}
 
       {/* Submit Button */}
       <Text style={styles.tAndC}>
@@ -166,26 +139,17 @@ const styles = StyleSheet.create({
   logo: {
     width: 80,
     height: 80,
-    borderRadius: 40, // Making the logo round
+    borderRadius: 40,
   },
   headerText: {
-    fontSize: 28,
+    fontSize: 24,
     textAlign: "center",
     marginBottom: 20,
     color: "#FFFFFF",
-    backgroundColor: "#000000",
-    padding: 10,
-    fontFamily: styleConstants.fontFamily, // Custom font family
+    fontFamily: styleConstants.fontFamily,
   },
-  scrollView: {
-    marginBottom: 20,
-
-  },
-  // scrollViewContent:{
-  //   paddingRight: 115,
-  // },
   card: {
-    width: "60%", // Less lengthier cards
+    width: 140, // Adjusted card size for better layout
     padding: 16,
     justifyContent: "center",
     backgroundColor: styleConstants.color.transparent,
@@ -201,19 +165,17 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 10,
     left: 5,
-    paddingBottom: 35,
   },
   planName: {
     color: styleConstants.color.textWhiteColor,
-    fontSize: 28,
+    fontSize: 22,
     marginBottom: 8,
-    fontFamily: styleConstants.fontFamily, // Custom font family
+    fontFamily: styleConstants.fontFamily,
   },
   price: {
     color: styleConstants.color.textWhiteColor,
-    fontSize: 18,
-    marginBottom: 8,
-    fontFamily: styleConstants.fontFamily, // Custom font family
+    fontSize: 16,
+    fontFamily: styleConstants.fontFamily,
   },
   tick: {
     position: "absolute",
@@ -228,6 +190,7 @@ const styles = StyleSheet.create({
     padding: 16,
     marginTop: 20,
     borderColor: styleConstants.color.textWhiteColor,
+    borderWidth: 1,
   },
   additionalCardTop: {
     borderBottomWidth: 1,
@@ -238,20 +201,18 @@ const styles = StyleSheet.create({
   additionalCardText: {
     fontSize: 16,
     color: styleConstants.color.textWhiteColor,
-    fontFamily: styleConstants.fontFamily, // Custom font family
-  },
-  additionalCardMain: {
-    paddingVertical: 10,
+    fontFamily: styleConstants.fontFamily,
   },
   additionalCardMainText: {
     fontSize: 14,
-    fontFamily: styleConstants.fontFamily, // Custom font family
+    fontFamily: styleConstants.fontFamily,
     color: styleConstants.color.textWhiteColor,
   },
   tAndC: {
     fontSize: 12,
-    fontFamily: styleConstants.fontFamily, // Custom font family
+    fontFamily: styleConstants.fontFamily,
     color: styleConstants.color.textWhiteColor,
+    marginVertical: 10,
   },
   submitButton: {
     marginTop: 20,

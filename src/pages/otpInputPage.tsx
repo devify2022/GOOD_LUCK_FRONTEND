@@ -14,7 +14,7 @@ import { otpInputStyle as styles } from "../styles";
 import useAuthService from "../hooks/useAuthServices";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux";
-import { notifyMessage } from "../hooks/useApiCalls";
+import { notifyMessage } from "../hooks/useDivineShopServices";
 
 const OTPPage = ({ navigation }: { navigation: any }) => {
   const [otp, setOtp] = useState(["", "", "", ""]);

@@ -2,7 +2,7 @@ import { Button, Image, Text, TouchableOpacity, View } from "react-native";
 import { OrderDetailStyles as styles } from "../styles/cart.styles";
 import { Divider, IconButton } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import useApiCalls from "../hooks/useApiCalls";
+import useDivineShopServices from "../hooks/useDivineShopServices";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux";
 import { ActivityIndicator } from "react-native";
@@ -24,7 +24,7 @@ const OrderDetails: React.FC<{
 
   const navigation = useNavigation<any>();
 
-  const { loadingOrderList } = useApiCalls();
+  const { loadingOrderList } = useDivineShopServices();
   const image = {
     id: "1",
     source: require("../assets/ganesha.png"),

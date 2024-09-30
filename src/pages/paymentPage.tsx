@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import PhonePePaymentSDK from "react-native-phonepe-pg"; // Fix import name
 import base64 from "react-native-base64";
 import { sha256 } from "react-native-sha256";
-import { notifyMessage } from "../hooks/useApiCalls";
+import { notifyMessage } from "../hooks/useDivineShopServices";
 import { useSelector } from "react-redux";
 import { styleConstants } from "../styles/constants";
 import { Button, Text } from "react-native-paper";

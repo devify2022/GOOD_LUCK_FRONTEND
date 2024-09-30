@@ -2,10 +2,10 @@ import React from "react";
 
 import ProfileCreation from "../components/myProfile";
 
-const CreateDatingProfile = ({ navigation }: { navigation: any }) => {
+const CreateDatingProfile = () => {
   return (
     // <DatingScreenLayout>
-    <ProfileCreation navigation={navigation} />
+    <ProfileCreation />
     // </DatingScreenLayout>
   );
 };

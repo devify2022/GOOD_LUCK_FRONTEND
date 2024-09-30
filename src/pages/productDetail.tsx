@@ -4,7 +4,7 @@ import { productDetailStyles as styles } from "../styles/cart.styles";
 import { Dimensions } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { useEffect, useState } from "react";
-import useApiCalls from "../hooks/useApiCalls";
+import useDivineShopServices from "../hooks/useDivineShopServices";
 import { ActivityIndicator } from "react-native-paper";
 import { styleConstants } from "../styles/constants";
 
@@ -29,7 +29,7 @@ const ProductDetail = ({
 }) => {
   const [lines, setLines] = useState(2);
   const { getProductDetails, productDetails, loadingProductDetails } =
-    useApiCalls();
+    useDivineShopServices();
   //(id, "getting route");
   useEffect(() => {
     if (id) getProductDetails(id);

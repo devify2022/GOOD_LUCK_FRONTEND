@@ -58,6 +58,13 @@ const Routes = () => {
           <Stack.Screen
             name="createdatingprofile"
             component={isAuthenticated ? CreateDatingProfile : SignInSignUp}
+            initialParams={{ type: "dating" }}
+          />
+
+          <Stack.Screen
+            name="creatematrimonyprofile"
+            component={isAuthenticated ? CreateDatingProfile : SignInSignUp}
+            initialParams={{ type: "matrimony" }}
           />
 
           <Stack.Screen
@@ -79,6 +86,16 @@ const Routes = () => {
           <Stack.Screen
             name="myprofile"
             component={isAuthenticated ? MyProfilePage : SignInSignUp}
+          />
+          <Stack.Screen
+            name="datingprofile"
+            component={isAuthenticated ? MyProfilePage : SignInSignUp}
+            initialParams={{ type: "datingprofile" }}
+          />
+          <Stack.Screen
+            name="matrimonyprofile"
+            component={isAuthenticated ? MyProfilePage : SignInSignUp}
+            initialParams={{ type: "matrimonyprofile" }}
           />
           <Stack.Screen
             name="buyProduct"

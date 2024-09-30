@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import useApiCalls from "../hooks/useApiCalls"; // Fetching orders from an API
+import useDivineShopServices from "../hooks/useDivineShopServices"; // Fetching orders from an API
 import moment from "moment"; // Import moment.js for date formatting
 import { styleConstants } from "../styles/constants";
 import HomeScreenLayout from "../components/homeLayOut";
@@ -20,7 +20,7 @@ const OrderListingPage = ({ navigation }: { navigation: any }) => {
     loadingOrderList,
     getOrderListByUserId,
     getOrderDetailsByOrderId,
-  } = useApiCalls(); // Fetching orders from an API
+  } = useDivineShopServices(); // Fetching orders from an API
 
   const handleItemClick = (id: string) => {
     getOrderDetailsByOrderId(id);

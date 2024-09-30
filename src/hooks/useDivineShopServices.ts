@@ -20,7 +20,7 @@ import { clearOrder, setCurrentOrder } from "../redux/silces/order.slice";
 import axios from "axios";
 import moment from "moment";
 
-const useApiCalls = () => {
+const useDivineShopServices = () => {
   const [categoryList, setCategoryList] = useState<IMenuItem[]>([]);
   const [loadingCategories, setLoadingCategories] = useState<boolean>(false);
   const [loadingProducts, setLoadingProducts] = useState<boolean>(false);
@@ -275,7 +275,7 @@ const useApiCalls = () => {
   };
 };
 
-export default useApiCalls;
+export default useDivineShopServices;
 
 export function notifyMessage(msg: string) {
   if (Platform.OS === "android") {

@@ -12,7 +12,7 @@ import useAuthService from "../hooks/useAuthServices";
 import { createAccountStyle as styles } from "../styles";
 import { useDispatch } from "react-redux";
 import { setOtpFlow } from "../redux/silces/auth.silce";
-import { notifyMessage } from "../hooks/useApiCalls";
+import { notifyMessage } from "../hooks/useDivineShopServices";
 
 const SignUp = ({ navigation }: any) => {
   const [passwordVisible, setPasswordVisible] = useState(false);

@@ -10,7 +10,9 @@ import {
 import { Avatar, IconButton, Button } from "react-native-paper";
 import { cartLayoutStyle as styles } from "../styles/cart.styles";
 import { useNavigation } from "@react-navigation/native";
-import useApiCalls, { notifyMessage } from "../hooks/useApiCalls";
+import useDivineShopServices, {
+  notifyMessage,
+} from "../hooks/useDivineShopServices";
 import PaymentPage from "../pages/paymentPage";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux";
@@ -33,7 +35,7 @@ const CartLayout: React.FC<{
     (state: RootState) => state.order.disableButton
   );
 
-  const { addOrder, handlePayment } = useApiCalls();
+  const { addOrder, handlePayment } = useDivineShopServices();
 
   const handleAddOrder = () => {
     if (buttonState) {

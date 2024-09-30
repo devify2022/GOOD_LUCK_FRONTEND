@@ -15,7 +15,7 @@ import { clearOrder } from "../redux/silces/order.slice";
 import { clearProductS } from "../redux/silces/product.slice";
 import { Alert } from "react-native";
 import { RootState } from "../redux";
-import { notifyMessage } from "./useApiCalls";
+import { notifyMessage } from "./useDivineShopServices";
 import { useNavigation } from "@react-navigation/native";
 
 const useAuthService = () => {

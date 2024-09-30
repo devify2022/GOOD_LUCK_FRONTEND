@@ -7,10 +7,13 @@ import {
   StyleSheet,
   Animated,
   Dimensions,
+  Pressable,
 } from "react-native";
 import { IconButton } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { styleConstants } from "../styles/constants";
+import { notifyMessage } from "../hooks/useDivineShopServices";
+import { useNavigation } from "@react-navigation/native";
 
 const { width, height } = Dimensions.get("window");
 
@@ -22,13 +25,16 @@ const DatingDashBoardScroll = (props: {
 }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const images = [
-    "../assets/marketing.png",
-    "../assets/marketingOne.png",
-    "../assets/marketing.png",
-  ];
+    require("../assets/Matches_Image.png"),
+    require("../assets/girlOne.png"),
+    require("../assets/marketing.png"),
+    require("../assets/Matches_Image.png"),
+    require("../assets/girlOne.png"),
+  ]; // Array of static images
+
   const { userName, userAge, userLocation, imageURL } = props;
   const lookingFor = "Men";
-  const interests = ["music", "travel"]
+  const interests = ["music", "travel"];
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -40,84 +46,97 @@ const DatingDashBoardScroll = (props: {
 
   const progressBarWidth = new Animated.Value(0);
 
+  const handleClick = () => {
+    // Go to next image if available, else go to first
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === images.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
   useEffect(() => {
     Animated.timing(progressBarWidth, {
-      toValue: 100,
+      toValue: 50,
       duration: 5000,
       useNativeDriver: false,
     }).start();
   }, [currentImageIndex]);
 
+  const navigation = useNavigation<any>();
+
   return (
     <View style={styles.container}>
-      <ImageBackground
-        source={require("../assets/girlOne.png")}
-        style={styles.backgroundImage}
-        imageStyle={styles.imageStyle}
-      >
-        <View style={styles.overlay}>
-          <View style={styles.topContainer}>
-            <TouchableOpacity style={styles.backButton}>
-              <Icon name="chevron-left" size={30} color="white" />
-            </TouchableOpacity>
+      <Pressable style={styles.container} onPress={handleClick}>
+        {/* Handle tap event */}
+        <ImageBackground
+          source={images[currentImageIndex]} // Use current image based on index
+          style={styles.backgroundImage}
+          imageStyle={styles.imageStyle}
+        >
+          <View style={styles.overlay}>
+            <View style={styles.topContainer}>
+              <TouchableOpacity style={styles.backButton}>
+                <Icon name="chevron-left" size={30} color="white" />
+              </TouchableOpacity>
 
-            <View style={styles.progressContainer}>
-              {images.map((_, index) => (
-                <View key={index} style={styles.progressLine}>
-                  <Animated.View
-                    style={[
-                      styles.progressFill,
-                      index === currentImageIndex
-                        ? { width: progressBarWidth }
-                        : {},
-                    ]}
-                  />
-                </View>
-              ))}
+              <View style={styles.progressContainer}>
+                {images.map((_, index) => (
+                  <View key={index} style={styles.progressLine}>
+                    <Animated.View
+                      style={[
+                        styles.progressFill,
+                        index === currentImageIndex
+                          ? { width: progressBarWidth }
+                          : {},
+                      ]}
+                    />
+                  </View>
+                ))}
+              </View>
+
+              <TouchableOpacity style={styles.filterButton}>
+                <Icon name="filter" size={30} color="white" />
+              </TouchableOpacity>
             </View>
 
-            <TouchableOpacity style={styles.filterButton}>
-              <Icon name="filter" size={30} color="white" />
-            </TouchableOpacity>
+            <View style={styles.bottomContainer}>
+              <Text style={styles.userInfo}>
+                {userName}, {userAge}
+              </Text>
+              <View style={styles.interestContainer}>
+                <Text style={styles.interest}>{lookingFor}</Text>
+                <Text style={styles.interest}>{interests[0]}</Text>
+                <Text style={styles.interest}>{interests[1]}</Text>
+              </View>
+              <View style={styles.buttonContainer}>
+                <IconButton
+                  icon="close-circle-outline"
+                  iconColor={styleConstants.color.textWhiteColor}
+                  mode="contained"
+                  style={styles.actionButton}
+                  size={50}
+                />
+                <IconButton
+                  iconColor={styleConstants.color.textWhiteColor}
+                  icon="heart-outline"
+                  mode="contained"
+                  style={styles.actionButton}
+                  size={45}
+                />
+                <IconButton
+                  icon="arrow-up"
+                  iconColor={styleConstants.color.textWhiteColor}
+                  mode="contained"
+                  style={styles.actionButton}
+                  size={45}
+                  onPress={() => {
+                    navigation.navigate("create");
+                  }}
+                />
+              </View>
+            </View>
           </View>
-
-
-
-          <View style={styles.bottomContainer}>
-            <Text style={styles.userInfo}>
-              {userName}, {userAge}
-            </Text>
-            <View style={styles.interestContainer}>
-              <Text style={styles.interest}>{lookingFor}</Text>
-              <Text style={styles.interest}>{interests[0]}</Text>
-              <Text style={styles.interest}>{interests[1]}</Text>
-            </View>
-            <View style={styles.buttonContainer}>
-              <IconButton
-                icon="close-circle-outline"
-                iconColor={styleConstants.color.textWhiteColor}
-                mode="contained"
-                style={styles.actionButton}
-                size={50}
-              />
-              <IconButton
-                iconColor={styleConstants.color.textWhiteColor}
-                icon="heart-outline"
-                mode="contained"
-                style={styles.actionButton}
-                size={45}
-              />
-              <IconButton
-                icon="arrow-up"
-                iconColor={styleConstants.color.textWhiteColor}
-                mode="contained"
-                style={styles.actionButton}
-                size={45}
-              />
-            </View>
-          </View>
-        </View>
-      </ImageBackground>
+        </ImageBackground>
+      </Pressable>
     </View>
   );
 };
@@ -143,7 +162,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 20,
     paddingVertical: 20,
-    // backgroundColor: "rgba(0, 0, 0, 0.4)", // To darken the background
   },
   topContainer: {
     flexDirection: "row",
@@ -173,8 +191,7 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     alignItems: "center",
-
-    justifyContent: "flex-end"
+    justifyContent: "flex-end",
   },
   userInfo: {
     color: "white",
@@ -182,16 +199,9 @@ const styles = StyleSheet.create({
     fontFamily: styleConstants.fontFamily,
     alignSelf: "flex-start",
   },
-  // userLocation: {
-  //   color: "white",
-  //   fontSize: 24,
-  //   marginBottom: 20,
-  //   alignSelf: "flex-start",
-  //   fontFamily: styleConstants.fontFamily,
-  // },
   interestContainer: {
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   interest: {
     marginHorizontal: 10,
@@ -216,14 +226,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     backgroundColor: "rgba(0, 0, 0, 0.12)",
     color: styleConstants.color.textWhiteColor,
-    height: 65,
-    width: 65,
-    borderRadius: 32.5,
+    height: 70,
+    width: 70,
+    borderRadius: 35,
     justifyContent: "center",
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    
+    zIndex: 1000000,
   },
 });
 

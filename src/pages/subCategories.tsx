@@ -5,7 +5,7 @@ import ScrollableMenu, { IMenuItem } from "../components/scrollableTopMenu";
 import GridView from "../components/gridView";
 import HomeScreenLayout from "../components/homeLayOut";
 import { subCategoriesstyle as styles } from "../styles";
-import useApiCalls from "../hooks/useApiCalls";
+import useDivineShopServices from "../hooks/useDivineShopServices";
 import { ActivityIndicator, Divider } from "react-native-paper";
 import { styleConstants } from "../styles/constants";
 import { useNavigation } from "@react-navigation/native";
@@ -44,7 +44,7 @@ const Subcategories = ({ navigation }: { navigation: any }) => {
     loadingCategories,
     productList,
     loadingProducts,
-  } = useApiCalls();
+  } = useDivineShopServices();
   useEffect(() => {
     getAllCategory();
     getAllProduct();

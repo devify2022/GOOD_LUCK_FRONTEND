@@ -16,7 +16,7 @@ import { ActivityIndicator, RadioButton } from "react-native-paper";
 import useAuthService from "../hooks/useAuthServices";
 import { useDispatch, useSelector } from "react-redux";
 import { logOut, setOtpFlow } from "../redux/silces/auth.silce";
-import { notifyMessage } from "../hooks/useApiCalls";
+import { notifyMessage } from "../hooks/useDivineShopServices";
 import { RootState } from "../redux";
 
 const LoginPage = ({ navigation }: any) => {

@@ -15,14 +15,17 @@ import {
   Switch,
 } from "react-native-paper";
 import { styleConstants } from "../styles/constants"; // Assuming styleConstants is defined in your project
+import { useNavigation } from "@react-navigation/native";
 
-const ProfileCreation = ({ navigation }: { navigation: any }) => {
+const ProfileCreation = () => {
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);
   const [bio, setBio] = useState("");
   const [smoking, setSmoking] = useState("No");
   const [drinking, setDrinking] = useState("No");
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
   const [selectedGender, setSelectedGender] = useState<string[]>([]);
+
+  const navigation = useNavigation<any>();
 
   const interests = ["Music", "Travel", "Sports", "Art"];
   const genderOptions = ["Men", "Women", "Both"];
@@ -52,11 +55,10 @@ const ProfileCreation = ({ navigation }: { navigation: any }) => {
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.headerContainerStyle}>
-          <IconButton icon="arrow-left" style={styles.icon} onPress={() => { }} />
-          <Text style={styles.header}>Create Profile</Text>
-        </View>
+        <IconButton icon="arrow-left" style={styles.icon} onPress={() => {}} />
+        <Text style={styles.header}>Create Profile</Text>
+      </View>
       <ScrollView contentContainerStyle={styles.container}>
-      
         <Text style={styles.sectionHeader}>Profile Pictures</Text>
 
         <View style={styles.imagesGrid}>
@@ -91,7 +93,6 @@ const ProfileCreation = ({ navigation }: { navigation: any }) => {
             fonts: {
               regular: { fontFamily: styleConstants.fontFamily }, // Custom font family
             },
-
           }}
           // label="State"
           // value={drinking}
@@ -309,17 +310,16 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     paddingHorizontal: 5,
-    
   },
   icon: {
     justifyContent: "space-between",
   },
   header: {
     fontSize: 24,
-        fontWeight: "600",
-        fontFamily: styleConstants.fontFamily,
-        color: styleConstants.color.textBlackColor,
-        marginLeft: 15,
+    fontWeight: "600",
+    fontFamily: styleConstants.fontFamily,
+    color: styleConstants.color.textBlackColor,
+    marginLeft: 15,
   },
   sectionHeader: {
     fontSize: 18,
@@ -360,7 +360,6 @@ const styles = StyleSheet.create({
   },
   input: {
     marginVertical: 8,
-
   },
   bioInput: {
     marginBottom: 16,
@@ -416,18 +415,17 @@ const styles = StyleSheet.create({
     // height: "6%",
     alignItems: "center",
     borderRadius: 46,
-    
   },
   submitButtonContent: {
     paddingVertical: 4,
-    alignSelf: "center"
+    alignSelf: "center",
   },
   submitButtonText: {
     color: styleConstants.color.textWhiteColor,
     alignSelf: "center",
     fontFamily: styleConstants.fontFamily,
     fontSize: 18,
-    fontWeight: "700"
+    fontWeight: "700",
   },
 });
 
