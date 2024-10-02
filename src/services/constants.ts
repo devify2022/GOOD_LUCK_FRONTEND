@@ -22,6 +22,10 @@ export const endPoints = {
   orderList: "/order/user",
   orderDetails: "/order",
   payment: "/pay",
+  getAllMatrimonyProfile: "/matrimony",
+  getMatrimonyProfileById: "/matrimony",
+  createMatrimonyProfile: "/matrimony/createMatrimonyProfile",
+  updateMatrimonyProfile: "/matrimony/update",
 };
 
 const env = "devBaseURL";

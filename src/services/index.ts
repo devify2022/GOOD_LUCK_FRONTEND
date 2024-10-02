@@ -66,3 +66,26 @@ export const makePayment = (payload: any) => {
   console.log("getting value");
   return axios.post("https://good-luck-backend.onrender.com/pay", payload);
 };
+
+export const createMatrimonyProfile = (payload: any, userId: string) => {
+  return baseClient.post(
+    endPoints.createMatrimonyProfile + "/" + userId,
+    payload
+  );
+};
+
+export const updateMatrimonyProfile = (payload: any, userId: string) => {
+  return baseClient.patch(
+    endPoints.updateMatrimonyProfile,
+    +"/" + userId,
+    payload
+  );
+};
+
+export const getMatrimonyProfiles = () => {
+  return baseClient.get(endPoints.getAllMatrimonyProfile);
+};
+
+export const getMatrimonyProfileDetails = (userId: string) => {
+  return baseClient.get(endPoints.getMatrimonyProfileById + "/" + userId);
+};

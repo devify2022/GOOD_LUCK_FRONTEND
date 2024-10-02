@@ -32,7 +32,7 @@ const menuItems: IMenuItem[] = [
     id: "2",
     title: "Matrimony",
     icon: require("../assets/matrimony.png"),
-    route: "createdatingprofile",
+    route: "creatematrimonyprofile",
   },
   {
     id: "3",
@@ -44,7 +44,7 @@ const menuItems: IMenuItem[] = [
     id: "4",
     title: "Love & Friends",
     icon: require("../assets/friends.png"),
-    route: "matches",
+    route: "createdatingprofile",
   },
 ];
 
@@ -53,18 +53,17 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
     playBellSound();
   }, [navigation]);
   const playBellSound = () => {
-    const bell = new Sound('bell.mp3', Sound.MAIN_BUNDLE, (error) => {
+    const bell = new Sound("bell.mp3", Sound.MAIN_BUNDLE, (error) => {
       if (error) {
-        console.log('Failed to load the sound', error);
+        console.log("Failed to load the sound", error);
         return;
       }
       bell.play((success) => {
         if (!success) {
-          console.log('Playback failed due to audio decoding errors');
+          console.log("Playback failed due to audio decoding errors");
         }
       });
     });
-    
   };
   // const [bell, setbell] = useState<Sound | null>(null);
 
@@ -79,10 +78,9 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
   //   });
 
   //   // Play the sound when the screen is focused
-    
 
   //   // Cleanup function
-    
+
   // }, [navigation, bell]);
 
   return (

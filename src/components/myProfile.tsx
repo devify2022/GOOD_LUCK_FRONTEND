@@ -16,22 +16,41 @@ import {
 } from "react-native-paper";
 import { styleConstants } from "../styles/constants"; // Assuming styleConstants is defined in your project
 import { useNavigation } from "@react-navigation/native";
+import UploadScreen from "./imageUploader";
+import useMatrimonyServices from "../hooks/useMatrimonyServices";
+interface IProfileDetails {
+  state?: string;
+  city?: string;
+  pin?: string;
+  education?: string;
+  age?: string;
+  caste?: string;
+  salary?: string;
+}
 
-const ProfileCreation = () => {
+const ProfileCreation = ({ route }: { route: any }) => {
+  console.log(route.params);
+  const { createOwnMatrimonyProfile } = useMatrimonyServices();
+  const imageNumber = route?.params?.type === "dating" ? 5 : 1;
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);
   const [bio, setBio] = useState("");
+  const [isDivorcee, setIsDivorcee] = useState("No");
   const [smoking, setSmoking] = useState("No");
   const [drinking, setDrinking] = useState("No");
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
   const [selectedGender, setSelectedGender] = useState<string[]>([]);
+  const [userDetails, setuserDetails] = useState<IProfileDetails>();
 
   const navigation = useNavigation<any>();
 
   const interests = ["Music", "Travel", "Sports", "Art"];
-  const genderOptions = ["Men", "Women", "Both"];
+  const genderOptions =
+    route?.params?.type === "dating"
+      ? ["Men", "Women", "Both"]
+      : ["Bride", "Groom"];
 
   const handleImageUpload = () => {
-    if (uploadedImages.length < 5) {
+    if (uploadedImages.length < imageNumber) {
       setUploadedImages([...uploadedImages, "image_uri_here"]); // Replace with actual image upload logic
     }
   };
@@ -45,6 +64,13 @@ const ProfileCreation = () => {
     selectedChips: string[],
     setChips: (chips: string[]) => void
   ) => {
+    if (
+      (chip === "Bride" || chip === "Groom") &&
+      route?.params?.type === "matrimony"
+    ) {
+      setChips([chip]);
+      return;
+    }
     setChips(
       selectedChips.includes(chip)
         ? selectedChips.filter((item) => item !== chip)
@@ -52,23 +78,65 @@ const ProfileCreation = () => {
     );
   };
 
+  const handleValueUpdate = (text: string, type: string) => {
+    setuserDetails((prev) => ({ ...prev, [type]: text }));
+  };
+
+  const handleButtonCLick = () => {
+    if (route.params.type === "matrimony") {
+      const payload = {
+        photo: uploadedImages,
+        city: userDetails?.city,
+        state: userDetails?.state,
+        salary: userDetails?.salary,
+        age: parseInt(userDetails?.age ?? ""),
+        subscribed: false,
+        subs_plan_name: "Basic plan",
+        subs_start_date: new Date(),
+        bio,
+        isDivorce: isDivorcee === "Yes",
+        pending_likes_id: "64e4b3a1f5e45b8d9b2c5f7d",
+        sent_likes_id: "64e4b3aaf5e45b8d9b2c5f7e",
+        cast: userDetails?.caste,
+        searching_for: selectedGender,
+        interests: selectedInterests,
+      };
+
+      console.log(payload);
+
+      createOwnMatrimonyProfile(payload);
+    } else {
+      navigation.navigate("/plans");
+    }
+  };
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.headerContainerStyle}>
-        <IconButton icon="arrow-left" style={styles.icon} onPress={() => {}} />
-        <Text style={styles.header}>Create Profile</Text>
+        <IconButton
+          icon="arrow-left"
+          style={styles.icon}
+          onPress={() => {
+            navigation.goBack();
+          }}
+        />
+        <Text style={styles.header}>
+          {route?.params?.type === "matrimony"
+            ? "Create matrimony profile "
+            : "Create dating profile"}
+        </Text>
       </View>
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.sectionHeader}>Profile Pictures</Text>
 
         <View style={styles.imagesGrid}>
-          {uploadedImages.length < 5 && (
-            <TouchableOpacity
-              style={styles.uploadButton}
-              onPress={handleImageUpload}
-            >
-              <IconButton icon="camera" size={40} style={styles.cameraIcon} />
-            </TouchableOpacity>
+          {uploadedImages.length < imageNumber && (
+            // <TouchableOpacity
+            //   style={styles.uploadButton}
+            //   onPress={handleImageUpload}
+            // >
+            //   <IconButton icon="camera" size={40} style={styles.cameraIcon} />
+            // </TouchableOpacity>
+            <UploadScreen />
           )}
           {uploadedImages.map((image, index) => (
             <View key={index} style={styles.imageContainer}>
@@ -101,6 +169,10 @@ const ProfileCreation = () => {
           outlineColor="#CCCCCC"
           placeholderTextColor={styleConstants.color.textGrayColor}
           placeholder="State"
+          value={userDetails?.state}
+          onChangeText={(text: string) => {
+            handleValueUpdate(text, "state");
+          }}
         />
         <TextInput
           theme={{
@@ -116,6 +188,10 @@ const ProfileCreation = () => {
           outlineColor="#CCCCCC"
           placeholderTextColor={styleConstants.color.textGrayColor}
           placeholder="City"
+          value={userDetails?.city}
+          onChangeText={(text: string) => {
+            handleValueUpdate(text, "city");
+          }}
         />
         <TextInput
           theme={{
@@ -132,6 +208,10 @@ const ProfileCreation = () => {
           outlineColor="#CCCCCC"
           placeholderTextColor={styleConstants.color.textGrayColor}
           placeholder="Pin"
+          value={userDetails?.pin}
+          onChangeText={(text: string) => {
+            handleValueUpdate(text, "pin");
+          }}
         />
         <TextInput
           theme={{
@@ -148,77 +228,188 @@ const ProfileCreation = () => {
           outlineColor="#CCCCCC"
           placeholderTextColor={styleConstants.color.textGrayColor}
           placeholder="Education"
+          value={userDetails?.education}
+          onChangeText={(text: string) => {
+            handleValueUpdate(text, "education");
+          }}
         />
 
+        {route?.params?.type === "matrimony" && (
+          <>
+            <TextInput
+              theme={{
+                roundness: 60, // Custom border radius
+                fonts: {
+                  regular: { fontFamily: styleConstants.fontFamily }, // Custom font family
+                },
+              }}
+              // label="Pin"
+              // value={drinking}
+              mode="outlined"
+              editable={true}
+              style={styles.input}
+              outlineColor="#CCCCCC"
+              placeholderTextColor={styleConstants.color.textGrayColor}
+              placeholder="Age"
+              value={userDetails?.age}
+              onChangeText={(text: string) => {
+                handleValueUpdate(text, "age");
+              }}
+            />
+            <TextInput
+              theme={{
+                roundness: 60, // Custom border radius
+                fonts: {
+                  regular: { fontFamily: styleConstants.fontFamily }, // Custom font family
+                },
+              }}
+              // label="Education"
+              // value={drinking}
+              mode="outlined"
+              editable={true}
+              style={styles.input}
+              outlineColor="#CCCCCC"
+              placeholderTextColor={styleConstants.color.textGrayColor}
+              placeholder="Caste"
+              value={userDetails?.caste}
+              onChangeText={(text: string) => {
+                handleValueUpdate(text, "caste");
+              }}
+            />
+
+            <TextInput
+              theme={{
+                roundness: 60, // Custom border radius
+                fonts: {
+                  regular: { fontFamily: styleConstants.fontFamily }, // Custom font family
+                },
+              }}
+              // label="Pin"
+              // value={drinking}
+              mode="outlined"
+              editable={true}
+              style={styles.input}
+              outlineColor="#CCCCCC"
+              placeholderTextColor={styleConstants.color.textGrayColor}
+              placeholder="Salary"
+              value={userDetails?.salary}
+              onChangeText={(text: string) => {
+                handleValueUpdate(text, "salary");
+              }}
+            />
+          </>
+        )}
+
         <View style={styles.habitContainer}>
-          <TextInput
-            theme={{
-              roundness: 60, // Custom border radius
-              fonts: {
-                regular: { fontFamily: styleConstants.fontFamily }, // Custom font family
-              },
-            }}
-            outlineColor="#CCCCCC"
-            // label="Smoking Habit"
-            value={"Smoker"}
-            textColor={styleConstants.color.textGrayColor}
-            mode="outlined"
-            editable={false}
-            style={styles.input}
-            right={
-              <TextInput.Icon
-                icon={() => (
-                  <TouchableOpacity>
-                    <Switch
-                      onChange={() =>
-                        setSmoking(smoking === "Yes" ? "No" : "Yes")
-                      }
-                      color={styleConstants.color.primaryColor}
-                      style={[
-                        styles.toggleButton,
-                        smoking === "Yes" && styles.toggleButtonActive,
-                      ]}
-                      value={smoking === "Yes"}
-                    />
-                  </TouchableOpacity>
-                )}
+          {route?.params?.type === "matrimony" && (
+            <TextInput
+              theme={{
+                roundness: 60, // Custom border radius
+                fonts: {
+                  regular: { fontFamily: styleConstants.fontFamily }, // Custom font family
+                },
+              }}
+              outlineColor="#CCCCCC"
+              // label="Smoking Habit"
+              value={"Is divorcee"}
+              textColor={styleConstants.color.textGrayColor}
+              mode="outlined"
+              editable={false}
+              style={styles.input}
+              right={
+                <TextInput.Icon
+                  icon={() => (
+                    <TouchableOpacity>
+                      <Switch
+                        onChange={() =>
+                          setIsDivorcee(isDivorcee === "Yes" ? "No" : "Yes")
+                        }
+                        color={styleConstants.color.primaryColor}
+                        style={[
+                          styles.toggleButton,
+                          isDivorcee === "Yes" && styles.toggleButtonActive,
+                        ]}
+                        value={isDivorcee === "Yes"}
+                      />
+                    </TouchableOpacity>
+                  )}
+                />
+              }
+            />
+          )}
+
+          {route?.params?.type === "dating" && (
+            <>
+              <TextInput
+                theme={{
+                  roundness: 60, // Custom border radius
+                  fonts: {
+                    regular: { fontFamily: styleConstants.fontFamily }, // Custom font family
+                  },
+                }}
+                outlineColor="#CCCCCC"
+                // label="Smoking Habit"
+                value={"Smoker"}
+                textColor={styleConstants.color.textGrayColor}
+                mode="outlined"
+                editable={false}
+                style={styles.input}
+                right={
+                  <TextInput.Icon
+                    icon={() => (
+                      <TouchableOpacity>
+                        <Switch
+                          onChange={() =>
+                            setSmoking(smoking === "Yes" ? "No" : "Yes")
+                          }
+                          color={styleConstants.color.primaryColor}
+                          style={[
+                            styles.toggleButton,
+                            smoking === "Yes" && styles.toggleButtonActive,
+                          ]}
+                          value={smoking === "Yes"}
+                        />
+                      </TouchableOpacity>
+                    )}
+                  />
+                }
               />
-            }
-          />
-          <TextInput
-            theme={{
-              roundness: 60, // Custom border radius
-              fonts: {
-                regular: { fontFamily: styleConstants.fontFamily }, // Custom font family
-              },
-            }}
-            // label="Drinking Habit"
-            outlineColor="#CCCCCC"
-            value={"Drinker"}
-            textColor={styleConstants.color.textGrayColor}
-            mode="outlined"
-            editable={false}
-            style={styles.input}
-            right={
-              <TextInput.Icon
-                icon={() => (
-                  <TouchableOpacity>
-                    <Switch
-                      color={styleConstants.color.primaryColor}
-                      onChange={() =>
-                        setDrinking(drinking === "Yes" ? "No" : "Yes")
-                      }
-                      style={[
-                        styles.toggleButton,
-                        drinking === "Yes" && styles.toggleButtonActive,
-                      ]}
-                      value={drinking === "Yes"}
-                    />
-                  </TouchableOpacity>
-                )}
+              <TextInput
+                theme={{
+                  roundness: 60, // Custom border radius
+                  fonts: {
+                    regular: { fontFamily: styleConstants.fontFamily }, // Custom font family
+                  },
+                }}
+                // label="Drinking Habit"
+                outlineColor="#CCCCCC"
+                value={"Drinker"}
+                textColor={styleConstants.color.textGrayColor}
+                mode="outlined"
+                editable={false}
+                style={styles.input}
+                right={
+                  <TextInput.Icon
+                    icon={() => (
+                      <TouchableOpacity>
+                        <Switch
+                          color={styleConstants.color.primaryColor}
+                          onChange={() =>
+                            setDrinking(drinking === "Yes" ? "No" : "Yes")
+                          }
+                          style={[
+                            styles.toggleButton,
+                            drinking === "Yes" && styles.toggleButtonActive,
+                          ]}
+                          value={drinking === "Yes"}
+                        />
+                      </TouchableOpacity>
+                    )}
+                  />
+                }
               />
-            }
-          />
+            </>
+          )}
         </View>
 
         <Text style={styles.sectionHeader}>Interest</Text>
@@ -287,9 +478,7 @@ const ProfileCreation = () => {
 
         <Button
           mode="contained"
-          onPress={() => {
-            navigation.navigate("plans");
-          }}
+          onPress={handleButtonCLick}
           style={styles.submitButton}
           contentStyle={styles.submitButtonContent}
           labelStyle={styles.submitButtonText}
@@ -360,6 +549,7 @@ const styles = StyleSheet.create({
   },
   input: {
     marginVertical: 8,
+    borderColor: styleConstants.color.primaryColor,
   },
   bioInput: {
     marginBottom: 16,

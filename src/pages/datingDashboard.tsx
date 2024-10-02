@@ -31,7 +31,6 @@ const DatingDashboard = () => {
 
   const handleSwipeLeft = () => {
     console.log("left swipe");
-    // You can implement your logic for left swipe here (e.g., reject the profile)
     if (currentIndex < profiles.length - 1) {
       setCurrentIndex(currentIndex + 1);
     }
@@ -39,16 +38,22 @@ const DatingDashboard = () => {
 
   const handleSwipeRight = () => {
     console.log("right swipe");
-    // You can implement your logic for right swipe here (e.g., like the profile)
-    if (currentIndex < profiles.length - 1) {
-      setCurrentIndex(currentIndex + 1);
+    if (currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1);
     }
+  };
+
+  const swipeConfig = {
+    velocityThreshold: 0.4, // Adjusted for faster swipes
+    directionalOffsetThreshold: 100, // Allows slight deviation while swiping
+    gestureIsClickThreshold: 10, // Tolerates slight movements as a click
   };
 
   return (
     <View style={{ height: "100%" }}>
       <DatingScreenLayout showHeader>
         <SwipeGesture
+          config={swipeConfig}
           style={{ flex: 1, width: "100%", height: "100%" }}
           onSwipeLeft={handleSwipeLeft}
           onSwipeRight={handleSwipeRight}
