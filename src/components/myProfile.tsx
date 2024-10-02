@@ -106,7 +106,7 @@ const ProfileCreation = ({ route }: { route: any }) => {
 
       createOwnMatrimonyProfile(payload);
     } else {
-      navigation.navigate("/plans");
+      navigation.navigate("datingplans");
     }
   };
   return (

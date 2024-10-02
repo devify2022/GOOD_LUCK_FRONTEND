@@ -45,7 +45,10 @@ export const authSlice = createSlice({
         isLoading: true,
       };
     },
-    authSuccess: (state: IAuthState, action: PayloadAction<any>) => {
+    authSuccess: (
+      state: IAuthState,
+      action: PayloadAction<Partial<IUserDetails>>
+    ) => {
       console.log(
         state.userDetails?.phoneNumber,
         action.payload.userID,
@@ -59,6 +62,8 @@ export const authSlice = createSlice({
           phoneNumber: state.userDetails?.phoneNumber,
           userID: action.payload.userID,
           accessToken: action.payload.accessToken,
+          matrimonyID: action.payload.matrimonyID,
+          datingID: action.payload.datingID,
         },
       };
     },
@@ -93,6 +98,19 @@ export const authSlice = createSlice({
         otpFlow: action.payload,
       };
     },
+
+    updateUserData: (
+      state: IAuthState,
+      action: PayloadAction<Partial<IUserDetails>>
+    ) => {
+      return {
+        ...state,
+        userDetails: {
+          ...state.userDetails,
+          ...action.payload,
+        },
+      };
+    },
   },
 });
 export const {
@@ -104,6 +122,7 @@ export const {
   otpFailed,
   setOtpFlow,
   logOut,
+  updateUserData,
 } = authSlice.actions;
 
 export const authReducer = authSlice.reducer;

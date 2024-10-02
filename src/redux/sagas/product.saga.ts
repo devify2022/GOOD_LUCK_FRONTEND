@@ -1,11 +1,6 @@
 import { ActionType } from "typesafe-actions";
 
-import {
-  addNewCategory,
-  addProduct,
-  getCategoryList,
-  getProductList,
-} from "../../services";
+import { addNewCategory, addProduct, getCategoryList } from "../../services";
 import { AxiosResponse } from "axios";
 import { call, put, takeLatest } from "redux-saga/effects";
 import {
@@ -23,7 +18,7 @@ import {
   productListSuccess,
 } from "../silces/product.slice";
 import { IProduct, category } from "../redux.constants";
-import { Alert } from "react-native";
+import { notifyMessage } from "../../hooks/useDivineShopServices";
 
 function* getCategoryListData(
   action: ActionType<typeof categoryListRequested>
@@ -73,11 +68,11 @@ function* getProductListData(
 ): Generator<any, void, any> {
   try {
     // API call logic here
-    const response: AxiosResponse = yield call(getProductList, {
-      categoryid: action.payload,
-    });
+    // const response: AxiosResponse = yield call(getProductList, {
+    //   categoryid: action.payload,
+    // });
 
-    const responseData = response?.data?.data;
+    const responseData: any[] = []; //response?data?.data;
     const data: IProduct[] = []; // Create a new array to store the transformed data.
     for (let i = 0; i < responseData.length; i++) {
       const obj: IProduct = {

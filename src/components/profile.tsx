@@ -12,8 +12,9 @@ import { styleConstants } from "../styles/constants";
 import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
-const MyProfile = () => {
+const MyProfile = ({ routes }: { routes: any }) => {
   const navigation = useNavigation<any>();
+  const type = routes?.params?.type;
 
   const openWhatsApp = () => {
     Linking.openURL("whatsapp://send?phone=1234567890");
@@ -32,31 +33,51 @@ const MyProfile = () => {
       </View>
       <ScrollView contentContainerStyle={styles.container}>
         {/* Profile Section */}
-        <View style={styles.profileSection}>
-          <View style={styles.imageContainer}>
-            <Image
-              source={require("../assets/girlOne.png")}
-              style={styles.profileImage}
-            />
 
-            {/* WhatsApp and Facebook buttons */}
-            <View style={styles.socialButtonsContainer}>
+        <View style={styles.profileSection}>
+          {type === "own" ? (
+            <>
               <IconButton
-                icon="whatsapp"
-                size={30}
-                iconColor="#25D366"
-                style={styles.socialButton}
-                onPress={openWhatsApp}
+                icon="pencil"
+                iconColor={styleConstants.color.primaryColor}
+                size={24}
+                onPress={() => {
+                  navigation.navigate("createdatingprofile");
+                }}
+                style={styles.editIcon}
               />
-              <IconButton
-                icon="facebook"
-                size={30}
-                iconColor="#3b5998"
-                style={styles.socialButton}
-                onPress={openFacebook}
+              <Avatar.Image
+                size={100}
+                source={require("../assets/girlOne.png")}
               />
+              <Text style={styles.nameAgeText}>John Doe, 30</Text>
+            </>
+          ) : (
+            <View style={styles.imageContainer}>
+              <Image
+                source={require("../assets/girlOne.png")}
+                style={styles.profileImage}
+              />
+
+              {/* WhatsApp and Facebook buttons */}
+              <View style={styles.socialButtonsContainer}>
+                <IconButton
+                  icon="whatsapp"
+                  size={30}
+                  iconColor="#25D366"
+                  style={styles.socialButton}
+                  onPress={openWhatsApp}
+                />
+                <IconButton
+                  icon="facebook"
+                  size={30}
+                  iconColor="#3b5998"
+                  style={styles.socialButton}
+                  onPress={openFacebook}
+                />
+              </View>
             </View>
-          </View>
+          )}
         </View>
 
         <Divider style={styles.divider} />
@@ -237,6 +258,13 @@ const styles = StyleSheet.create({
   bioText: {
     fontSize: 16,
     lineHeight: 24,
+    fontFamily: styleConstants.fontFamily,
+    color: styleConstants.color.textBlackColor,
+  },
+  editIcon: { position: "absolute", left: 60, bottom: 60, zIndex: 100 },
+  nameAgeText: {
+    fontSize: 22,
+    marginTop: 10,
     fontFamily: styleConstants.fontFamily,
     color: styleConstants.color.textBlackColor,
   },

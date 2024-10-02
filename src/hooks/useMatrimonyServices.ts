@@ -4,15 +4,18 @@ import {
   getMatrimonyProfileDetails,
   getMatrimonyProfiles,
 } from "../services";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux";
 import { notifyMessage } from "./useDivineShopServices";
 import { useNavigation } from "@react-navigation/native";
+import { updateUserData } from "../redux/silces/auth.silce";
 
 const useMatrimonyServices = () => {
   const userId = useSelector(
     (state: RootState) => state.auth.userDetails?.userID
   );
+
+  const dispatch = useDispatch();
 
   const navigation = useNavigation<any>();
   console.log(userId);
@@ -29,6 +32,8 @@ const useMatrimonyServices = () => {
       console.log(payload, userId);
       const response = await createMatrimonyProfile(payload, userId ?? "");
       console.log(response?.data?.data);
+      dispatch(updateUserData({ matrimonyID: response?.data?.data?._id }));
+
       notifyMessage(response?.data?.message);
       navigation.navigate("matrimonydashboard");
     } catch (error) {
@@ -37,14 +42,23 @@ const useMatrimonyServices = () => {
     }
   };
 
-  const getAllMatrimonyProfile = async () => {
+  const getMatrimonyProfile = async (
+    type: "all" | "randomFive" | "filterApplied"
+  ) => {
     try {
       const response = await getMatrimonyProfiles();
-      const data = response?.data?.data;
-      const formattedData = data?.map((item: any) => {
-        formatProfileDataForList(item);
-      });
-      setallMatrimonyProfiles(formattedData);
+      const data = response?.data?.data as Array<any>;
+      if (type === "all") {
+        const formattedData = data?.map((item: any) => {
+          formatProfileDataForList(item);
+        });
+        setallMatrimonyProfiles(formattedData);
+      } else if (type === "randomFive") {
+        const formattedData = data?.splice(5).map((item: any) => {
+          formatProfileDataForList(item);
+        });
+        setallMatrimonyProfiles(formattedData);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -71,7 +85,7 @@ const useMatrimonyServices = () => {
 
   return {
     createOwnMatrimonyProfile,
-    getAllMatrimonyProfile,
+    getMatrimonyProfile,
     allMatrimonyProfiles,
     setallMatrimonyProfiles,
     filteredMatrimonyProfile,

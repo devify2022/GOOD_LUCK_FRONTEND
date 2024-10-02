@@ -4,6 +4,8 @@ import DatingScreenLayout from "../components/datingLayOut";
 import DatingDashBoardScroll from "../components/scrollableProfiles";
 import SwipeGesture from "react-native-swipe-gestures";
 import useMatrimonyServices from "../hooks/useMatrimonyServices";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux";
 
 const profiles = [
   {
@@ -28,11 +30,17 @@ const profiles = [
 ];
 
 const DatingDashboard = ({ route }: { route: any }) => {
+  const datingSubscribed = useSelector(
+    (state: RootState) => state.auth.userDetails?.isDatingSubscribed
+  );
+
+  const matrimonySubscribed = useSelector(
+    (state: RootState) => state.auth.userDetails?.isMatrimonySubscribed
+  );
   const [currentIndex, setCurrentIndex] = useState(0);
   const [viewableProfile, setViewableProfile] = useState<any[]>([]);
   const { type } = route?.param;
-  const { getAllMatrimonyProfile, allMatrimonyProfiles } =
-    useMatrimonyServices();
+  const { getMatrimonyProfile, allMatrimonyProfiles } = useMatrimonyServices();
 
   const handleSwipeLeft = () => {
     //("left swipe");
@@ -54,7 +62,11 @@ const DatingDashboard = ({ route }: { route: any }) => {
     gestureIsClickThreshold: 10, // Tolerates slight movements as a click
   };
   useEffect(() => {
-    if (type === "matrimony") getAllMatrimonyProfile();
+    if (type === "matrimony") {
+      if (matrimonySubscribed) getMatrimonyProfile("all");
+      else getMatrimonyProfile("randomFive");
+    } else if (type === "dating") {
+    }
   }, []);
   useEffect(() => {
     if (type === "matrimony" && allMatrimonyProfiles.length > 0) {

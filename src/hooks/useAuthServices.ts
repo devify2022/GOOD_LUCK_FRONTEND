@@ -13,7 +13,7 @@ import { addNewUser, reSendOTP, sendOTP, verifyOTP } from "../services";
 import { clearCart } from "../redux/silces/cart.slice";
 import { clearOrder } from "../redux/silces/order.slice";
 import { clearProductS } from "../redux/silces/product.slice";
-import { Alert } from "react-native";
+
 import { RootState } from "../redux";
 import { notifyMessage } from "./useDivineShopServices";
 import { useNavigation } from "@react-navigation/native";
@@ -43,6 +43,8 @@ const useAuthService = () => {
           userID: data?.userId,
           matrimonyID: data?.matrimonyID,
           datingID: data?.datingID,
+          isDatingSubscribed: false,
+          isMatrimonySubscribed: false,
         })
       );
       notifyMessage(response?.data?.message);

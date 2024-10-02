@@ -16,6 +16,8 @@ export interface IUserDetails {
   matrimonyID?: string | null;
   datingProfileDetails?: any;
   matrimonyProfileDetails?: any;
+  isMatrimonySubscribed?: boolean;
+  isDatingSubscribed?: boolean;
 }
 
 export const IUserDetailsInitialState: IUserDetails = {

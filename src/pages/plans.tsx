@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { Button } from "react-native-paper";
 import { styleConstants } from "../styles/constants";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 interface Iplan {
   name: string;
@@ -39,8 +40,13 @@ const plans: Iplan[] = [
   },
 ];
 
-const PlanSelectionComponent = ({ navigation }: { navigation: any }) => {
+const PlanSelectionComponent = () => {
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
+
+  const navigation = useNavigation<any>();
+
+  const routes = useRoute();
+  console.log(routes);
 
   const handlePlanSelection = (planName: string) => {
     setSelectedPlan(planName);
@@ -118,7 +124,7 @@ const PlanSelectionComponent = ({ navigation }: { navigation: any }) => {
       <Button
         mode="contained"
         style={styles.submitButton}
-        onPress={() => navigation.navigate("datinghome")}
+        onPress={() => navigation.navigate("datingdashboard")}
       >
         Submit
       </Button>
