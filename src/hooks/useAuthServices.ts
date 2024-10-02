@@ -38,7 +38,12 @@ const useAuthService = () => {
       const data = response?.data?.data;
 
       dispatch(
-        authSuccess({ accessToken: data?.accessToken, userID: data?.userId })
+        authSuccess({
+          accessToken: data?.accessToken,
+          userID: data?.userId,
+          matrimonyID: data?.matrimonyID,
+          datingID: data?.datingID,
+        })
       );
       notifyMessage(response?.data?.message);
       navigation.navigate("home");

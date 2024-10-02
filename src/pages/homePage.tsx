@@ -11,6 +11,8 @@ import HomeScreenLayout from "../components/homeLayOut";
 import ScrollableMenu, { IMenuItem } from "../components/scrollableTopMenu";
 import Sound from "react-native-sound";
 import { homePageStyle as styles } from "../styles";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux";
 
 // Static import for the images
 const scrollableMenuItems = [
@@ -21,34 +23,39 @@ const scrollableMenuItems = [
   { id: 5, source: require("../assets/marketing.png") },
 ];
 
-const menuItems: IMenuItem[] = [
-  {
-    id: "1",
-    title: "Divine Shop",
-    icon: require("../assets/divineShop.png"),
-    route: "subproducts",
-  },
-  {
-    id: "2",
-    title: "Matrimony",
-    icon: require("../assets/matrimony.png"),
-    route: "creatematrimonyprofile",
-  },
-  {
-    id: "3",
-    title: "Panchang Calendar",
-    icon: require("../assets/panchangLogo.png"),
-    route: "subproducts",
-  },
-  {
-    id: "4",
-    title: "Love & Friends",
-    icon: require("../assets/friends.png"),
-    route: "createdatingprofile",
-  },
-];
-
 const HomeScreen = ({ navigation }: { navigation: any }) => {
+  const matrimonyID = useSelector(
+    (state: RootState) => state.auth.userDetails?.matrimonyID
+  );
+  const datingID = useSelector(
+    (state: RootState) => state.auth.userDetails?.datingID
+  );
+  const menuItems: IMenuItem[] = [
+    {
+      id: "1",
+      title: "Divine Shop",
+      icon: require("../assets/divineShop.png"),
+      route: "subproducts",
+    },
+    {
+      id: "2",
+      title: "Matrimony",
+      icon: require("../assets/matrimony.png"),
+      route: matrimonyID ? "matrimonydashboard" : "creatematrimonyprofile",
+    },
+    {
+      id: "3",
+      title: "Panchang Calendar",
+      icon: require("../assets/panchangLogo.png"),
+      route: "subproducts",
+    },
+    {
+      id: "4",
+      title: "Love & Friends",
+      icon: require("../assets/friends.png"),
+      route: datingID ? "datingdashboard" : "createdatingprofile",
+    },
+  ];
   useEffect(() => {
     playBellSound();
   }, [navigation]);

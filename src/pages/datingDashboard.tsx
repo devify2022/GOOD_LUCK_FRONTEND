@@ -1,8 +1,9 @@
 import { View } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DatingScreenLayout from "../components/datingLayOut";
 import DatingDashBoardScroll from "../components/scrollableProfiles";
 import SwipeGesture from "react-native-swipe-gestures";
+import useMatrimonyServices from "../hooks/useMatrimonyServices";
 
 const profiles = [
   {
@@ -26,18 +27,22 @@ const profiles = [
   // Add more profiles as needed
 ];
 
-const DatingDashboard = () => {
+const DatingDashboard = ({ route }: { route: any }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [viewableProfile, setViewableProfile] = useState<any[]>([]);
+  const { type } = route?.param;
+  const { getAllMatrimonyProfile, allMatrimonyProfiles } =
+    useMatrimonyServices();
 
   const handleSwipeLeft = () => {
-    console.log("left swipe");
-    if (currentIndex < profiles.length - 1) {
+    //("left swipe");
+    if (currentIndex < viewableProfile.length - 1) {
       setCurrentIndex(currentIndex + 1);
     }
   };
 
   const handleSwipeRight = () => {
-    console.log("right swipe");
+    //("right swipe");
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
     }
@@ -48,6 +53,14 @@ const DatingDashboard = () => {
     directionalOffsetThreshold: 100, // Allows slight deviation while swiping
     gestureIsClickThreshold: 10, // Tolerates slight movements as a click
   };
+  useEffect(() => {
+    if (type === "matrimony") getAllMatrimonyProfile();
+  }, []);
+  useEffect(() => {
+    if (type === "matrimony" && allMatrimonyProfiles.length > 0) {
+      setViewableProfile(allMatrimonyProfiles);
+    }
+  }, [allMatrimonyProfiles]);
 
   return (
     <View style={{ height: "100%" }}>
@@ -58,12 +71,12 @@ const DatingDashboard = () => {
           onSwipeLeft={handleSwipeLeft}
           onSwipeRight={handleSwipeRight}
         >
-          {profiles.length > 0 && (
+          {viewableProfile.length > 0 && (
             <DatingDashBoardScroll
-              userName={profiles[currentIndex].userName}
-              userAge={profiles[currentIndex].userAge}
-              userLocation={profiles[currentIndex].userLocation}
-              imageURL={profiles[currentIndex].imageURL}
+              userName={viewableProfile[currentIndex].userName}
+              userAge={viewableProfile[currentIndex].userAge}
+              userLocation={viewableProfile[currentIndex].userLocation}
+              imageURL={viewableProfile[currentIndex].imageURL}
             />
           )}
         </SwipeGesture>

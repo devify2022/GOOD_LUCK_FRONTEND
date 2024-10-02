@@ -12,6 +12,10 @@ export interface IUserDetails {
   fullname?: string;
   email?: string;
   phoneNumber?: string;
+  datingID?: string | null;
+  matrimonyID?: string | null;
+  datingProfileDetails?: any;
+  matrimonyProfileDetails?: any;
 }
 
 export const IUserDetailsInitialState: IUserDetails = {

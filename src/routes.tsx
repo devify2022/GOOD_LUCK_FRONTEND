@@ -74,7 +74,19 @@ const Routes = () => {
           <Stack.Screen
             name="datinghome"
             component={isAuthenticated ? DatingDashboard : SignInSignUp}
+            initialParams={{ type: "dating" }}
           />
+          <Stack.Screen
+            name="datingdashboard"
+            component={isAuthenticated ? DatingDashboard : SignInSignUp}
+            initialParams={{ type: "dating" }}
+          />
+          <Stack.Screen
+            name="matrimonydashboard"
+            component={isAuthenticated ? DatingDashboard : SignInSignUp}
+            initialParams={{ type: "dating" }}
+          />
+
           <Stack.Screen
             name="datingmessage"
             component={isAuthenticated ? DatingMessageList : SignInSignUp}
