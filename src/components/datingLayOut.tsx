@@ -3,7 +3,9 @@ import React from "react";
 import { View, StyleSheet, Text, Dimensions } from "react-native";
 import { Avatar, IconButton, Button } from "react-native-paper";
 import { homeLayOutStyle as styles } from "../styles";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux";
 
 const DatingScreenLayout: React.FC<{
   children: React.ReactNode;
@@ -11,8 +13,18 @@ const DatingScreenLayout: React.FC<{
   showHeader?: boolean;
   showFooter?: boolean;
 }> = ({ children, showHeader, showFooter }) => {
-  const { width, height } = Dimensions.get("window");
+  const { width } = Dimensions.get("window");
   const navigation = useNavigation<any>();
+
+  const currentFlow = useSelector(
+    (state: RootState) => state.auth.userDetails?.currentFlow
+  );
+  const handleProfileClick = () => {
+    if (currentFlow === "dating") navigation.navigate("datingprofile");
+    else if (currentFlow === "matrimony")
+      navigation.naviagte("matrimonyprofile");
+    else navigation.navigate("myprofile");
+  };
 
   return (
     <View style={styles.container}>
@@ -33,40 +45,41 @@ const DatingScreenLayout: React.FC<{
       <View style={styles.content}>{children}</View>
 
       {/* Footer */}
-      { !showFooter && <View style={styles.footer}>
-        <View style={styles.footerButton}>
-          <IconButton
-            icon="home"
-            size={width * 0.08}
-            iconColor="white"
-            onPress={() => {
-              navigation.navigate("datinghome");
-            }}
-          />
-          {/* <Text style={styles.footerButtonText}>Land</Text> */}
-        </View>
-        <View style={styles.footerButton}>
-          <IconButton
-            icon="message"
-            size={width * 0.08}
-            iconColor="white"
-            onPress={() => {
-              navigation.navigate("datingmessage");
-            }}
-          />
-        </View>
+      {!showFooter && (
+        <View style={styles.footer}>
+          <View style={styles.footerButton}>
+            <IconButton
+              icon="home"
+              size={width * 0.08}
+              iconColor="white"
+              onPress={() => {
+                navigation.navigate("datinghome");
+              }}
+            />
+            {/* <Text style={styles.footerButtonText}>Land</Text> */}
+          </View>
+          {currentFlow === "dating" && (
+            <View style={styles.footerButton}>
+              <IconButton
+                icon="message"
+                size={width * 0.08}
+                iconColor="white"
+                onPress={() => {
+                  navigation.navigate("datingmessage");
+                }}
+              />
+            </View>
+          )}
 
-        <View style={styles.footerButton}>
-          <IconButton
-            icon="account"
-            size={width * 0.08}
-            iconColor="white"
-            onPress={() => {
-              navigation.navigate("myprofile");
-            }}
-          />
-        </View>
-        {/* <View style={styles.homeIconContainer}>
+          <View style={styles.footerButton}>
+            <IconButton
+              icon="account"
+              size={width * 0.08}
+              iconColor="white"
+              onPress={handleProfileClick}
+            />
+          </View>
+          {/* <View style={styles.homeIconContainer}>
           <Button
             icon="home"
             labelStyle={styles.homeIconLabel}
@@ -76,7 +89,8 @@ const DatingScreenLayout: React.FC<{
             {""}
           </Button>
         </View> */}
-      </View>}
+        </View>
+      )}
     </View>
   );
 };

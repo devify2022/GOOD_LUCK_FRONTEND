@@ -59,6 +59,7 @@ export const authSlice = createSlice({
         isAuthenticated: true,
         isLoading: false,
         userDetails: {
+          ...state.userDetails,
           phoneNumber: state.userDetails?.phoneNumber,
           userID: action.payload.userID,
           accessToken: action.payload.accessToken,
@@ -111,6 +112,19 @@ export const authSlice = createSlice({
         },
       };
     },
+
+    updateProfileType: (
+      state: IAuthState,
+      action: PayloadAction<"own" | "matrimony" | "dating">
+    ) => {
+      return {
+        ...state,
+        userDetails: {
+          ...state.userDetails,
+          currentFlow: action.payload,
+        },
+      };
+    },
   },
 });
 export const {
@@ -123,6 +137,7 @@ export const {
   setOtpFlow,
   logOut,
   updateUserData,
+  updateProfileType,
 } = authSlice.actions;
 
 export const authReducer = authSlice.reducer;

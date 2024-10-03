@@ -18,6 +18,8 @@ import { styleConstants } from "../styles/constants"; // Assuming styleConstants
 import { useNavigation } from "@react-navigation/native";
 import UploadScreen from "./imageUploader";
 import useMatrimonyServices from "../hooks/useMatrimonyServices";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux";
 interface IProfileDetails {
   state?: string;
   city?: string;
@@ -30,6 +32,9 @@ interface IProfileDetails {
 
 const ProfileCreation = ({ route }: { route: any }) => {
   console.log(route.params);
+  const currentFlow = useSelector(
+    (state: RootState) => state.auth.userDetails?.currentFlow
+  );
   const { createOwnMatrimonyProfile } = useMatrimonyServices();
   const imageNumber = route?.params?.type === "dating" ? 5 : 1;
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);

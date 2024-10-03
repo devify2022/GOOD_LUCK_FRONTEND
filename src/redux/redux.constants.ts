@@ -18,6 +18,7 @@ export interface IUserDetails {
   matrimonyProfileDetails?: any;
   isMatrimonySubscribed?: boolean;
   isDatingSubscribed?: boolean;
+  currentFlow?: "own" | "matrimony" | "dating";
 }
 
 export const IUserDetailsInitialState: IUserDetails = {
@@ -27,6 +28,7 @@ export const IUserDetailsInitialState: IUserDetails = {
   fullname: "",
   email: "",
   phoneNumber: "",
+  currentFlow: "own",
 };
 
 export const IAuthStateInitialState: IAuthState = {

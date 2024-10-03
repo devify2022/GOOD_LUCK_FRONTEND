@@ -39,7 +39,9 @@ const DatingDashboard = ({ route }: { route: any }) => {
   );
   const [currentIndex, setCurrentIndex] = useState(0);
   const [viewableProfile, setViewableProfile] = useState<any[]>([]);
-  const { type } = route?.param;
+  console.log(route?.params?.type, "getting route");
+  const type = route?.params?.type;
+
   const { getMatrimonyProfile, allMatrimonyProfiles } = useMatrimonyServices();
 
   const handleSwipeLeft = () => {
