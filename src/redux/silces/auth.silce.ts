@@ -125,6 +125,13 @@ export const authSlice = createSlice({
         },
       };
     },
+
+    updateActiveId: (state: IAuthState, action: PayloadAction<string>) => {
+      return {
+        ...state,
+        currentProfileId: action.payload,
+      };
+    },
   },
 });
 export const {
@@ -138,6 +145,7 @@ export const {
   logOut,
   updateUserData,
   updateProfileType,
+  updateActiveId,
 } = authSlice.actions;
 
 export const authReducer = authSlice.reducer;

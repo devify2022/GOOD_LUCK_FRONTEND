@@ -9,47 +9,54 @@ import {
   Dimensions,
   Pressable,
 } from "react-native";
-import { IconButton } from "react-native-paper";
+import { ActivityIndicator, IconButton } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+
 import { styleConstants } from "../styles/constants";
 import { notifyMessage } from "../hooks/useDivineShopServices";
 import { useNavigation } from "@react-navigation/native";
+import { useDispatch } from "react-redux";
+import { updateActiveId } from "../redux/silces/auth.silce";
 
 const { width, height } = Dimensions.get("window");
 
 const DatingDashBoardScroll = (props: {
   userName: string;
+  userID: string;
   userAge: number;
   userLocation: string;
-  imageURL: string;
+  imageURL: string[];
+  interests: string[];
+  gender: string;
 }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const images = [
-    require("../assets/Matches_Image.png"),
-    require("../assets/girlOne.png"),
-    require("../assets/marketing.png"),
-    require("../assets/Matches_Image.png"),
-    require("../assets/girlOne.png"),
-  ]; // Array of static images
 
-  const { userName, userAge, userLocation, imageURL } = props;
-  const lookingFor = "Men";
-  const interests = ["music", "travel"];
+  const dispatch = useDispatch();
+
+  const {
+    userName,
+    userAge,
+    userLocation,
+    imageURL,
+    interests,
+    gender,
+    userID,
+  } = props;
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % imageURL.length);
     }, 5000); // Change image every 5 seconds
 
     return () => clearInterval(interval);
-  }, []);
+  }, [currentImageIndex]);
 
   const progressBarWidth = new Animated.Value(0);
 
   const handleClick = () => {
     // Go to next image if available, else go to first
     setCurrentImageIndex((prevIndex) =>
-      prevIndex === images.length - 1 ? 0 : prevIndex + 1
+      prevIndex === imageURL.length - 1 ? 0 : prevIndex + 1
     );
   };
 
@@ -65,78 +72,91 @@ const DatingDashBoardScroll = (props: {
 
   return (
     <View style={styles.container}>
-      <Pressable style={styles.container} onPress={handleClick}>
-        {/* Handle tap event */}
-        <ImageBackground
-          source={images[currentImageIndex]} // Use current image based on index
-          style={styles.backgroundImage}
-          imageStyle={styles.imageStyle}
-        >
-          <View style={styles.overlay}>
-            <View style={styles.topContainer}>
-              <TouchableOpacity style={styles.backButton}>
-                <Icon name="chevron-left" size={30} color="white" />
-              </TouchableOpacity>
+      {imageURL[currentImageIndex] ? (
+        <Pressable style={styles.container} onPress={handleClick}>
+          {/* Handle tap event */}
 
-              <View style={styles.progressContainer}>
-                {images.map((_, index) => (
-                  <View key={index} style={styles.progressLine}>
-                    <Animated.View
-                      style={[
-                        styles.progressFill,
-                        index === currentImageIndex
-                          ? { width: progressBarWidth }
-                          : {},
-                      ]}
-                    />
-                  </View>
-                ))}
+          <ImageBackground
+            source={{ uri: imageURL[currentImageIndex] }} // Use current image based on index
+            style={styles.backgroundImage}
+            imageStyle={styles.imageStyle}
+          >
+            <View style={styles.overlay}>
+              <View style={styles.topContainer}>
+                <TouchableOpacity style={styles.backButton}>
+                  <Icon name="arrow-left" size={30} color="white" />
+                </TouchableOpacity>
+
+                <View style={styles.progressContainer}>
+                  {imageURL.map((_, index) => (
+                    <View key={index} style={styles.progressLine}>
+                      <Animated.View
+                        style={[
+                          styles.progressFill,
+                          index === currentImageIndex
+                            ? { width: progressBarWidth }
+                            : {},
+                        ]}
+                      />
+                    </View>
+                  ))}
+                </View>
+
+                <TouchableOpacity style={styles.filterButton}>
+                  <Icon name="filter" size={30} color="white" />
+                </TouchableOpacity>
               </View>
 
-              <TouchableOpacity style={styles.filterButton}>
-                <Icon name="filter" size={30} color="white" />
-              </TouchableOpacity>
+              <View style={styles.bottomContainer}>
+                <Text style={styles.userInfo}>
+                  {userName}, {userAge}
+                </Text>
+                <View style={styles.interestContainer}>
+                  {interests.map((item: any) => (
+                    <Text key={item} style={styles.interest}>
+                      {item}
+                    </Text>
+                  ))}
+                </View>
+                <View style={styles.buttonContainer}>
+                  <IconButton
+                    icon="close-circle-outline"
+                    iconColor={styleConstants.color.textWhiteColor}
+                    mode="contained"
+                    style={styles.actionButton}
+                    size={50}
+                  />
+                  <IconButton
+                    iconColor={styleConstants.color.textWhiteColor}
+                    icon="heart-outline"
+                    mode="contained"
+                    style={styles.actionButton}
+                    size={45}
+                  />
+                  <IconButton
+                    icon="arrow-up"
+                    iconColor={styleConstants.color.textWhiteColor}
+                    mode="contained"
+                    style={styles.actionButton}
+                    size={45}
+                    onPress={() => {
+                      dispatch(updateActiveId(userID));
+                      console.log(userID, "userid");
+                      navigation.navigate("matrimonyprofile");
+                    }}
+                  />
+                </View>
+              </View>
             </View>
-
-            <View style={styles.bottomContainer}>
-              <Text style={styles.userInfo}>
-                {userName}, {userAge}
-              </Text>
-              <View style={styles.interestContainer}>
-                <Text style={styles.interest}>{lookingFor}</Text>
-                <Text style={styles.interest}>{interests[0]}</Text>
-                <Text style={styles.interest}>{interests[1]}</Text>
-              </View>
-              <View style={styles.buttonContainer}>
-                <IconButton
-                  icon="close-circle-outline"
-                  iconColor={styleConstants.color.textWhiteColor}
-                  mode="contained"
-                  style={styles.actionButton}
-                  size={50}
-                />
-                <IconButton
-                  iconColor={styleConstants.color.textWhiteColor}
-                  icon="heart-outline"
-                  mode="contained"
-                  style={styles.actionButton}
-                  size={45}
-                />
-                <IconButton
-                  icon="arrow-up"
-                  iconColor={styleConstants.color.textWhiteColor}
-                  mode="contained"
-                  style={styles.actionButton}
-                  size={45}
-                  onPress={() => {
-                    navigation.navigate("create");
-                  }}
-                />
-              </View>
-            </View>
-          </View>
-        </ImageBackground>
-      </Pressable>
+          </ImageBackground>
+        </Pressable>
+      ) : (
+        <ActivityIndicator
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          size={"large"}
+          color={styleConstants.color.primaryColor}
+        />
+      )}
     </View>
   );
 };
@@ -155,7 +175,7 @@ const styles = StyleSheet.create({
   },
   imageStyle: {
     resizeMode: "cover",
-    opacity: 1,
+    opacity: 0.8,
   },
   overlay: {
     flex: 1,
@@ -198,6 +218,7 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontFamily: styleConstants.fontFamily,
     alignSelf: "flex-start",
+    fontWeight: "600",
   },
   interestContainer: {
     flexDirection: "row",

@@ -3,6 +3,7 @@ export interface IAuthState {
   isLoading: boolean;
   isAuthenticated: boolean;
   userDetails: IUserDetails | null;
+  currentProfileId?: string | null;
 }
 
 export interface IUserDetails {

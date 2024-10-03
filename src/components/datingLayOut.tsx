@@ -53,7 +53,10 @@ const DatingScreenLayout: React.FC<{
               size={width * 0.08}
               iconColor="white"
               onPress={() => {
-                navigation.navigate("datinghome");
+                if (currentFlow === "dating")
+                  navigation.navigate("datingdashboard");
+                else if (currentFlow === "matrimony")
+                  navigation.naviagte("matrimonydashboard");
               }}
             />
             {/* <Text style={styles.footerButtonText}>Land</Text> */}

@@ -6,28 +6,9 @@ import SwipeGesture from "react-native-swipe-gestures";
 import useMatrimonyServices from "../hooks/useMatrimonyServices";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux";
-
-const profiles = [
-  {
-    userName: "Jane Austen",
-    userAge: 25,
-    userLocation: "New York, USA",
-    imageURL: "https://example.com/image1.jpg",
-  },
-  {
-    userName: "Mark Twain",
-    userAge: 30,
-    userLocation: "San Francisco, USA",
-    imageURL: "https://example.com/image2.jpg",
-  },
-  {
-    userName: "Virginia Woolf",
-    userAge: 28,
-    userLocation: "London, UK",
-    imageURL: "https://example.com/image3.jpg",
-  },
-  // Add more profiles as needed
-];
+import { ActivityIndicator } from "react-native";
+import { styleConstants } from "../styles/constants";
+import { all } from "axios";
 
 const DatingDashboard = ({ route }: { route: any }) => {
   const datingSubscribed = useSelector(
@@ -45,7 +26,8 @@ const DatingDashboard = ({ route }: { route: any }) => {
   const { getMatrimonyProfile, allMatrimonyProfiles } = useMatrimonyServices();
 
   const handleSwipeLeft = () => {
-    //("left swipe");
+    //("left swipe");viewableProfile[currentIndex]
+    console.log(viewableProfile[currentIndex]);
     if (currentIndex < viewableProfile.length - 1) {
       setCurrentIndex(currentIndex + 1);
     }
@@ -73,27 +55,39 @@ const DatingDashboard = ({ route }: { route: any }) => {
   useEffect(() => {
     if (type === "matrimony" && allMatrimonyProfiles.length > 0) {
       setViewableProfile(allMatrimonyProfiles);
+      console.log(allMatrimonyProfiles, "getting profiles");
     }
   }, [allMatrimonyProfiles]);
 
   return (
     <View style={{ height: "100%" }}>
       <DatingScreenLayout showHeader>
-        <SwipeGesture
-          config={swipeConfig}
-          style={{ flex: 1, width: "100%", height: "100%" }}
-          onSwipeLeft={handleSwipeLeft}
-          onSwipeRight={handleSwipeRight}
-        >
-          {viewableProfile.length > 0 && (
-            <DatingDashBoardScroll
-              userName={viewableProfile[currentIndex].userName}
-              userAge={viewableProfile[currentIndex].userAge}
-              userLocation={viewableProfile[currentIndex].userLocation}
-              imageURL={viewableProfile[currentIndex].imageURL}
-            />
-          )}
-        </SwipeGesture>
+        {allMatrimonyProfiles.length > 0 ? (
+          <SwipeGesture
+            config={swipeConfig}
+            style={{ flex: 1, width: "100%", height: "100%" }}
+            onSwipeLeft={handleSwipeLeft}
+            onSwipeRight={handleSwipeRight}
+          >
+            {viewableProfile.length > 0 && (
+              <DatingDashBoardScroll
+                userID={viewableProfile[currentIndex]?.userID}
+                userName={viewableProfile[currentIndex]?.userName}
+                userAge={viewableProfile[currentIndex]?.userAge}
+                userLocation={viewableProfile[currentIndex]?.userLocation}
+                imageURL={viewableProfile[currentIndex]?.imageURL}
+                interests={viewableProfile[currentIndex]?.interests}
+                gender={viewableProfile[currentIndex]?.gender}
+              />
+            )}
+          </SwipeGesture>
+        ) : (
+          <ActivityIndicator
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+            size={"large"}
+            color={styleConstants.color.primaryColor}
+          />
+        )}
       </DatingScreenLayout>
     </View>
   );

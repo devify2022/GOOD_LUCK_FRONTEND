@@ -16,9 +16,8 @@ const useMatrimonyServices = () => {
   );
 
   const dispatch = useDispatch();
-
   const navigation = useNavigation<any>();
-  console.log(userId);
+
   const [allMatrimonyProfiles, setallMatrimonyProfiles] = useState<any[]>([]);
   const [filteredMatrimonyProfile, setfilteredMatrimonyProfile] = useState<
     any[]
@@ -48,16 +47,19 @@ const useMatrimonyServices = () => {
     try {
       const response = await getMatrimonyProfiles();
       const data = response?.data?.data as Array<any>;
+      console.log(data, "api response");
+
       if (type === "all") {
-        const formattedData = data?.map((item: any) => {
-          formatProfileDataForList(item);
-        });
+        const formattedData = data?.map((item: any) =>
+          formatProfileDataForList(item)
+        );
+
         setallMatrimonyProfiles(formattedData);
       } else if (type === "randomFive") {
-        const formattedData = data?.splice(5).map((item: any) => {
-          formatProfileDataForList(item);
-        });
-        setallMatrimonyProfiles(formattedData);
+        const randomData = data
+          ?.slice(0, 5)
+          .map((item: any) => formatProfileDataForList(item));
+        setallMatrimonyProfiles(randomData);
       }
     } catch (error) {
       console.error(error);
@@ -75,11 +77,13 @@ const useMatrimonyServices = () => {
 
   const formatProfileDataForList = (profileData: any) => {
     return {
-      userID: profileData._id,
-      userName: profileData.Fname + " " + profileData.Lname,
-      userAddress: profileData.city + ", " + profileData.state,
+      userID: profileData.userId,
+      userName: `${profileData.Fname} ${profileData.Lname}`,
+      userAddress: `${profileData.city}, ${profileData.state}`,
       userAge: profileData?.age,
       imageURL: profileData?.photo,
+      interests: profileData?.interests,
+      gender: profileData?.gender,
     };
   };
 

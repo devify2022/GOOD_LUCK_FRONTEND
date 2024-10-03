@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
@@ -11,10 +11,16 @@ import { Avatar, IconButton, Divider } from "react-native-paper";
 import { styleConstants } from "../styles/constants";
 import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import useMatrimonyServices from "../hooks/useMatrimonyServices";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux";
 
 const MyProfile = ({ routes }: { routes: any }) => {
   const navigation = useNavigation<any>();
   const type = routes?.params?.type;
+  const { getProfileDetails, profileDetails } = useMatrimonyServices();
+
+  const id = useSelector((state: RootState) => state.auth.currentProfileId);
 
   const openWhatsApp = () => {
     Linking.openURL("whatsapp://send?phone=1234567890");
@@ -23,12 +29,19 @@ const MyProfile = ({ routes }: { routes: any }) => {
   const openFacebook = () => {
     Linking.openURL("https://www.facebook.com/johndoe");
   };
+  useEffect(() => {
+    getProfileDetails(id ?? "");
+  }, [id, type]);
 
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.titleContainer}>
         <Icon name="arrow-back" size={24} color="black" style={{ top: -2 }} />
-        <Text style={styles.title}>Your Profile</Text>
+        <Text style={styles.title}>
+          {type === "own"
+            ? "Your profile"
+            : profileDetails?.userName ?? "No Name"}
+        </Text>
         <View></View>
       </View>
       <ScrollView contentContainerStyle={styles.container}>

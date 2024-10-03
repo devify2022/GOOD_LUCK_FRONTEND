@@ -21,6 +21,7 @@ import useMatrimonyServices from "../hooks/useMatrimonyServices";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux";
 interface IProfileDetails {
+  name?: string;
   state?: string;
   city?: string;
   pin?: string;
@@ -48,7 +49,18 @@ const ProfileCreation = ({ route }: { route: any }) => {
 
   const navigation = useNavigation<any>();
 
-  const interests = ["Music", "Travel", "Sports", "Art"];
+  const interests = [
+    "Badminton",
+    "Football",
+    "Cricket",
+    "MakeUp",
+    "Dance",
+    "Yoga",
+    "Meditation",
+    "Swimming",
+    "Movie",
+    "Party",
+  ];
   const genderOptions =
     route?.params?.type === "dating"
       ? ["Men", "Women", "Both"]
@@ -90,6 +102,8 @@ const ProfileCreation = ({ route }: { route: any }) => {
   const handleButtonCLick = () => {
     if (route.params.type === "matrimony") {
       const payload = {
+        Fname: userDetails?.name?.split(" ")[0],
+        Lname: userDetails?.name?.split(" ")[1] ?? "",
         photo: uploadedImages,
         city: userDetails?.city,
         state: userDetails?.state,
@@ -97,14 +111,15 @@ const ProfileCreation = ({ route }: { route: any }) => {
         age: parseInt(userDetails?.age ?? ""),
         subscribed: false,
         subs_plan_name: "Basic plan",
-        subs_start_date: new Date(),
+        subs_start_date: new Date().toISOString(),
         bio,
         isDivorce: isDivorcee === "Yes",
         pending_likes_id: "64e4b3a1f5e45b8d9b2c5f7d",
         sent_likes_id: "64e4b3aaf5e45b8d9b2c5f7e",
         cast: userDetails?.caste,
-        searching_for: selectedGender,
-        interests: selectedInterests,
+        searching_for: selectedGender[0].toLowerCase(),
+        gender: selectedGender[0].toLowerCase() === "bride" ? "Male" : "Female",
+        interests: selectedInterests[0].toLowerCase(),
       };
 
       console.log(payload);
@@ -167,6 +182,25 @@ const ProfileCreation = ({ route }: { route: any }) => {
               regular: { fontFamily: styleConstants.fontFamily }, // Custom font family
             },
           }}
+          // label="City"
+          // value={drinking}
+          mode="outlined"
+          style={styles.input}
+          outlineColor="#CCCCCC"
+          placeholderTextColor={styleConstants.color.textGrayColor}
+          placeholder="Name"
+          value={userDetails?.name}
+          onChangeText={(text: string) => {
+            handleValueUpdate(text, "name");
+          }}
+        />
+        <TextInput
+          theme={{
+            roundness: 60, // Custom border radius
+            fonts: {
+              regular: { fontFamily: styleConstants.fontFamily }, // Custom font family
+            },
+          }}
           // label="State"
           // value={drinking}
           mode="outlined"
@@ -179,6 +213,7 @@ const ProfileCreation = ({ route }: { route: any }) => {
             handleValueUpdate(text, "state");
           }}
         />
+
         <TextInput
           theme={{
             roundness: 60, // Custom border radius
