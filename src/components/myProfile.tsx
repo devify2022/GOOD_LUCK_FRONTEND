@@ -29,6 +29,8 @@ interface IProfileDetails {
   age?: string;
   caste?: string;
   salary?: string;
+  whatsappno?: string;
+  fblink?: string;
 }
 
 const ProfileCreation = ({ route }: { route: any }) => {
@@ -335,6 +337,46 @@ const ProfileCreation = ({ route }: { route: any }) => {
               value={userDetails?.salary}
               onChangeText={(text: string) => {
                 handleValueUpdate(text, "salary");
+              }}
+            />
+            <TextInput
+              theme={{
+                roundness: 60, // Custom border radius
+                fonts: {
+                  regular: { fontFamily: styleConstants.fontFamily }, // Custom font family
+                },
+              }}
+              // label="Pin"
+              // value={drinking}
+              mode="outlined"
+              editable={true}
+              style={styles.input}
+              outlineColor="#CCCCCC"
+              placeholderTextColor={styleConstants.color.textGrayColor}
+              placeholder="Whatsapp number"
+              value={userDetails?.whatsappno}
+              onChangeText={(text: string) => {
+                handleValueUpdate(text, "whatsappno");
+              }}
+            />
+            <TextInput
+              theme={{
+                roundness: 60, // Custom border radius
+                fonts: {
+                  regular: { fontFamily: styleConstants.fontFamily }, // Custom font family
+                },
+              }}
+              // label="Pin"
+              // value={drinking}
+              mode="outlined"
+              editable={true}
+              style={styles.input}
+              outlineColor="#CCCCCC"
+              placeholderTextColor={styleConstants.color.textGrayColor}
+              placeholder="Facebook link"
+              value={userDetails?.fblink}
+              onChangeText={(text: string) => {
+                handleValueUpdate(text, "fblink");
               }}
             />
           </>

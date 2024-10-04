@@ -30,7 +30,9 @@ const MyProfile = ({ routes }: { routes: any }) => {
     Linking.openURL("https://www.facebook.com/johndoe");
   };
   useEffect(() => {
-    getProfileDetails(id ?? "");
+    if (id && (type === "matrimony" || type === "dating"))
+      getProfileDetails(id ?? "");
+    else getProfileDetails();
   }, [id, type]);
 
   return (

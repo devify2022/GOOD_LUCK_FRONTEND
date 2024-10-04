@@ -28,6 +28,8 @@ const DatingDashBoardScroll = (props: {
   imageURL: string[];
   interests: string[];
   gender: string;
+  handleRightSwipe: any;
+  handleLeftSwipe: any;
 }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
@@ -41,6 +43,8 @@ const DatingDashBoardScroll = (props: {
     interests,
     gender,
     userID,
+    handleLeftSwipe,
+    handleRightSwipe,
   } = props;
 
   useEffect(() => {
@@ -125,6 +129,9 @@ const DatingDashBoardScroll = (props: {
                     mode="contained"
                     style={styles.actionButton}
                     size={50}
+                    onPress={() => {
+                      handleLeftSwipe();
+                    }}
                   />
                   <IconButton
                     iconColor={styleConstants.color.textWhiteColor}
@@ -132,6 +139,9 @@ const DatingDashBoardScroll = (props: {
                     mode="contained"
                     style={styles.actionButton}
                     size={45}
+                    onPress={() => {
+                      handleLeftSwipe();
+                    }}
                   />
                   <IconButton
                     icon="arrow-up"

@@ -11,6 +11,7 @@ import {
 import { Button } from "react-native-paper";
 import { styleConstants } from "../styles/constants";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import useMatrimonyServices from "../hooks/useMatrimonyServices";
 
 interface Iplan {
   name: string;
@@ -39,19 +40,31 @@ const plans: Iplan[] = [
     isPopular: false,
   },
 ];
-
+interface RouteParams {
+  type: string | undefined; // Define the properties that you expect in your route params
+}
 const PlanSelectionComponent = () => {
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
+
+  const { updateProfileDetails } = useMatrimonyServices();
 
   const navigation = useNavigation<any>();
 
   const routes = useRoute();
-  console.log(routes);
+  const routeParams = routes.params as RouteParams;
 
   const handlePlanSelection = (planName: string) => {
     setSelectedPlan(planName);
   };
-
+  const handleButtonClick = () => {
+    if (routeParams?.type && routeParams?.type === "matrimony") {
+      updateProfileDetails({
+        subscribed: true,
+        subs_plan_name: "Basic plan",
+        subs_start_date: new Date().toISOString(),
+      });
+    }
+  };
   const renderPlans = ({ item }: { item: Iplan }) => (
     <View>
       <TouchableOpacity
@@ -124,7 +137,7 @@ const PlanSelectionComponent = () => {
       <Button
         mode="contained"
         style={styles.submitButton}
-        onPress={() => navigation.navigate("datingdashboard")}
+        onPress={handleButtonClick}
       >
         Submit
       </Button>

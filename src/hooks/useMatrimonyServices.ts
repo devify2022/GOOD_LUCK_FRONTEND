@@ -3,6 +3,7 @@ import {
   createMatrimonyProfile,
   getMatrimonyProfileDetails,
   getMatrimonyProfiles,
+  updateMatrimonyProfile,
 } from "../services";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux";
@@ -13,6 +14,9 @@ import { updateUserData } from "../redux/silces/auth.silce";
 const useMatrimonyServices = () => {
   const userId = useSelector(
     (state: RootState) => state.auth.userDetails?.userID
+  );
+  const matrimonyId = useSelector(
+    (state: RootState) => state.auth.userDetails?.matrimonyID
   );
 
   const dispatch = useDispatch();
@@ -66,18 +70,35 @@ const useMatrimonyServices = () => {
     }
   };
 
-  const getProfileDetails = async (userId: string) => {
+  const getProfileDetails = async (profileId?: string) => {
     try {
-      const response = await getMatrimonyProfileDetails(userId);
+      const response = await getMatrimonyProfileDetails(
+        profileId ?? matrimonyId ?? ""
+      );
       setprofileDetails(response?.data?.data);
     } catch (error) {
       console.error(error);
     }
   };
 
+  const updateProfileDetails = async (payload: any) => {
+    try {
+      console.log(payload, "geting payload");
+      const response = await updateMatrimonyProfile(payload, matrimonyId ?? "");
+
+      setprofileDetails(response?.data?.data);
+      console.log("updated profile");
+      navigation.navigate("matrimonydashboard");
+      notifyMessage(response?.data?.data?.message);
+    } catch (error) {
+      console.error(error);
+      notifyMessage("Couldn't update user details");
+    }
+  };
+
   const formatProfileDataForList = (profileData: any) => {
     return {
-      userID: profileData.userId,
+      userID: profileData._id,
       userName: `${profileData.Fname} ${profileData.Lname}`,
       userAddress: `${profileData.city}, ${profileData.state}`,
       userAge: profileData?.age,
@@ -99,6 +120,7 @@ const useMatrimonyServices = () => {
     getProfileDetails,
     profileDetails,
     setprofileDetails,
+    updateProfileDetails,
   };
 };
 

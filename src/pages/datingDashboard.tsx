@@ -9,6 +9,7 @@ import { RootState } from "../redux";
 import { ActivityIndicator } from "react-native";
 import { styleConstants } from "../styles/constants";
 import { all } from "axios";
+import { useNavigation } from "@react-navigation/native";
 
 const DatingDashboard = ({ route }: { route: any }) => {
   const datingSubscribed = useSelector(
@@ -22,7 +23,7 @@ const DatingDashboard = ({ route }: { route: any }) => {
   const [viewableProfile, setViewableProfile] = useState<any[]>([]);
   console.log(route?.params?.type, "getting route");
   const type = route?.params?.type;
-
+  const navigation = useNavigation<any>();
   const { getMatrimonyProfile, allMatrimonyProfiles } = useMatrimonyServices();
 
   const handleSwipeLeft = () => {
@@ -58,6 +59,15 @@ const DatingDashboard = ({ route }: { route: any }) => {
       console.log(allMatrimonyProfiles, "getting profiles");
     }
   }, [allMatrimonyProfiles]);
+  useEffect(() => {
+    if (
+      currentIndex === 4 &&
+      viewableProfile.length === 5 &&
+      !matrimonySubscribed
+    ) {
+      navigation.navigate("matrimonyplans");
+    }
+  }, [viewableProfile, currentIndex]);
 
   return (
     <View style={{ height: "100%" }}>
@@ -78,6 +88,8 @@ const DatingDashboard = ({ route }: { route: any }) => {
                 imageURL={viewableProfile[currentIndex]?.imageURL}
                 interests={viewableProfile[currentIndex]?.interests}
                 gender={viewableProfile[currentIndex]?.gender}
+                handleLeftSwipe={handleSwipeLeft}
+                handleRightSwipe={handleSwipeRight}
               />
             )}
           </SwipeGesture>
