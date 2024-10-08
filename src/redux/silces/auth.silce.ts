@@ -126,10 +126,12 @@ export const authSlice = createSlice({
       };
     },
 
-    updateActiveId: (state: IAuthState, action: PayloadAction<string>) => {
+    updateActiveId: (state: IAuthState, action: PayloadAction<{id:string}>) => {
+
+      console.log(action.payload,"inside slice")
       return {
         ...state,
-        currentProfileId: action.payload,
+        currentProfileId: action.payload.id,
       };
     },
   },

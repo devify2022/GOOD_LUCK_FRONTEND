@@ -70,11 +70,13 @@ const useMatrimonyServices = () => {
     }
   };
 
-  const getProfileDetails = async (profileId?: string) => {
+  const getProfileDetails = async (profileId: string) => {
+    console.log
     try {
       const response = await getMatrimonyProfileDetails(
-        profileId ?? matrimonyId ?? ""
+        profileId 
       );
+      console.log(response?.data?.data,"getting data")
       setprofileDetails(response?.data?.data);
     } catch (error) {
       console.error(error);
@@ -98,7 +100,7 @@ const useMatrimonyServices = () => {
 
   const formatProfileDataForList = (profileData: any) => {
     return {
-      userID: profileData._id,
+      userID: profileData.userId,
       userName: `${profileData.Fname} ${profileData.Lname}`,
       userAddress: `${profileData.city}, ${profileData.state}`,
       userAge: profileData?.age,

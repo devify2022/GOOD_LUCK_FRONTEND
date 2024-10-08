@@ -87,5 +87,6 @@ export const getMatrimonyProfiles = () => {
 };
 
 export const getMatrimonyProfileDetails = (userId: string) => {
+  console.log(userId, "inside services")
   return baseClient.get(endPoints.getMatrimonyProfileById + "/" + userId);
 };

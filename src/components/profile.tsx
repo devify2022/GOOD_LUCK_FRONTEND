@@ -20,8 +20,8 @@ const MyProfile = ({ routes }: { routes: any }) => {
   const type = routes?.params?.type;
   const { getProfileDetails, profileDetails } = useMatrimonyServices();
 
-  const id = useSelector((state: RootState) => state.auth.currentProfileId);
-
+  const currentProfileId = useSelector((state: RootState) => state.auth.currentProfileId);
+  const userId=useSelector((state:RootState)=>state.auth.userDetails?.userID)
   const openWhatsApp = () => {
     Linking.openURL("whatsapp://send?phone=1234567890");
   };
@@ -30,10 +30,12 @@ const MyProfile = ({ routes }: { routes: any }) => {
     Linking.openURL("https://www.facebook.com/johndoe");
   };
   useEffect(() => {
-    if (id && (type === "matrimony" || type === "dating"))
-      getProfileDetails(id ?? "");
-    else getProfileDetails();
-  }, [id, type]);
+   console.log(type,"getting type")
+    if ((type === "matrimonyprofile" || type === "datingprofile"))
+    { console.log('inside condition'); getProfileDetails(currentProfileId ?? '');}
+     
+    else getProfileDetails(userId??'');
+  }, []);
 
   return (
     <View style={{ flex: 1 }}>

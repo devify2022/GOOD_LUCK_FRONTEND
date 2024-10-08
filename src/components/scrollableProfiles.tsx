@@ -150,7 +150,7 @@ const DatingDashBoardScroll = (props: {
                     style={styles.actionButton}
                     size={45}
                     onPress={() => {
-                      dispatch(updateActiveId(userID));
+                      dispatch(updateActiveId({id:userID}));
                       console.log(userID, "userid");
                       navigation.navigate("matrimonyprofile");
                     }}
