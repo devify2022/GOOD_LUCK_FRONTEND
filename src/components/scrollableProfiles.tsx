@@ -53,9 +53,9 @@ const DatingDashBoardScroll = (props: {
     }, 5000); // Change image every 5 seconds
 
     return () => clearInterval(interval);
-  }, [currentImageIndex]);
+  }, [currentImageIndex,userID]);
 
-  const progressBarWidth = new Animated.Value(0);
+  let progressBarWidth = new Animated.Value(0);
 
   const handleClick = () => {
     // Go to next image if available, else go to first
@@ -71,6 +71,11 @@ const DatingDashBoardScroll = (props: {
       useNativeDriver: false,
     }).start();
   }, [currentImageIndex]);
+
+  useEffect(() => {
+    progressBarWidth = new Animated.Value(0)
+  }, [userID])
+  
 
   const navigation = useNavigation<any>();
 

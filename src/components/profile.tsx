@@ -34,7 +34,7 @@ const MyProfile = ({ routes }: { routes: any }) => {
     if ((type === "matrimonyprofile" || type === "datingprofile"))
     { console.log('inside condition'); getProfileDetails(currentProfileId ?? '');}
      
-    else getProfileDetails(userId??'');
+    else{ console.log("getting userId"); getProfileDetails(userId??'');}
   }, []);
 
   return (
@@ -65,7 +65,7 @@ const MyProfile = ({ routes }: { routes: any }) => {
               />
               <Avatar.Image
                 size={100}
-                source={require("../assets/girlOne.png")}
+                source={{ uri: profileDetails?.imageURL[0] }}
               />
               <Text style={styles.nameAgeText}>John Doe, 30</Text>
             </>
@@ -78,20 +78,22 @@ const MyProfile = ({ routes }: { routes: any }) => {
 
               {/* WhatsApp and Facebook buttons */}
               <View style={styles.socialButtonsContainer}>
-                <IconButton
+                {profileDetails?.whatsappNumber &&  <IconButton
                   icon="whatsapp"
                   size={30}
                   iconColor="#25D366"
                   style={styles.socialButton}
                   onPress={openWhatsApp}
-                />
-                <IconButton
+                /> }
+                
+               {profileDetails?.facebookLink &&  <IconButton
                   icon="facebook"
                   size={30}
                   iconColor="#3b5998"
                   style={styles.socialButton}
                   onPress={openFacebook}
-                />
+                />}
+               
               </View>
             </View>
           )}
@@ -113,12 +115,19 @@ const MyProfile = ({ routes }: { routes: any }) => {
               <Text style={styles.detailLabel}>State:</Text> {profileDetails?.state}
             </Text>
           </View>
-          {/* <View style={styles.detailItem}>
-            <IconButton icon="map-marker" size={20} style={styles.detailIcon} />
+          <View style={styles.detailItem}>
+            <IconButton icon="calendar" size={20} style={styles.detailIcon} />
             <Text style={styles.detailText}>
-              <Text style={styles.detailLabel}>PIN:</Text> 700150
+              <Text style={styles.detailLabel}>Age:</Text> {profileDetails?.age}
             </Text>
-          </View> */}
+          </View>
+
+          <View style={styles.detailItem}>
+            <IconButton icon="gender-male-female" size={20} style={styles.detailIcon} />
+            <Text style={styles.detailText}>
+              <Text style={styles.detailLabel}>Gender:</Text> {profileDetails?.gender}
+            </Text>
+          </View>
   
             {type === 'datingprofile' && <>
               <View style={styles.detailItem}>
@@ -144,7 +153,23 @@ const MyProfile = ({ routes }: { routes: any }) => {
               <Text style={styles.detailLabel}>Alcohol Habits:</Text> No
             </Text>
           </View></> }
-         {type==='matrimonyprofile' &&  <><View style={styles.detailItem}>
+         {type==='matrimonyprofile' &&  <>
+         
+          <View style={styles.detailItem}>
+          
+          
+          <IconButton
+            icon="group"
+            size={20}
+            style={styles.detailIcon}
+          />
+          <Text style={styles.detailText}>
+            <Text style={styles.detailLabel}>Cast :</Text> {profileDetails?.caste }
+          </Text>
+        </View>
+         
+         <View style={styles.detailItem}>
+          
           
           <IconButton
             icon="heart-broken"
@@ -152,12 +177,12 @@ const MyProfile = ({ routes }: { routes: any }) => {
             style={styles.detailIcon}
           />
           <Text style={styles.detailText}>
-            <Text style={styles.detailLabel}>Is divorcee:</Text> {profileDetails?.isDivorcee ? 'Yes': 'No'}
+            <Text style={styles.detailLabel}>Is Divorcee :</Text> {profileDetails?.isDivorcee ? 'Yes': 'No'}
           </Text>
         </View><View style={styles.detailItem}>
           
           <IconButton
-            icon="attach-money"
+            icon="wallet"
             size={20}
             style={styles.detailIcon}
           />
@@ -267,12 +292,15 @@ const styles = StyleSheet.create({
   detailText: {
     fontSize: 16,
     fontFamily: styleConstants.fontFamily,
-    color: styleConstants.color.textGrayColor,
+   
+    color: styleConstants.color.textBlackColor,
     flexWrap: "wrap",
   },
   detailLabel: {
-    fontWeight: "bold",
-    color: styleConstants.color.textBlackColor,
+    fontSize: 16,
+    fontFamily: styleConstants.fontFamily,
+    
+    color: styleConstants.color.textGrayColor,
   },
   bioTitle: {
     fontSize: 20,

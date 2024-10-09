@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   ScrollView,
@@ -39,8 +39,8 @@ const ProfileCreation = ({ route }: { route: any }) => {
     (state: RootState) => state.auth.userDetails?.currentFlow
   );
   const { createOwnMatrimonyProfile } = useMatrimonyServices();
-  const imageNumber = route?.params?.type === "dating" ? 5 : 1;
-  const [uploadedImages, setUploadedImages] = useState<string[]>([]);
+  const imageNumber =  5;
+  const [uploadedImages, setUploadedImages] = useState<any[]>([]);
   const [bio, setBio] = useState("");
   const [isDivorcee, setIsDivorcee] = useState("No");
   const [smoking, setSmoking] = useState("No");
@@ -131,6 +131,10 @@ const ProfileCreation = ({ route }: { route: any }) => {
       navigation.navigate("datingplans");
     }
   };
+  useEffect(() => {
+    console.log(uploadedImages)
+  }, [uploadedImages])
+  
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.headerContainerStyle}>
@@ -151,30 +155,42 @@ const ProfileCreation = ({ route }: { route: any }) => {
         <Text style={styles.sectionHeader}>Profile Pictures</Text>
 
         <View style={styles.imagesGrid}>
-          {uploadedImages.length < imageNumber && (
-            // <TouchableOpacity
-            //   style={styles.uploadButton}
-            //   onPress={handleImageUpload}
-            // >
-            //   <IconButton icon="camera" size={40} style={styles.cameraIcon} />
-            // </TouchableOpacity>
-            <UploadScreen />
-          )}
-          {uploadedImages.map((image, index) => (
-            <View key={index} style={styles.imageContainer}>
-              <Image
-                source={require("../assets/marketingOne.png")}
-                style={styles.image}
-              />
-              <IconButton
-                icon="close"
-                size={20}
-                style={styles.removeIcon}
-                onPress={() => handleImageRemove(index)}
-              />
-            </View>
-          ))}
-        </View>
+  {/* Render UploadScreen if the number of uploaded images is less than the allowed limit */}
+  {uploadedImages?.length < imageNumber && (
+    <UploadScreen
+      imageCount={imageNumber}
+      selectedImage={uploadedImages}
+      setSelectedImage={setUploadedImages} // Use the function to update the uploaded images
+    />
+  )}
+
+  {/* Render each uploaded image with the close button */}
+  {Array.isArray(uploadedImages) &&
+  
+    uploadedImages.map((image, index) => (
+      
+      <View key={index} style={styles.imageContainer}>
+       
+        {image?.assets?.[0]?.uri && (
+          <>
+            {/* Render the uploaded image */}
+            <Image
+              source={{ uri: image.assets[0].uri }}
+              style={styles.image}
+            />
+            {/* Render the close button to remove the image */}
+            <IconButton
+              icon="close"
+              size={20}
+              style={styles.removeIcon}
+              onPress={() => handleImageRemove(index)}
+            />
+          </>
+        )}
+      </View>
+    ))}
+</View>
+
 
         {/* <Text style={styles.sectionHeader}>Habits</Text> */}
         <TextInput

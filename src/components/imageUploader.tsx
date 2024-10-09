@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Alert,
   Platform,
+  Image,
 } from "react-native";
 import {
   launchCamera,
@@ -16,13 +17,14 @@ import {
 import storage from "@react-native-firebase/storage";
 import { styleConstants } from "../styles/constants";
 import { IconButton } from "react-native-paper";
-import { Image } from "react-native-svg";
 
-const UploadScreen: React.FC = () => {
+import { notifyMessage } from "../hooks/useDivineShopServices";
+
+const UploadScreen= (props:{imageCount:number,selectedImage:any ,setSelectedImage:any}) => {
+  const {selectedImage, setSelectedImage}=props
   const [uploading, setUploading] = useState<boolean>(false);
   const [transferred, setTransferred] = useState<number>(0);
-  const [selectedImage, setSelectedImage] =
-    useState<ImagePickerResponse | null>(null);
+
 
   const selectImageFromCamera = async () => {
     try {
@@ -37,7 +39,7 @@ const UploadScreen: React.FC = () => {
       handleImageResponse(response);
     } catch (error) {
       console.error("Error launching camera:", error);
-      Alert.alert("Error", "Failed to launch the camera.");
+      notifyMessage("Failed to launch the camera.");
     }
   };
 
@@ -53,7 +55,7 @@ const UploadScreen: React.FC = () => {
       handleImageResponse(response);
     } catch (error) {
       console.error("Error launching image library:", error);
-      Alert.alert("Error", "Failed to open the image library.");
+      notifyMessage( "Failed to open the image library.");
     }
   };
 
@@ -65,9 +67,9 @@ const UploadScreen: React.FC = () => {
     } else if (response.assets && response.assets[0].uri) {
       const source = { uri: response.assets[0].uri };
       setSelectedImage(response);
-      console.log(source);
-      const responseURl = await uploadImageToFirebase(source.uri);
-      console.log(response);
+      console.log(source,"h=getting response");
+      // const responseURl = await uploadImageToFirebase(source.uri);
+      // console.log(response);
     }
   };
 
@@ -93,11 +95,11 @@ const UploadScreen: React.FC = () => {
       // Get the download URL
       const downloadURL = await reference.getDownloadURL();
       console.log("Image uploaded to Firebase:", downloadURL);
-      Alert.alert("Upload Successful", "Image has been uploaded to Firebase!");
+      notifyMessage("Image has been uploaded to Firebase!");
       return downloadURL;
     } catch (error) {
       console.error("Error uploading image:", error);
-      Alert.alert("Upload Failed", "Something went wrong while uploading.");
+      notifyMessage("Something went wrong while uploading.");
     }
   };
 
@@ -117,12 +119,12 @@ const UploadScreen: React.FC = () => {
         <IconButton icon="folder" size={40} style={styles.cameraIcon} />
       </TouchableOpacity>
 
-      {/* {selectedImage && (
-        <Image
-          source={{ uri: selectedImage.assets[0].uri }}
-          style={styles.selectedImage}
-        />
-      )} */}
+      {/* {selectedImage?.assets?.[0]?.uri && (
+  <Image
+    source={{ uri: selectedImage.assets[0].uri }}
+    style={styles.selectedImage}
+  />
+)} */}
     </SafeAreaView>
   );
 };

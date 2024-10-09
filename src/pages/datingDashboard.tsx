@@ -27,16 +27,24 @@ const DatingDashboard = ({ route }: { route: any }) => {
   const { getMatrimonyProfile, allMatrimonyProfiles } = useMatrimonyServices();
 
   const handleSwipeLeft = () => {
-    //("left swipe");viewableProfile[currentIndex]
+    console.log("left swipe");viewableProfile[currentIndex]
     console.log(viewableProfile[currentIndex]);
-    if (currentIndex < viewableProfile.length - 1) {
+    
+    if (
+      currentIndex === 4 &&
+      viewableProfile.length === 5 &&
+      !matrimonySubscribed
+    ) {
+      navigation.navigate("matrimonyplans");
+    }
+   else if (currentIndex < viewableProfile.length - 1) {
       setCurrentIndex(currentIndex + 1);
     }
   };
 
   const handleSwipeRight = () => {
-    //("right swipe");
-    if (currentIndex > 0) {
+    console.log("right swipe");
+   if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
     }
   };
@@ -59,15 +67,15 @@ const DatingDashboard = ({ route }: { route: any }) => {
       console.log(allMatrimonyProfiles, "getting profiles");
     }
   }, [allMatrimonyProfiles]);
-  useEffect(() => {
-    if (
-      currentIndex === 4 &&
-      viewableProfile.length === 5 &&
-      !matrimonySubscribed
-    ) {
-      navigation.navigate("matrimonyplans");
-    }
-  }, [viewableProfile, currentIndex]);
+  // useEffect(() => {
+  //   if (
+  //     currentIndex === 4 &&
+  //     viewableProfile.length === 5 &&
+  //     !matrimonySubscribed
+  //   ) {
+  //     navigation.navigate("matrimonyplans");
+  //   }
+  // }, [viewableProfile, currentIndex]);
 
   return (
     <View style={{ height: "100%" }}>

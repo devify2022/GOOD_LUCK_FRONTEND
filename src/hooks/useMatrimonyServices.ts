@@ -46,7 +46,7 @@ const useMatrimonyServices = () => {
   };
 
   const getMatrimonyProfile = async (
-    type: "all" | "randomFive" | "filterApplied"
+    type: "all" | "randomFive" | "filterApplied"|'bride'|'groom'
   ) => {
     try {
       const response = await getMatrimonyProfiles();
@@ -115,7 +115,10 @@ const useMatrimonyServices = () => {
       city:profileData?.city,
       state:profileData?.state,
       lookingFor:profileData?.searching_for,
-      isDivorcee:profileData?.isDivorce
+      isDivorcee:profileData?.isDivorce,
+      age:profileData?.age,
+      whatsappNumber:profileData?.whatsappNumber,
+      facebookLink:profileData?.facebookLink
       
     };
   };
