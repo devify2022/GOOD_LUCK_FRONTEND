@@ -77,7 +77,7 @@ const useMatrimonyServices = () => {
         profileId 
       );
       console.log(response?.data?.data,"getting data")
-      setprofileDetails(response?.data?.data);
+      setprofileDetails( formatProfileDataForList(response?.data?.data) );
     } catch (error) {
       console.error(error);
     }
@@ -86,7 +86,8 @@ const useMatrimonyServices = () => {
   const updateProfileDetails = async (payload: any) => {
     try {
       console.log(payload, "geting payload");
-      const response = await updateMatrimonyProfile(payload, matrimonyId ?? "");
+      console.log(userId,"getting user id")
+      const response = await updateMatrimonyProfile(payload, userId ?? "");
 
       setprofileDetails(response?.data?.data);
       console.log("updated profile");
@@ -99,6 +100,7 @@ const useMatrimonyServices = () => {
   };
 
   const formatProfileDataForList = (profileData: any) => {
+    console.log(profileData,"getting profile data")
     return {
       userID: profileData.userId,
       userName: `${profileData.Fname} ${profileData.Lname}`,
@@ -107,6 +109,14 @@ const useMatrimonyServices = () => {
       imageURL: profileData?.photo,
       interests: profileData?.interests,
       gender: profileData?.gender,
+      bio:profileData?.bio,
+      caste:profileData?.cast,
+      salary: profileData?.salary,
+      city:profileData?.city,
+      state:profileData?.state,
+      lookingFor:profileData?.searching_for,
+      isDivorcee:profileData?.isDivorce
+      
     };
   };
 

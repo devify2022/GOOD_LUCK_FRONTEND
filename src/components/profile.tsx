@@ -72,7 +72,7 @@ const MyProfile = ({ routes }: { routes: any }) => {
           ) : (
             <View style={styles.imageContainer}>
               <Image
-                source={require("../assets/girlOne.png")}
+                source={{ uri: profileDetails?.imageURL[0] }}
                 style={styles.profileImage}
               />
 
@@ -104,30 +104,30 @@ const MyProfile = ({ routes }: { routes: any }) => {
           <View style={styles.detailItem}>
             <IconButton icon="map-marker" size={20} style={styles.detailIcon} />
             <Text style={styles.detailText}>
-              <Text style={styles.detailLabel}>City:</Text> Kolkata
+              <Text style={styles.detailLabel}>City:</Text>{profileDetails?.city}
             </Text>
           </View>
           <View style={styles.detailItem}>
             <IconButton icon="map-marker" size={20} style={styles.detailIcon} />
             <Text style={styles.detailText}>
-              <Text style={styles.detailLabel}>State:</Text> West Bengal
+              <Text style={styles.detailLabel}>State:</Text> {profileDetails?.state}
             </Text>
           </View>
-          <View style={styles.detailItem}>
+          {/* <View style={styles.detailItem}>
             <IconButton icon="map-marker" size={20} style={styles.detailIcon} />
             <Text style={styles.detailText}>
               <Text style={styles.detailLabel}>PIN:</Text> 700150
             </Text>
-          </View>
-
-          <View style={styles.detailItem}>
+          </View> */}
+  
+            {type === 'datingprofile' && <>
+              <View style={styles.detailItem}>
             <IconButton icon="school" size={20} style={styles.detailIcon} />
             <Text style={styles.detailText}>
               <Text style={styles.detailLabel}>Education:</Text> B Tech
             </Text>
           </View>
-
-          <View style={styles.detailItem}>
+             <View style={styles.detailItem}>
             <IconButton icon="smoking" size={20} style={styles.detailIcon} />
             <Text style={styles.detailText}>
               <Text style={styles.detailLabel}>Smoking Habits:</Text> Yes
@@ -143,20 +143,40 @@ const MyProfile = ({ routes }: { routes: any }) => {
             <Text style={styles.detailText}>
               <Text style={styles.detailLabel}>Alcohol Habits:</Text> No
             </Text>
-          </View>
-
+          </View></> }
+         {type==='matrimonyprofile' &&  <><View style={styles.detailItem}>
+          
+          <IconButton
+            icon="heart-broken"
+            size={20}
+            style={styles.detailIcon}
+          />
+          <Text style={styles.detailText}>
+            <Text style={styles.detailLabel}>Is divorcee:</Text> {profileDetails?.isDivorcee ? 'Yes': 'No'}
+          </Text>
+        </View><View style={styles.detailItem}>
+          
+          <IconButton
+            icon="attach-money"
+            size={20}
+            style={styles.detailIcon}
+          />
+          <Text style={styles.detailText}>
+            <Text style={styles.detailLabel}>Salary:</Text> {profileDetails?.salary }
+          </Text>
+        </View></> }
+          {type==='datingprofile' &&
           <View style={styles.detailItem}>
             <IconButton icon="heart" size={20} style={styles.detailIcon} />
             <Text style={styles.detailText}>
               <Text style={styles.detailLabel}>Orientation:</Text> Straight
             </Text>
-          </View>
+          </View>}
 
           <View style={styles.detailItem}>
             <IconButton icon="star" size={20} style={styles.detailIcon} />
             <Text style={styles.detailText}>
-              <Text style={styles.detailLabel}>Interests:</Text> Music,
-              Technology
+              <Text style={styles.detailLabel}>Interests:</Text> {profileDetails?.interests?.map((item:string)=>item)}
             </Text>
           </View>
 
@@ -167,7 +187,7 @@ const MyProfile = ({ routes }: { routes: any }) => {
               style={styles.detailIcon}
             />
             <Text style={styles.detailText}>
-              <Text style={styles.detailLabel}>Looking For:</Text> Both
+              <Text style={styles.detailLabel}>Looking For:</Text> {profileDetails?.lookingFor}
             </Text>
           </View>
         </View>
@@ -178,9 +198,7 @@ const MyProfile = ({ routes }: { routes: any }) => {
         <Text style={styles.bioTitle}>Bio</Text>
         <View style={styles.bioContainer}>
           <Text style={styles.bioText}>
-            This is a short bio about John Doe. He enjoys hiking, reading, and
-            spending time with friends. He is looking for someone who shares
-            similar interests and values.
+           {profileDetails?.bio}
           </Text>
         </View>
       </ScrollView>

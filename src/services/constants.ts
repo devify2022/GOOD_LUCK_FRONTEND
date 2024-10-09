@@ -26,6 +26,8 @@ export const endPoints = {
   getMatrimonyProfileById: "/matrimony",
   createMatrimonyProfile: "/matrimony/createMatrimonyProfile",
   updateMatrimonyProfile: "/matrimony/update",
+  getTopFiveBrideProfile:'/matrimony/brides',
+  getTopFiveGroomProfile:'/matrimony/grooms'
 };
 
 const env = "devBaseURL";

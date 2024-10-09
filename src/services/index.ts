@@ -86,6 +86,14 @@ export const getMatrimonyProfiles = () => {
   return baseClient.get(endPoints.getAllMatrimonyProfile);
 };
 
+export const getTopFiveBrideProfiles = () => {
+  return baseClient.get(endPoints.getTopFiveBrideProfile);
+};
+
+export const getTopFiveGroomProfiles = () => {
+  return baseClient.get(endPoints.getTopFiveGroomProfile);
+};
+
 export const getMatrimonyProfileDetails = (userId: string) => {
   console.log(userId, "inside services")
   return baseClient.get(endPoints.getMatrimonyProfileById + "/" + userId);
