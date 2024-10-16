@@ -21,7 +21,7 @@ const MyProfile = ({ routes }: { routes: any }) => {
   const { getProfileDetails, profileDetails } = useMatrimonyServices();
 
   const currentProfileId = useSelector((state: RootState) => state.auth.currentProfileId);
-  const userId=useSelector((state:RootState)=>state.auth.userDetails?.userID)
+  const userId=useSelector((state:RootState)=>state.auth.userDetails?.matrimonyID)
   const openWhatsApp = () => {
     Linking.openURL("whatsapp://send?phone=1234567890");
   };
@@ -67,7 +67,7 @@ const MyProfile = ({ routes }: { routes: any }) => {
                 size={100}
                 source={{ uri: profileDetails?.imageURL[0] }}
               />
-              <Text style={styles.nameAgeText}>John Doe, 30</Text>
+              <Text style={styles.nameAgeText}>{profileDetails?.userName}</Text>
             </>
           ) : (
             <View style={styles.imageContainer}>

@@ -35,7 +35,7 @@ const useMatrimonyServices = () => {
       console.log(payload, userId);
       const response = await createMatrimonyProfile(payload, userId ?? "");
       console.log(response?.data?.data);
-      dispatch(updateUserData({ matrimonyID: response?.data?.data?._id }));
+      dispatch(updateUserData({ matrimonyID: response?.data?.data?.userId }));
 
       notifyMessage(response?.data?.message);
       navigation.navigate("matrimonydashboard");
