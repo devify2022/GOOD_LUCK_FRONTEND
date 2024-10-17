@@ -70,9 +70,10 @@ const DatingDashBoardScroll = (props: {
       duration: 5000,
       useNativeDriver: false,
     }).start();
-  }, [currentImageIndex]);
+  }, [currentImageIndex,userID]);
 
   useEffect(() => {
+    console.log('moving to next user')
     progressBarWidth = new Animated.Value(0)
   }, [userID])
   
@@ -216,13 +217,13 @@ const styles = StyleSheet.create({
   progressLine: {
     height: 4,
     width: 50,
-    backgroundColor: "white",
+    backgroundColor: styleConstants.color.textGrayColor,
     marginHorizontal: 2,
     borderRadius: 2,
   },
   progressFill: {
     height: "100%",
-    backgroundColor: "gold",
+    backgroundColor: styleConstants.color.textWhiteColor,
   },
   bottomContainer: {
     alignItems: "center",
@@ -251,6 +252,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 16,
     fontWeight: "400",
+    textTransform:'capitalize'
   },
   buttonContainer: {
     flexDirection: "row",

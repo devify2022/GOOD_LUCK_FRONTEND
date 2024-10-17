@@ -13,6 +13,7 @@ import {
   TextInput,
   IconButton,
   Switch,
+  ActivityIndicator,
 } from "react-native-paper";
 import { styleConstants } from "../styles/constants"; // Assuming styleConstants is defined in your project
 import { useNavigation } from "@react-navigation/native";
@@ -35,10 +36,11 @@ interface IProfileDetails {
 
 const ProfileCreation = ({ route }: { route: any }) => {
   console.log(route.params);
-  const currentFlow = useSelector(
-    (state: RootState) => state.auth.userDetails?.currentFlow
+  const userId = useSelector(
+    (state: RootState) => state.auth.userDetails?.matrimonyID
   );
-  const { createOwnMatrimonyProfile } = useMatrimonyServices();
+ 
+  const { createOwnMatrimonyProfile ,getProfileDetails, profileDetails, updateProfileDetails, isLoading} = useMatrimonyServices();
   const imageNumber =  5;
   const [uploadedImages, setUploadedImages] = useState<any[]>([]);
   const [bio, setBio] = useState("");
@@ -52,21 +54,21 @@ const ProfileCreation = ({ route }: { route: any }) => {
   const navigation = useNavigation<any>();
 
   const interests = [
-    "Badminton",
-    "Football",
-    "Cricket",
-    "MakeUp",
-    "Dance",
-    "Yoga",
-    "Meditation",
-    "Swimming",
-    "Movie",
-    "Party",
+    "badminton",
+    "football",
+    "cricket",
+    "makeUp",
+    "dance",
+    "yoga",
+    "meditation",
+    "swimming",
+    "movie",
+    "party",
   ];
   const genderOptions =
     route?.params?.type === "dating"
       ? ["Men", "Women", "Both"]
-      : ["Bride", "Groom"];
+      : ["bride", "groom"];
 
   const handleImageUpload = () => {
     if (uploadedImages.length < imageNumber) {
@@ -83,13 +85,16 @@ const ProfileCreation = ({ route }: { route: any }) => {
     selectedChips: string[],
     setChips: (chips: string[]) => void
   ) => {
+    console.log(chip)
     if (
-      (chip === "Bride" || chip === "Groom") &&
-      route?.params?.type === "matrimony"
+      (chip === "bride" || chip === "groom") &&
+    (  route?.params?.type === "matrimony" ||  route?.params?.type === "updatematrimonyprofile")
     ) {
+      console.log('here again')
       setChips([chip]);
       return;
     }
+    console.log("here")
     setChips(
       selectedChips.includes(chip)
         ? selectedChips.filter((item) => item !== chip)
@@ -127,16 +132,79 @@ const ProfileCreation = ({ route }: { route: any }) => {
       console.log(payload);
 
       createOwnMatrimonyProfile(payload);
-    } else {
+    }
+    else if(route.params.type === "updatematrimonyprofile")
+    {
+      const payload = {
+        Fname: userDetails?.name?.split(" ")[0],
+        Lname: userDetails?.name?.split(" ")[1] ?? "",
+        photo: uploadedImages,
+        city: userDetails?.city,
+        state: userDetails?.state,
+        salary: userDetails?.salary,
+        age: parseInt(userDetails?.age ?? ""),
+        subscribed: false,
+        subs_plan_name: "Basic plan",
+        subs_start_date: new Date().toISOString(),
+        bio,
+        isDivorce: isDivorcee === "Yes",
+        pending_likes_id: "64e4b3a1f5e45b8d9b2c5f7d",
+        sent_likes_id: "64e4b3aaf5e45b8d9b2c5f7e",
+        cast: userDetails?.caste,
+        searching_for: selectedGender[0].toLowerCase(),
+        gender: selectedGender[0].toLowerCase() === "bride" ? "Male" : "Female",
+        interests: selectedInterests[0].toLowerCase(),
+      };
+      updateProfileDetails(payload)
+    }
+    else {
       navigation.navigate("datingplans");
     }
   };
   useEffect(() => {
     console.log(uploadedImages)
   }, [uploadedImages])
+
+  useEffect(() => {
+    if(route?.params?.type==='updatematrimonyprofile')
+  {  
+    getProfileDetails(userId ?? '')
+   
+  }
+    
+  }, [])
+
+  useEffect(() => {
+    console.log(profileDetails?.photo,"getting profile details")
+    const userData:IProfileDetails={
+      name: profileDetails?.userName,
+      city:profileDetails?.city,
+      state:profileDetails?.state,
+      caste:profileDetails?.caste,
+      age:profileDetails?.userAge?.toString(),
+      salary:profileDetails?.salary,
+      education:profileDetails?.education,
+      pin:profileDetails?.pin,
+      whatsappno:profileDetails?.whatsappno,
+      fblink:profileDetails?.fblink
+
+    }
+    setuserDetails(userData)
+    setIsDivorcee(profileDetails?.isDivorcee ?'Yes':'No')
+    setSelectedGender([profileDetails?.lookingFor])
+    setBio(profileDetails?.bio)
+    setSelectedInterests(profileDetails?.interests)
+    setUploadedImages(profileDetails?.imageURL)
+    console.log(uploadedImages,"getting interests")
+
+  }, [profileDetails])
+  
+  
   
   return (
     <View style={{ flex: 1 }}>
+
+    
       <View style={styles.headerContainerStyle}>
         <IconButton
           icon="arrow-left"
@@ -146,7 +214,7 @@ const ProfileCreation = ({ route }: { route: any }) => {
           }}
         />
         <Text style={styles.header}>
-          {route?.params?.type === "matrimony"
+          { route?.params?.type === "updatematrimonyprofile" ? 'Update matrimony profile' : route?.params?.type === "updatedatingprofile" ?'Update dating profile': route?.params?.type === "matrimony"
             ? "Create matrimony profile "
             : "Create dating profile"}
         </Text>
@@ -292,7 +360,7 @@ const ProfileCreation = ({ route }: { route: any }) => {
           }}
         />
 
-        {route?.params?.type === "matrimony" && (
+        {route?.params?.type === "matrimony"  || route?.params?.type === "updatematrimonyprofile" && (
           <>
             <TextInput
               theme={{
@@ -399,7 +467,7 @@ const ProfileCreation = ({ route }: { route: any }) => {
         )}
 
         <View style={styles.habitContainer}>
-          {route?.params?.type === "matrimony" && (
+          {route?.params?.type === "matrimony" || route?.params?.type === 'updatematrimonyprofile' && (
             <TextInput
               theme={{
                 roundness: 60, // Custom border radius
@@ -512,16 +580,16 @@ const ProfileCreation = ({ route }: { route: any }) => {
 
         <Text style={styles.sectionHeader}>Interest</Text>
         <View style={styles.chipsContainer}>
-          {interests.map((interest, index) => (
+          {interests?.map((interest, index) => (
             <Chip
               key={index}
               style={[
                 styles.chip,
-                selectedInterests.includes(interest) && styles.chipSelected,
+                selectedInterests?.includes(interest) && styles.chipSelected,
               ]}
               textStyle={[
                 styles.chipText,
-                selectedInterests.includes(interest) && styles.chipTextSelected,
+                selectedInterests?.includes(interest) && styles.chipTextSelected,
               ]}
               onPress={() =>
                 handleChipToggle(
@@ -581,7 +649,7 @@ const ProfileCreation = ({ route }: { route: any }) => {
           contentStyle={styles.submitButtonContent}
           labelStyle={styles.submitButtonText}
         >
-          Submit
+         {isLoading ? <ActivityIndicator/>:  route?.params?.type === "updatematrimonyprofile" ? 'Update' : 'Create profile'}
         </Button>
       </ScrollView>
     </View>
@@ -692,6 +760,7 @@ const styles = StyleSheet.create({
   chipText: {
     color: styleConstants.color.primaryColor,
     fontFamily: styleConstants.fontFamily,
+    textTransform:'capitalize',
   },
   chipTextSelected: {
     color: styleConstants.color.textWhiteColor,

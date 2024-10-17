@@ -7,7 +7,7 @@ import {
   Image,
   Linking,
 } from "react-native";
-import { Avatar, IconButton, Divider } from "react-native-paper";
+import { Avatar, IconButton, Divider, ActivityIndicator } from "react-native-paper";
 import { styleConstants } from "../styles/constants";
 import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -18,7 +18,7 @@ import { RootState } from "../redux";
 const MyProfile = ({ routes }: { routes: any }) => {
   const navigation = useNavigation<any>();
   const type = routes?.params?.type;
-  const { getProfileDetails, profileDetails } = useMatrimonyServices();
+  const { getProfileDetails, profileDetails, isLoading } = useMatrimonyServices();
 
   const currentProfileId = useSelector((state: RootState) => state.auth.currentProfileId);
   const userId=useSelector((state:RootState)=>state.auth.userDetails?.matrimonyID)
@@ -39,194 +39,197 @@ const MyProfile = ({ routes }: { routes: any }) => {
 
   return (
     <View style={{ flex: 1 }}>
-      <View style={styles.titleContainer}>
+    
+      {isLoading ? <ActivityIndicator  style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          size={"large"}
+          color={styleConstants.color.primaryColor}/>: <ScrollView contentContainerStyle={styles.container}>
+          {/* Profile Section */}
+          <View style={styles.titleContainer}>
         <Icon name="arrow-back" size={24} color="black" style={{ top: -2 }} />
         <Text style={styles.title}>
           {type === "own"
             ? "Your profile"
             : profileDetails?.userName ?? "No Name"}
         </Text>
-        <View></View>
+       
       </View>
-      <ScrollView contentContainerStyle={styles.container}>
-        {/* Profile Section */}
-
-        <View style={styles.profileSection}>
-          {type === "own" ? (
-            <>
-              <IconButton
-                icon="pencil"
-                iconColor={styleConstants.color.primaryColor}
-                size={24}
-                onPress={() => {
-                  navigation.navigate("createdatingprofile");
-                }}
-                style={styles.editIcon}
-              />
-              <Avatar.Image
-                size={100}
-                source={{ uri: profileDetails?.imageURL[0] }}
-              />
-              <Text style={styles.nameAgeText}>{profileDetails?.userName}</Text>
-            </>
-          ) : (
-            <View style={styles.imageContainer}>
-              <Image
-                source={{ uri: profileDetails?.imageURL[0] }}
-                style={styles.profileImage}
-              />
-
-              {/* WhatsApp and Facebook buttons */}
-              <View style={styles.socialButtonsContainer}>
-                {profileDetails?.whatsappNumber &&  <IconButton
-                  icon="whatsapp"
-                  size={30}
-                  iconColor="#25D366"
-                  style={styles.socialButton}
-                  onPress={openWhatsApp}
-                /> }
-                
-               {profileDetails?.facebookLink &&  <IconButton
-                  icon="facebook"
-                  size={30}
-                  iconColor="#3b5998"
-                  style={styles.socialButton}
-                  onPress={openFacebook}
-                />}
-               
+          <View style={styles.profileSection}>
+            {type === "own" ? (
+              <>
+                <IconButton
+                  icon="pencil"
+                  iconColor={styleConstants.color.primaryColor}
+                  size={24}
+                  onPress={() => {
+                    navigation.navigate("createdatingprofile", {type:'updatematrimonyprofile'});
+                  }}
+                  style={styles.editIcon}
+                />
+                <Avatar.Image
+                  size={100}
+                  source={{ uri: profileDetails?.imageURL[0] }}
+                />
+                <Text style={styles.nameAgeText}>{profileDetails?.userName}</Text>
+              </>
+            ) : (
+              <View style={styles.imageContainer}>
+                <Image
+                  source={{ uri: profileDetails?.imageURL[0] }}
+                  style={styles.profileImage}
+                />
+  
+                {/* WhatsApp and Facebook buttons */}
+                <View style={styles.socialButtonsContainer}>
+                  {profileDetails?.whatsappNumber &&  <IconButton
+                    icon="whatsapp"
+                    size={30}
+                    iconColor="#25D366"
+                    style={styles.socialButton}
+                    onPress={openWhatsApp}
+                  /> }
+                  
+                 {profileDetails?.facebookLink &&  <IconButton
+                    icon="facebook"
+                    size={30}
+                    iconColor="#3b5998"
+                    style={styles.socialButton}
+                    onPress={openFacebook}
+                  />}
+                 
+                </View>
               </View>
-            </View>
-          )}
-        </View>
-
-        <Divider style={styles.divider} />
-
-        {/* Details Section */}
-        <View style={styles.detailsSection}>
-          <View style={styles.detailItem}>
-            <IconButton icon="map-marker" size={20} style={styles.detailIcon} />
-            <Text style={styles.detailText}>
-              <Text style={styles.detailLabel}>City:</Text>{profileDetails?.city}
-            </Text>
-          </View>
-          <View style={styles.detailItem}>
-            <IconButton icon="map-marker" size={20} style={styles.detailIcon} />
-            <Text style={styles.detailText}>
-              <Text style={styles.detailLabel}>State:</Text> {profileDetails?.state}
-            </Text>
-          </View>
-          <View style={styles.detailItem}>
-            <IconButton icon="calendar" size={20} style={styles.detailIcon} />
-            <Text style={styles.detailText}>
-              <Text style={styles.detailLabel}>Age:</Text> {profileDetails?.age}
-            </Text>
-          </View>
-
-          <View style={styles.detailItem}>
-            <IconButton icon="gender-male-female" size={20} style={styles.detailIcon} />
-            <Text style={styles.detailText}>
-              <Text style={styles.detailLabel}>Gender:</Text> {profileDetails?.gender}
-            </Text>
+            )}
           </View>
   
-            {type === 'datingprofile' && <>
-              <View style={styles.detailItem}>
-            <IconButton icon="school" size={20} style={styles.detailIcon} />
-            <Text style={styles.detailText}>
-              <Text style={styles.detailLabel}>Education:</Text> B Tech
-            </Text>
-          </View>
-             <View style={styles.detailItem}>
-            <IconButton icon="smoking" size={20} style={styles.detailIcon} />
-            <Text style={styles.detailText}>
-              <Text style={styles.detailLabel}>Smoking Habits:</Text> Yes
-            </Text>
-          </View>
-
-          <View style={styles.detailItem}>
+          <Divider style={styles.divider} />
+  
+          {/* Details Section */}
+          <View style={styles.detailsSection}>
+            <View style={styles.detailItem}>
+              <IconButton icon="map-marker" size={20} style={styles.detailIcon} />
+              <Text style={styles.detailText}>
+                <Text style={styles.detailLabel}>City:</Text>{profileDetails?.city}
+              </Text>
+            </View>
+            <View style={styles.detailItem}>
+              <IconButton icon="map-marker" size={20} style={styles.detailIcon} />
+              <Text style={styles.detailText}>
+                <Text style={styles.detailLabel}>State:</Text> {profileDetails?.state}
+              </Text>
+            </View>
+            <View style={styles.detailItem}>
+              <IconButton icon="calendar" size={20} style={styles.detailIcon} />
+              <Text style={styles.detailText}>
+                <Text style={styles.detailLabel}>Age:</Text> {profileDetails?.age}
+              </Text>
+            </View>
+  
+            <View style={styles.detailItem}>
+              <IconButton icon="gender-male-female" size={20} style={styles.detailIcon} />
+              <Text style={styles.detailText}>
+                <Text style={styles.detailLabel}>Gender:</Text> {profileDetails?.gender}
+              </Text>
+            </View>
+    
+              {type === 'datingprofile' && <>
+                <View style={styles.detailItem}>
+              <IconButton icon="school" size={20} style={styles.detailIcon} />
+              <Text style={styles.detailText}>
+                <Text style={styles.detailLabel}>Education:</Text> B Tech
+              </Text>
+            </View>
+               <View style={styles.detailItem}>
+              <IconButton icon="smoking" size={20} style={styles.detailIcon} />
+              <Text style={styles.detailText}>
+                <Text style={styles.detailLabel}>Smoking Habits:</Text> Yes
+              </Text>
+            </View>
+  
+            <View style={styles.detailItem}>
+              <IconButton
+                icon="glass-cocktail"
+                size={20}
+                style={styles.detailIcon}
+              />
+              <Text style={styles.detailText}>
+                <Text style={styles.detailLabel}>Alcohol Habits:</Text> No
+              </Text>
+            </View></> }
+           {type==='matrimonyprofile' &&  <>
+           
+            <View style={styles.detailItem}>
+            
+            
             <IconButton
-              icon="glass-cocktail"
+              icon="group"
               size={20}
               style={styles.detailIcon}
             />
             <Text style={styles.detailText}>
-              <Text style={styles.detailLabel}>Alcohol Habits:</Text> No
+              <Text style={styles.detailLabel}>Cast :</Text> {profileDetails?.caste }
+            </Text>
+          </View>
+           
+           <View style={styles.detailItem}>
+            
+            
+            <IconButton
+              icon="heart-broken"
+              size={20}
+              style={styles.detailIcon}
+            />
+            <Text style={styles.detailText}>
+              <Text style={styles.detailLabel}>Is Divorcee :</Text> {profileDetails?.isDivorcee ? 'Yes': 'No'}
+            </Text>
+          </View><View style={styles.detailItem}>
+            
+            <IconButton
+              icon="wallet"
+              size={20}
+              style={styles.detailIcon}
+            />
+            <Text style={styles.detailText}>
+              <Text style={styles.detailLabel}>Salary:</Text> {profileDetails?.salary }
             </Text>
           </View></> }
-         {type==='matrimonyprofile' &&  <>
-         
-          <View style={styles.detailItem}>
-          
-          
-          <IconButton
-            icon="group"
-            size={20}
-            style={styles.detailIcon}
-          />
-          <Text style={styles.detailText}>
-            <Text style={styles.detailLabel}>Cast :</Text> {profileDetails?.caste }
-          </Text>
-        </View>
-         
-         <View style={styles.detailItem}>
-          
-          
-          <IconButton
-            icon="heart-broken"
-            size={20}
-            style={styles.detailIcon}
-          />
-          <Text style={styles.detailText}>
-            <Text style={styles.detailLabel}>Is Divorcee :</Text> {profileDetails?.isDivorcee ? 'Yes': 'No'}
-          </Text>
-        </View><View style={styles.detailItem}>
-          
-          <IconButton
-            icon="wallet"
-            size={20}
-            style={styles.detailIcon}
-          />
-          <Text style={styles.detailText}>
-            <Text style={styles.detailLabel}>Salary:</Text> {profileDetails?.salary }
-          </Text>
-        </View></> }
-          {type==='datingprofile' &&
-          <View style={styles.detailItem}>
-            <IconButton icon="heart" size={20} style={styles.detailIcon} />
-            <Text style={styles.detailText}>
-              <Text style={styles.detailLabel}>Orientation:</Text> Straight
-            </Text>
-          </View>}
-
-          <View style={styles.detailItem}>
-            <IconButton icon="star" size={20} style={styles.detailIcon} />
-            <Text style={styles.detailText}>
-              <Text style={styles.detailLabel}>Interests:</Text> {profileDetails?.interests?.map((item:string)=>item)}
+            {type==='datingprofile' &&
+            <View style={styles.detailItem}>
+              <IconButton icon="heart" size={20} style={styles.detailIcon} />
+              <Text style={styles.detailText}>
+                <Text style={styles.detailLabel}>Orientation:</Text> Straight
+              </Text>
+            </View>}
+  
+            <View style={styles.detailItem}>
+              <IconButton icon="star" size={20} style={styles.detailIcon} />
+              <Text style={styles.detailText}>
+                <Text style={styles.detailLabel}>Interests:</Text> {profileDetails?.interests?.map((item:string)=>item)}
+              </Text>
+            </View>
+  
+            <View style={styles.detailItem}>
+              <IconButton
+                icon="account-search"
+                size={20}
+                style={styles.detailIcon}
+              />
+              <Text style={styles.detailText}>
+                <Text style={styles.detailLabel}>Looking For:</Text> {profileDetails?.lookingFor}
+              </Text>
+            </View>
+          </View>
+  
+          <Divider style={styles.divider} />
+  
+          {/* Bio Section */}
+          <Text style={styles.bioTitle}>Bio</Text>
+          <View style={styles.bioContainer}>
+            <Text style={styles.bioText}>
+             {profileDetails?.bio}
             </Text>
           </View>
-
-          <View style={styles.detailItem}>
-            <IconButton
-              icon="account-search"
-              size={20}
-              style={styles.detailIcon}
-            />
-            <Text style={styles.detailText}>
-              <Text style={styles.detailLabel}>Looking For:</Text> {profileDetails?.lookingFor}
-            </Text>
-          </View>
-        </View>
-
-        <Divider style={styles.divider} />
-
-        {/* Bio Section */}
-        <Text style={styles.bioTitle}>Bio</Text>
-        <View style={styles.bioContainer}>
-          <Text style={styles.bioText}>
-           {profileDetails?.bio}
-          </Text>
-        </View>
-      </ScrollView>
+        </ScrollView>}
+     
     </View>
   );
 };
@@ -236,7 +239,7 @@ export default MyProfile;
 const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
+  justifyContent:'space-evenly',
     alignItems: "center",
     paddingHorizontal: 5,
     marginTop: 25,
@@ -246,6 +249,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontFamily: styleConstants.fontFamily,
     color: styleConstants.color.textBlackColor,
+    alignSelf:'center'
   },
   container: {
     padding: 20,
