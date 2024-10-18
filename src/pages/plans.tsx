@@ -11,7 +11,7 @@ import {
 import { Button } from "react-native-paper";
 import { styleConstants } from "../styles/constants";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import useMatrimonyServices from "../hooks/useMatrimonyServices";
+import useMatrimonyServices, { ProfileType } from "../hooks/useMatrimonyServices";
 
 interface Iplan {
   name: string;
@@ -58,7 +58,17 @@ const PlanSelectionComponent = () => {
   };
   const handleButtonClick = () => {
     if (routeParams?.type && routeParams?.type === "matrimony") {
-      updateProfileDetails({
+      updateProfileDetails( ProfileType.matrimony, {
+        subscribed: true,
+        subs_plan_name: "Basic plan",
+        subs_start_date: new Date().toISOString(),
+      });
+
+
+    }
+
+    else{
+      updateProfileDetails( ProfileType.dating, {
         subscribed: true,
         subs_plan_name: "Basic plan",
         subs_start_date: new Date().toISOString(),

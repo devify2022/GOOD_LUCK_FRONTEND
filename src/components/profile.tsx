@@ -11,7 +11,7 @@ import { Avatar, IconButton, Divider, ActivityIndicator } from "react-native-pap
 import { styleConstants } from "../styles/constants";
 import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import useMatrimonyServices from "../hooks/useMatrimonyServices";
+import useMatrimonyServices, { ProfileType } from "../hooks/useMatrimonyServices";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux";
 
@@ -22,19 +22,25 @@ const MyProfile = ({ routes }: { routes: any }) => {
 
   const currentProfileId = useSelector((state: RootState) => state.auth.currentProfileId);
   const userId=useSelector((state:RootState)=>state.auth.userDetails?.matrimonyID)
-  const openWhatsApp = () => {
-    Linking.openURL("whatsapp://send?phone=1234567890");
+  const openWhatsApp = (phone:string) => {
+    Linking.openURL(`whatsapp://send?phone=${phone}`);
   };
 
-  const openFacebook = () => {
-    Linking.openURL("https://www.facebook.com/johndoe");
+  const openFacebook = (link:string) => {
+    Linking.openURL(link);
   };
   useEffect(() => {
    console.log(type,"getting type")
-    if ((type === "matrimonyprofile" || type === "datingprofile"))
-    { console.log('inside condition'); getProfileDetails(currentProfileId ?? '');}
+    if (type === "matrimonyprofile" )
+    { console.log('inside condition'); getProfileDetails( ProfileType.matrimony, currentProfileId ?? '');}
+    else if( type === "datingprofile")
+    {
+      getProfileDetails( ProfileType.dating, currentProfileId ?? '');
+    }
      
-    else{ console.log("getting userId"); getProfileDetails(userId??'');}
+    else if(type==='ownmatrimonyprofile'){ console.log("getting userId"); getProfileDetails(ProfileType.matrimony,userId??'');}
+    else
+    getProfileDetails(ProfileType.dating,userId??'');
   }, []);
 
   return (
@@ -47,14 +53,14 @@ const MyProfile = ({ routes }: { routes: any }) => {
           <View style={styles.titleContainer}>
         <Icon name="arrow-back" size={24} color="black" style={{ top: -2 }} />
         <Text style={styles.title}>
-          {type === "own"
+          {type === "ownmatrimonyprofile" || type==="owndatingprofile"
             ? "Your profile"
             : profileDetails?.userName ?? "No Name"}
         </Text>
        
       </View>
           <View style={styles.profileSection}>
-            {type === "own" ? (
+            {type === "ownmatrimonyprofile" || type==="owndatingprofile" ? (
               <>
                 <IconButton
                   icon="pencil"
@@ -85,7 +91,7 @@ const MyProfile = ({ routes }: { routes: any }) => {
                     size={30}
                     iconColor="#25D366"
                     style={styles.socialButton}
-                    onPress={openWhatsApp}
+                    onPress={()=>openWhatsApp(profileDetails?.whatsappNumbe)}
                   /> }
                   
                  {profileDetails?.facebookLink &&  <IconButton
@@ -93,7 +99,7 @@ const MyProfile = ({ routes }: { routes: any }) => {
                     size={30}
                     iconColor="#3b5998"
                     style={styles.socialButton}
-                    onPress={openFacebook}
+                    onPress={()=>openFacebook(profileDetails?.facebookLink)}
                   />}
                  
                 </View>
@@ -135,13 +141,13 @@ const MyProfile = ({ routes }: { routes: any }) => {
                 <View style={styles.detailItem}>
               <IconButton icon="school" size={20} style={styles.detailIcon} />
               <Text style={styles.detailText}>
-                <Text style={styles.detailLabel}>Education:</Text> B Tech
+                <Text style={styles.detailLabel}>Education:</Text> {profileDetails?.education}
               </Text>
             </View>
                <View style={styles.detailItem}>
               <IconButton icon="smoking" size={20} style={styles.detailIcon} />
               <Text style={styles.detailText}>
-                <Text style={styles.detailLabel}>Smoking Habits:</Text> Yes
+                <Text style={styles.detailLabel}>Smoking Habits:</Text> {profileDetails?.smoker ? 'Yes': 'No'}
               </Text>
             </View>
   
@@ -152,7 +158,7 @@ const MyProfile = ({ routes }: { routes: any }) => {
                 style={styles.detailIcon}
               />
               <Text style={styles.detailText}>
-                <Text style={styles.detailLabel}>Alcohol Habits:</Text> No
+                <Text style={styles.detailLabel}>Alcohol Habits:</Text> {profileDetails?.alcoholic ? 'Yes': 'No'}
               </Text>
             </View></> }
            {type==='matrimonyprofile' &&  <>
@@ -296,6 +302,7 @@ const styles = StyleSheet.create({
   detailText: {
     fontSize: 16,
     fontFamily: styleConstants.fontFamily,
+    textTransform:'capitalize',
    
     color: styleConstants.color.textBlackColor,
     flexWrap: "wrap",
@@ -328,7 +335,7 @@ const styles = StyleSheet.create({
     fontFamily: styleConstants.fontFamily,
     color: styleConstants.color.textBlackColor,
   },
-  editIcon: { position: "absolute", left: 60, bottom: 60, zIndex: 100 },
+  editIcon: { position: "absolute", left: 600, bottom: 60, zIndex: 100 },
   nameAgeText: {
     fontSize: 22,
     marginTop: 10,

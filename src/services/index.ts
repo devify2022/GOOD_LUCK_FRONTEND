@@ -98,3 +98,33 @@ export const getMatrimonyProfileDetails = (userId: string) => {
   console.log(userId, "inside services")
   return baseClient.get(endPoints.getMatrimonyProfileById + "/" + userId);
 };
+
+
+export const createDatingProfile = (payload: any, userId: string) => {
+  return baseClient.post(
+    endPoints.createDatingProfile + "/" + userId,
+    payload
+  );
+};
+
+export const updateDatingProfile = (payload: any, userId: string) => {
+  return baseClient.patch(
+    endPoints.updateDatingProfile,
+    +"/" + userId,
+    payload
+  );
+};
+
+export const getDatingProfiles = () => {
+  return baseClient.get(endPoints.getAllDatingProfile);
+};
+
+
+
+
+
+export const getDatingProfileDetails = (userId: string) => {
+  console.log(userId, "inside services")
+  return baseClient.get(endPoints.getDatingProfileById + "/" + userId);
+};
+

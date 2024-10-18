@@ -18,7 +18,7 @@ import {
 import { styleConstants } from "../styles/constants"; // Assuming styleConstants is defined in your project
 import { useNavigation } from "@react-navigation/native";
 import UploadScreen from "./imageUploader";
-import useMatrimonyServices from "../hooks/useMatrimonyServices";
+import useMatrimonyServices, { ProfileType } from "../hooks/useMatrimonyServices";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux";
 interface IProfileDetails {
@@ -40,7 +40,7 @@ const ProfileCreation = ({ route }: { route: any }) => {
     (state: RootState) => state.auth.userDetails?.matrimonyID
   );
  
-  const { createOwnMatrimonyProfile ,getProfileDetails, profileDetails, updateProfileDetails, isLoading} = useMatrimonyServices();
+  const { createOwnProfile ,getProfileDetails, profileDetails, updateProfileDetails, isLoading} = useMatrimonyServices();
   const imageNumber =  5;
   const [uploadedImages, setUploadedImages] = useState<any[]>([]);
   const [bio, setBio] = useState("");
@@ -96,8 +96,8 @@ const ProfileCreation = ({ route }: { route: any }) => {
     }
     console.log("here")
     setChips(
-      selectedChips.includes(chip)
-        ? selectedChips.filter((item) => item !== chip)
+      selectedChips?.includes(chip)
+        ? selectedChips?.filter((item) => item !== chip)
         : [...selectedChips, chip]
     );
   };
@@ -107,8 +107,10 @@ const ProfileCreation = ({ route }: { route: any }) => {
   };
 
   const handleButtonCLick = () => {
+
+   
     if (route.params.type === "matrimony") {
-      const payload = {
+      const payload =   {
         Fname: userDetails?.name?.split(" ")[0],
         Lname: userDetails?.name?.split(" ")[1] ?? "",
         photo: uploadedImages,
@@ -127,11 +129,43 @@ const ProfileCreation = ({ route }: { route: any }) => {
         searching_for: selectedGender[0].toLowerCase(),
         gender: selectedGender[0].toLowerCase() === "bride" ? "Male" : "Female",
         interests: selectedInterests[0].toLowerCase(),
-      };
+        pin:userDetails?.pin
+      } ;
+     
 
       console.log(payload);
 
-      createOwnMatrimonyProfile(payload);
+      createOwnProfile( ProfileType.matrimony, payload);
+    }
+
+    if (route.params.type === "dating") {
+      const payload =   {
+        Fname: userDetails?.name?.split(" ")[0],
+        Lname: userDetails?.name?.split(" ")[1] ?? "",
+        photo: uploadedImages,
+        city: userDetails?.city,
+        state: userDetails?.state,
+        salary: userDetails?.salary,
+        age: parseInt(userDetails?.age ?? ""),
+        subscribed: false,
+        subs_plan_name: "Basic plan",
+        subs_start_date: new Date().toISOString(),
+        bio,
+        smoking: smoking === "Yes",
+        alcoholic:drinking==='Yes',
+        pending_likes_id: "64e4b3a1f5e45b8d9b2c5f7d",
+        sent_likes_id: "64e4b3aaf5e45b8d9b2c5f7e",
+        cast: userDetails?.caste,
+        searching_for: selectedGender[0].toLowerCase(),
+        gender: selectedGender[0].toLowerCase() === "bride" ? "Male" : "Female",
+        interests: selectedInterests[0].toLowerCase(),
+       
+      } ;
+     
+
+      console.log(payload);
+
+      createOwnProfile(  ProfileType.dating , payload);
     }
     else if(route.params.type === "updatematrimonyprofile")
     {
@@ -155,8 +189,35 @@ const ProfileCreation = ({ route }: { route: any }) => {
         gender: selectedGender[0].toLowerCase() === "bride" ? "Male" : "Female",
         interests: selectedInterests[0].toLowerCase(),
       };
-      updateProfileDetails(payload)
+      updateProfileDetails(ProfileType.matrimony, payload)
     }
+    else if(route.params.type === "updatedatingprofile")
+      {
+        const payload =   {
+          Fname: userDetails?.name?.split(" ")[0],
+          Lname: userDetails?.name?.split(" ")[1] ?? "",
+          photo: uploadedImages,
+          city: userDetails?.city,
+          state: userDetails?.state,
+          salary: userDetails?.salary,
+          age: parseInt(userDetails?.age ?? ""),
+          subscribed: false,
+          subs_plan_name: "Basic plan",
+          subs_start_date: new Date().toISOString(),
+          bio,
+          smoking: smoking === "Yes",
+          alcoholic:drinking==='Yes',
+          pending_likes_id: "64e4b3a1f5e45b8d9b2c5f7d",
+          sent_likes_id: "64e4b3aaf5e45b8d9b2c5f7e",
+          cast: userDetails?.caste,
+          searching_for: selectedGender[0].toLowerCase(),
+          gender: selectedGender[0].toLowerCase() === "bride" ? "Male" : "Female",
+          interests: selectedInterests[0].toLowerCase(),
+         
+        } ;
+      
+        updateProfileDetails(ProfileType.dating, payload)
+      }
     else {
       navigation.navigate("datingplans");
     }
@@ -168,7 +229,7 @@ const ProfileCreation = ({ route }: { route: any }) => {
   useEffect(() => {
     if(route?.params?.type==='updatematrimonyprofile')
   {  
-    getProfileDetails(userId ?? '')
+    getProfileDetails(route.params.type==='dating'? ProfileType.dating : ProfileType.matrimony,  userId ?? '')
    
   }
     

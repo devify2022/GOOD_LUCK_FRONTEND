@@ -27,7 +27,11 @@ export const endPoints = {
   createMatrimonyProfile: "/matrimony/createMatrimonyProfile",
   updateMatrimonyProfile: "/matrimony/update",
   getTopFiveBrideProfile:'/matrimony/brides',
-  getTopFiveGroomProfile:'/matrimony/grooms'
+  getTopFiveGroomProfile:'/matrimony/grooms',
+  getAllDatingProfile: "/dating",
+  getDatingProfileById: "/dating",
+  createDatingProfile: "/dating/createDatingProfile",
+  updateDatingProfile: "/dating/update",
 };
 
 const env = "devBaseURL";

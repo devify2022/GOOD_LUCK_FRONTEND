@@ -15,15 +15,17 @@ const DatingScreenLayout: React.FC<{
 }> = ({ children, showHeader, showFooter }) => {
   const { width } = Dimensions.get("window");
   const navigation = useNavigation<any>();
+  const route = useRoute<any>();
+  const routeParams = route.params;
 
   const currentFlow = useSelector(
     (state: RootState) => state.auth.userDetails?.currentFlow
   );
   const handleProfileClick = () => {
-    if (currentFlow === "dating") navigation.navigate("datingprofile");
-    else if (currentFlow === "matrimony")
-      navigation.naviagte("matrimonyprofile");
-    else navigation.navigate("myprofile");
+    if (routeParams?.type && routeParams?.type === "matrimony")
+    navigation.navigate("mymatrimonyprofile");
+  else
+  navigation.navigate("mydatingprofile");
   };
 
   return (

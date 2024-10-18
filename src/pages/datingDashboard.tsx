@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import DatingScreenLayout from "../components/datingLayOut";
 import DatingDashBoardScroll from "../components/scrollableProfiles";
 import SwipeGesture from "react-native-swipe-gestures";
-import useMatrimonyServices from "../hooks/useMatrimonyServices";
+import useMatrimonyServices, { ProfileType } from "../hooks/useMatrimonyServices";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux";
 import { ActivityIndicator } from "react-native";
@@ -19,12 +19,13 @@ const DatingDashboard = ({ route }: { route: any }) => {
   const matrimonySubscribed = useSelector(
     (state: RootState) => state.auth.userDetails?.isMatrimonySubscribed
   );
+ 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [viewableProfile, setViewableProfile] = useState<any[]>([]);
   console.log(route?.params?.type, "getting route");
   const type = route?.params?.type;
   const navigation = useNavigation<any>();
-  const { getMatrimonyProfile, allMatrimonyProfiles } = useMatrimonyServices();
+  const { getProfile, allProfiles } = useMatrimonyServices();
 
   const handleSwipeLeft = () => {
     console.log("left swipe");viewableProfile[currentIndex]
@@ -56,17 +57,19 @@ const DatingDashboard = ({ route }: { route: any }) => {
   };
   useEffect(() => {
     if (type === "matrimony") {
-      if (matrimonySubscribed) getMatrimonyProfile("all");
-      else getMatrimonyProfile("randomFive");
+      if (matrimonySubscribed) getProfile(ProfileType.matrimony,  "all");
+      else getProfile(  ProfileType.matrimony,  "randomFive");
     } else if (type === "dating") {
+      if (datingSubscribed) getProfile(ProfileType.dating,  "all");
+      else getProfile(  ProfileType.dating,  "randomFive");
     }
   }, []);
   useEffect(() => {
-    if (type === "matrimony" && allMatrimonyProfiles.length > 0) {
-      setViewableProfile(allMatrimonyProfiles);
-      console.log(allMatrimonyProfiles, "getting profiles");
+    if ((type === "matrimony"|| type==='dating' )&& allProfiles.length > 0) {
+      setViewableProfile(allProfiles);
+      console.log(allProfiles, "getting profiles");
     }
-  }, [allMatrimonyProfiles]);
+  }, [allProfiles]);
   // useEffect(() => {
   //   if (
   //     currentIndex === 4 &&
@@ -80,7 +83,7 @@ const DatingDashboard = ({ route }: { route: any }) => {
   return (
     <View style={{ height: "100%" }}>
       <DatingScreenLayout showHeader>
-        {allMatrimonyProfiles.length > 0 ? (
+        {allProfiles.length > 0 ? (
           <SwipeGesture
             config={swipeConfig}
             style={{ flex: 1, width: "100%", height: "100%" }}

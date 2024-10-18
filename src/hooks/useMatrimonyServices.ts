@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import {
+  createDatingProfile,
   createMatrimonyProfile,
+  getDatingProfileDetails,
+  getDatingProfiles,
   getMatrimonyProfileDetails,
   getMatrimonyProfiles,
+  updateDatingProfile,
   updateMatrimonyProfile,
 } from "../services";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,6 +14,11 @@ import { RootState } from "../redux";
 import { notifyMessage } from "./useDivineShopServices";
 import { useNavigation } from "@react-navigation/native";
 import { updateUserData } from "../redux/silces/auth.silce";
+
+export enum ProfileType{
+  matrimony,
+  dating
+}
 
 const useMatrimonyServices = () => {
   const userId = useSelector(
@@ -19,25 +28,29 @@ const useMatrimonyServices = () => {
     (state: RootState) => state.auth.userDetails?.matrimonyID
   );
 
+  const datingId = useSelector(
+    (state: RootState) => state.auth.userDetails?.datingID
+  );
+
   const dispatch = useDispatch();
   const navigation = useNavigation<any>();
 
-  const [allMatrimonyProfiles, setallMatrimonyProfiles] = useState<any[]>([]);
-  const [filteredMatrimonyProfile, setfilteredMatrimonyProfile] = useState<
+  const [allProfiles, setAllProfiles] = useState<any[]>([]);
+  const [filteredProfile, setfilteredProfile] = useState<
     any[]
   >([]);
-  const [filteredTopFiveMatrimonyProfile, setfilteredTopFiveMatrimonyProfile] =
+  const [filteredTopFiveProfile, setfilteredTopFiveProfile] =
     useState<any[]>([]);
   const [profileDetails, setprofileDetails] = useState<any>();
 
   // Loading state
   const [isLoading, setIsLoading] = useState(false);
 
-  const createOwnMatrimonyProfile = async (payload: any) => {
+  const createOwnProfile = async (profileType: ProfileType, payload: any) => {
     try {
       setIsLoading(true); // Start loading
       console.log(payload, userId);
-      const response = await createMatrimonyProfile(payload, userId ?? "");
+      const response = profileType===ProfileType.matrimony ? await createMatrimonyProfile(payload, userId ?? ""):await createDatingProfile(payload, userId ?? "") ;
       console.log(response?.data?.data);
       dispatch(updateUserData({ matrimonyID: userId }));
 
@@ -51,12 +64,12 @@ const useMatrimonyServices = () => {
     }
   };
 
-  const getMatrimonyProfile = async (
-    type: "all" | "randomFive" | "filterApplied" | "bride" | "groom"
+  const getProfile = async (
+    profileType: ProfileType,  type: "all" | "randomFive" | "filterApplied" | "bride" | "groom"
   ) => {
     try {
       setIsLoading(true); // Start loading
-      const response = await getMatrimonyProfiles();
+      const response =  profileType===ProfileType.matrimony ? await getMatrimonyProfiles():  await getDatingProfiles();
       const data = response?.data?.data as Array<any>;
       console.log(data, "api response");
 
@@ -64,12 +77,12 @@ const useMatrimonyServices = () => {
         const formattedData = data?.map((item: any) =>
           formatProfileDataForList(item)
         );
-        setallMatrimonyProfiles(formattedData);
+        setAllProfiles(formattedData);
       } else if (type === "randomFive") {
         const randomData = data
           ?.slice(0, 5)
           .map((item: any) => formatProfileDataForList(item));
-        setallMatrimonyProfiles(randomData);
+        setAllProfiles(randomData);
       }
     } catch (error) {
       console.error(error);
@@ -78,11 +91,11 @@ const useMatrimonyServices = () => {
     }
   };
 
-  const getProfileDetails = async (profileId: string) => {
+  const getProfileDetails = async (profileType: ProfileType,  profileId: string) => {
     try {
       setIsLoading(true); // Start loading
       console.log(profileId, "getting profile id")
-      const response = await getMatrimonyProfileDetails(profileId);
+      const response = profileType===ProfileType.matrimony ?  await getMatrimonyProfileDetails(profileId) : await getDatingProfileDetails(profileId);
       console.log(response?.data?.data, "getting data");
       setprofileDetails(formatProfileDataForList(response?.data?.data));
     } catch (error) {
@@ -92,12 +105,12 @@ const useMatrimonyServices = () => {
     }
   };
 
-  const updateProfileDetails = async (payload: any) => {
+  const updateProfileDetails = async (profileType: ProfileType,  payload: any) => {
     try {
       setIsLoading(true); // Start loading
       console.log(payload, "getting payload");
       console.log(userId, "getting user id");
-      const response = await updateMatrimonyProfile(payload, userId ?? "");
+      const response = profileType===ProfileType.matrimony ? await updateMatrimonyProfile(payload, matrimonyId ?? ""): await updateDatingProfile(payload, datingId ?? '');
 
       setprofileDetails(response?.data?.data);
       console.log("updated profile");
@@ -135,14 +148,14 @@ const useMatrimonyServices = () => {
   };
 
   return {
-    createOwnMatrimonyProfile,
-    getMatrimonyProfile,
-    allMatrimonyProfiles,
-    setallMatrimonyProfiles,
-    filteredMatrimonyProfile,
-    setfilteredMatrimonyProfile,
-    filteredTopFiveMatrimonyProfile,
-    setfilteredTopFiveMatrimonyProfile,
+    createOwnProfile,
+    getProfile,
+    allProfiles,
+    setAllProfiles,
+    filteredProfile,
+    setfilteredProfile,
+    filteredTopFiveProfile,
+    setfilteredTopFiveProfile,
     getProfileDetails,
     profileDetails,
     setprofileDetails,

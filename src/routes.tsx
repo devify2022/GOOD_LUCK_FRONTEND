@@ -102,9 +102,14 @@ const Routes = () => {
             component={isAuthenticated ? ChatUI : SignInSignUp}
           />
           <Stack.Screen
-            name="myprofile"
+            name="mydatingprofile"
             component={isAuthenticated ? MyProfilePage : SignInSignUp}
-            initialParams={{ type: "own" }}
+            initialParams={{ type: "owndatingprofile" }}
+          />
+          <Stack.Screen
+            name="mymatrimonyprofile"
+            component={isAuthenticated ? MyProfilePage : SignInSignUp}
+            initialParams={{ type: "ownmatrimonyprofile" }}
           />
           <Stack.Screen
             name="datingprofile"
